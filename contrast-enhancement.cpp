@@ -16,7 +16,7 @@ PGM_IMG contrast_enhancement_g(PGM_IMG img_in)
     histogram_equalization(result.img,img_in.img,hist,result.w*result.h, 256);
     return result;
 }
-//prueba
+
 PPM_IMG contrast_enhancement_c_rgb(PPM_IMG img_in)
 {
     PPM_IMG result;
