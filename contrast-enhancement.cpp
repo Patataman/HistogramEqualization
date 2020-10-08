@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "hist-equ.h"
-
+// prueba de comentario desde linux
 PGM_IMG contrast_enhancement_g(PGM_IMG img_in)
 {
     PGM_IMG result;
