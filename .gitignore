@@ -335,3 +335,7 @@ TSWLatexianTemp*
 
 # End of https://www.toptal.com/developers/gitignore/api/latex
 
+#imagenes de la practica
+*.ppm
+*.pgm
+
