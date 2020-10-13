@@ -1,6 +1,6 @@
 #ifndef HIST_EQU_COLOR_H
 #define HIST_EQU_COLOR_H
-#inculde "omp.h"
+#include "omp.h"
 
 typedef struct{
     int w;
