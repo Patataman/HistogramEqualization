@@ -37,39 +37,36 @@ void run_cpu_color_test(PPM_IMG img_in)
     PPM_IMG img_obuf_hsl, img_obuf_yuv;
     
     printf("Starting CPU processing...\n");
-    
+
+    double tiempo = omp_get_wtime();
+
     img_obuf_hsl = contrast_enhancement_c_hsl(img_in);
-    //printf("HSL processing time: %f (ms)\n", 0.0f /* TIMER */ );
-    
+    printf("HSL processing time: %f (ms)\n", omp_get_wtime()-tiempo /* TIMER */ );
+
     write_ppm(img_obuf_hsl, "out_hsl.ppm");
 
+    tiempo = omp_get_wtime();
     img_obuf_yuv = contrast_enhancement_c_yuv(img_in);
-    //printf("YUV processing time: %f (ms)\n", 0.0f /* TIMER */);
-    
+    printf("YUV processing time: %f (ms)\n", omp_get_wtime()-tiempo /* TIMER */);
+
     write_ppm(img_obuf_yuv, "out_yuv.ppm");
-    
+
     free_ppm(img_obuf_hsl);
     free_ppm(img_obuf_yuv);
 }
 
-
-
-
 void run_cpu_gray_test(PGM_IMG img_in)
 {
     PGM_IMG img_obuf;
-    
-    
+
     printf("Starting CPU processing...\n");
-    
+    double tiempo = omp_get_wtime();
     img_obuf = contrast_enhancement_g(img_in);
-    //printf("Processing time: %f (ms)\n", 0.0f /* TIMER */ );
-    
+    printf("Processing time: %f (ms)\n", omp_get_wtime()-tiempo /* TIMER */ );
+
     write_pgm(img_obuf, "out.pgm");
     free_pgm(img_obuf);
 }
-
-
 
 PPM_IMG read_ppm(const char * path){
     FILE * in_file;
