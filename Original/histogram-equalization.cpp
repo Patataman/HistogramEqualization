@@ -14,6 +14,9 @@ void histogram(int * hist_out, unsigned char * img_in, int img_size, int nbr_bin
         hist_out[img_in[i]] ++;
     }
 }
+// 4 líneas para color y gris (sin declaraciones)
+// 4 líneas paralelizables (aunque luego sabemos que al menos 
+//                          el primer bucle es tontería de paralelizar)
 
 void histogram_equalization(unsigned char * img_out, unsigned char * img_in, 
                             int * hist_in, int img_size, int nbr_bin){
@@ -23,7 +26,7 @@ void histogram_equalization(unsigned char * img_out, unsigned char * img_in,
     cdf = 0;
     min = 0;
     i = 0;
-    while(min == 0){
+    while(min == 0) {
         min = hist_in[i++];
     }
     d = img_size - min;
@@ -31,24 +34,23 @@ void histogram_equalization(unsigned char * img_out, unsigned char * img_in,
         cdf += hist_in[i];
         //lut[i] = (cdf - min)*(nbr_bin - 1)/d;
         lut[i] = (int)(((float)cdf - min)*255/d + 0.5);
-        if(lut[i] < 0){
+        if(lut[i] < 0) {
             lut[i] = 0;
         }
-        
-        
     }
     
     /* Get the result image */
-    for(i = 0; i < img_size; i ++){
-        if(lut[img_in[i]] > 255){
+    for(i = 0; i < img_size; i ++) {
+        if(lut[img_in[i]] > 255) {
             img_out[i] = 255;
-        }
-        else{
+        } else {
             img_out[i] = (unsigned char)lut[img_in[i]];
         }
         
     }
 }
-
-
-
+// 15 líneas en total para color y gris (sin declaraciones y en el if-else contando el más largo)
+// 3 líneas (el segundo for, el primero no es paralelizable por 
+//           la lut depende del cdf acumulado hasta el momento. Aunque de ser así,
+//           luego el particionar la imagen para MPI no debería dar los mismos resultados... 
+//           Y SI, depende solo de hist_in??? Si fuese así, quizás SI que es paralelizable la parte del cdf...
