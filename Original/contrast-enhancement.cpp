@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "hist-equ.h"
-// prueba de comentario desde linux
+
 PGM_IMG contrast_enhancement_g(PGM_IMG img_in)
 {
     PGM_IMG result;
@@ -16,6 +16,8 @@ PGM_IMG contrast_enhancement_g(PGM_IMG img_in)
     histogram_equalization(result.img,img_in.img,hist,result.w*result.h, 256);
     return result;
 }
+// 3 líneas para gris (sin declaraciones, return y llamadas a métodos, porque eso luego el compìlador lo sustituirá)
+// 0 líneas paralelizables? la del malloc me huele mucho a paralelo, pero no estoy seguro
 
 PPM_IMG contrast_enhancement_c_rgb(PPM_IMG img_in)
 {
@@ -37,7 +39,8 @@ PPM_IMG contrast_enhancement_c_rgb(PPM_IMG img_in)
 
     return result;
 }
-
+// 5 líneas para color (sin lo mismo que arriba)
+// 3 paralelizables (los malloc, aunque en la realidad no creo que sirva de nada, ya que es algo muy rápido)
 
 PPM_IMG contrast_enhancement_c_yuv(PPM_IMG img_in)
 {
@@ -63,6 +66,8 @@ PPM_IMG contrast_enhancement_c_yuv(PPM_IMG img_in)
     
     return result;
 }
+// 8 líneas en totoal para color (no declaraciones ni return ni métodos sin return)
+// 3´líneas si consideramos que paralelizar un free es útil
 
 PPM_IMG contrast_enhancement_c_hsl(PPM_IMG img_in)
 {
@@ -87,7 +92,8 @@ PPM_IMG contrast_enhancement_c_hsl(PPM_IMG img_in)
     free(hsl_med.l);
     return result;
 }
-
+// 8 líneas para color (sin return, declaraciones y métodos)
+// 3 líneas sin paralelizar frees es útil
 
 //Convert RGB to HSL, assume R,G,B in [0, 255]
 //Output H, S in [0.0, 1.0] and L in [0, 255]
@@ -102,8 +108,7 @@ HSL_IMG rgb2hsl(PPM_IMG img_in)
     img_out.s = (float *)malloc(img_in.w * img_in.h * sizeof(float));
     img_out.l = (unsigned char *)malloc(img_in.w * img_in.h * sizeof(unsigned char));
     
-    for(i = 0; i < img_in.w*img_in.h; i ++){
-        
+    for(i = 0; i < img_in.w*img_in.h; i ++){     
         float var_r = ( (float)img_in.img_r[i]/255 );//Convert RGB to [0,1]
         float var_g = ( (float)img_in.img_g[i]/255 );
         float var_b = ( (float)img_in.img_b[i]/255 );
@@ -114,13 +119,11 @@ HSL_IMG rgb2hsl(PPM_IMG img_in)
         float del_max = var_max - var_min;               //Delta RGB value
         
         L = ( var_max + var_min ) / 2;
-        if ( del_max == 0 )//This is a gray, no chroma...
-        {
-            H = 0;         
-            S = 0;    
+        if ( del_max == 0 ) {//This is a gray, no chroma...
+            H = 0;
+            S = 0;
         }
-        else                                    //Chromatic data...
-        {
+        else {  //Chromatic data...
             if ( L < 0.5 )
                 S = del_max/(var_max+var_min);
             else
@@ -129,18 +132,15 @@ HSL_IMG rgb2hsl(PPM_IMG img_in)
             float del_r = (((var_max-var_r)/6)+(del_max/2))/del_max;
             float del_g = (((var_max-var_g)/6)+(del_max/2))/del_max;
             float del_b = (((var_max-var_b)/6)+(del_max/2))/del_max;
-            if( var_r == var_max ){
+            if( var_r == var_max ) {
                 H = del_b - del_g;
-            }
-            else{       
-                if( var_g == var_max ){
+            } else {
+                if( var_g == var_max ) {
                     H = (1.0/3.0) + del_r - del_b;
-                }
-                else{
-                        H = (2.0/3.0) + del_g - del_r;
+                } else {
+                    H = (2.0/3.0) + del_g - del_r;
                 }   
             }
-            
         }
         
         if ( H < 0 )
@@ -155,6 +155,8 @@ HSL_IMG rgb2hsl(PPM_IMG img_in)
     
     return img_out;
 }
+// 28 líneas de código para color contando los IFs más largos (sin declaraciones ni return)
+// 24 lineas creo que son paralelizables (todo el for) 
 
 float Hue_2_RGB( float v1, float v2, float vH )             //Function Hue_2_RGB
 {
@@ -165,6 +167,8 @@ float Hue_2_RGB( float v1, float v2, float vH )             //Function Hue_2_RGB
     if ( ( 3 * vH ) < 2 ) return ( v1 + ( v2 - v1 ) * ( ( 2.0f/3.0f ) - vH ) * 6 );
     return ( v1 );
 }
+// 5 líneas para color (sin returns)
+// 0 líneas paralelizables
 
 //Convert HSL to RGB, assume H, S in [0.0, 1.0] and L in [0, 255]
 //Output R,G,B in [0, 255]
@@ -187,15 +191,11 @@ PPM_IMG hsl2rgb(HSL_IMG img_in)
         
         unsigned char r,g,b;
         
-        if ( S == 0 )
-        {
+        if ( S == 0 ) {
             r = L * 255;
             g = L * 255;
             b = L * 255;
-        }
-        else
-        {
-            
+        } else {
             if ( L < 0.5 )
                 var_2 = L * ( 1 + S );
             else
@@ -213,6 +213,8 @@ PPM_IMG hsl2rgb(HSL_IMG img_in)
 
     return result;
 }
+// 19 líneas para color en total (contando ifs más largos, sin declaraciones y sin returns)
+// 14 líenas paralelizables (el for, yendo por el if más largo)
 
 //Convert RGB to YUV, all components in [0, 255]
 YUV_IMG rgb2yuv(PPM_IMG img_in)
@@ -228,7 +230,7 @@ YUV_IMG rgb2yuv(PPM_IMG img_in)
     img_out.img_u = (unsigned char *)malloc(sizeof(unsigned char)*img_out.w*img_out.h);
     img_out.img_v = (unsigned char *)malloc(sizeof(unsigned char)*img_out.w*img_out.h);
 
-    for(i = 0; i < img_out.w*img_out.h; i ++){
+    for(i = 0; i < img_out.w*img_out.h; i ++) {
         r = img_in.img_r[i];
         g = img_in.img_g[i];
         b = img_in.img_b[i];
@@ -244,6 +246,8 @@ YUV_IMG rgb2yuv(PPM_IMG img_in)
     
     return img_out;
 }
+// 15 líneas para color (sin declaraciones ni return)
+// 10 líneas paralelizables (el for)
 
 unsigned char clip_rgb(int x)
 {
@@ -254,6 +258,8 @@ unsigned char clip_rgb(int x)
 
     return (unsigned char)x;
 }
+// 2 líneas para color sin contar returns
+// 0 líneas paralelizables
 
 //Convert YUV to RGB, all components in [0, 255]
 PPM_IMG yuv2rgb(YUV_IMG img_in)
@@ -262,15 +268,14 @@ PPM_IMG yuv2rgb(YUV_IMG img_in)
     int i;
     int  rt,gt,bt;
     int y, cb, cr;
-    
-    
+
     img_out.w = img_in.w;
     img_out.h = img_in.h;
     img_out.img_r = (unsigned char *)malloc(sizeof(unsigned char)*img_out.w*img_out.h);
     img_out.img_g = (unsigned char *)malloc(sizeof(unsigned char)*img_out.w*img_out.h);
     img_out.img_b = (unsigned char *)malloc(sizeof(unsigned char)*img_out.w*img_out.h);
 
-    for(i = 0; i < img_out.w*img_out.h; i ++){
+    for(i = 0; i < img_out.w*img_out.h; i ++) {
         y  = (int)img_in.img_y[i];
         cb = (int)img_in.img_u[i] - 128;
         cr = (int)img_in.img_v[i] - 128;
@@ -286,3 +291,5 @@ PPM_IMG yuv2rgb(YUV_IMG img_in)
     
     return img_out;
 }
+// 15 líneas en total para color
+// 10 líneas paralelizables (el for)
