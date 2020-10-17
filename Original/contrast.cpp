@@ -11,26 +11,28 @@ int main(){
 	
     PGM_IMG img_ibuf_g;
     PPM_IMG img_ibuf_c;
-
-	double tiempo = omp_get_wtime();
+    
+    double tiempo = omp_get_wtime();
     
     printf("Running contrast enhancement for gray-scale images.\n");
     img_ibuf_g = read_pgm("in.pgm");
     run_cpu_gray_test(img_ibuf_g);
     free_pgm(img_ibuf_g);
     
-	printf("Gris %f \n",omp_get_wtime()-tiempo);
-	tiempo = omp_get_wtime();
+    printf("Gris %f \n",omp_get_wtime()-tiempo);
+    tiempo = omp_get_wtime();
 
     printf("Running contrast enhancement for color images.\n");
     img_ibuf_c = read_ppm("in.ppm");
     run_cpu_color_test(img_ibuf_c);
     free_ppm(img_ibuf_c);
 
-	printf("Color %f \n",omp_get_wtime()-tiempo);
+    printf("Color %f \n",omp_get_wtime()-tiempo);
     
     return 0;
 }
+// 6 líneas en total sin contar los tiempos, return y declaración de variables (2) (3 líneas para gris y 3 para color)
+// 0 líneas paralelizables (así a primera vista)
 
 void run_cpu_color_test(PPM_IMG img_in)
 {
@@ -53,9 +55,8 @@ void run_cpu_color_test(PPM_IMG img_in)
     free_ppm(img_obuf_hsl);
     free_ppm(img_obuf_yuv);
 }
-
-
-
+// 6 líneas en total para imagen en color (sin contar tiempos ni declaraciones)
+// 0 líneas paralelizables
 
 void run_cpu_gray_test(PGM_IMG img_in)
 {
@@ -69,7 +70,8 @@ void run_cpu_gray_test(PGM_IMG img_in)
     write_pgm(img_obuf, "out.pgm");
     free_pgm(img_obuf);
 }
-
+// 3 líneas en total para gris (no tiempo ni declaraciones)
+// 0 líneas paralelizables
 
 
 PPM_IMG read_ppm(const char * path){
@@ -114,6 +116,8 @@ PPM_IMG read_ppm(const char * path){
     
     return result;
 }
+// 17 líneas para color sin return ni declaraciones
+// 8 líneas deberían ser paralelizables (reserva de espacio para cada buffer, lectura y el for)
 
 void write_ppm(PPM_IMG img, const char * path){
     FILE * out_file;
@@ -133,6 +137,8 @@ void write_ppm(PPM_IMG img, const char * path){
     fclose(out_file);
     free(obuf);
 }
+// 11 líneas para color sin contrar declaraciones
+// 5 líneas deberían ser paralelizables (reserva de memoria y el for)
 
 void free_ppm(PPM_IMG img)
 {
@@ -140,6 +146,8 @@ void free_ppm(PPM_IMG img)
     free(img.img_g);
     free(img.img_b);
 }
+// 3 íneas para color
+// 3 líneas paralelizables
 
 PGM_IMG read_pgm(const char * path){
     FILE * in_file;
@@ -169,6 +177,8 @@ PGM_IMG read_pgm(const char * path){
     
     return result;
 }
+// 9 ´líneas para gris (no declaraciones ni return)
+// 1 línea paralelizable (la lectura)
 
 void write_pgm(PGM_IMG img, const char * path){
     FILE * out_file;
@@ -178,9 +188,13 @@ void write_pgm(PGM_IMG img, const char * path){
     fwrite(img.img,sizeof(unsigned char), img.w*img.h, out_file);
     fclose(out_file);
 }
+// 3 líneas para gris (no declaraciones ni prints)
+// 0 líneas paralelizables (creo... porque escribir varios a la vez es mala idea)
 
 void free_pgm(PGM_IMG img)
 {
     free(img.img);
 }
+// 1 línea para gris
+// 0 líneas paralelizables
 
