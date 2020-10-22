@@ -338,4 +338,5 @@ TSWLatexianTemp*
 #imagenes de la practica
 *.ppm
 *.pgm
-
+**/times/*
+venv
