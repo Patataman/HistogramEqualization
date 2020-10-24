@@ -340,3 +340,4 @@ TSWLatexianTemp*
 *.pgm
 **/times/*
 venv
+*.pdf
