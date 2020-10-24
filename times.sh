@@ -23,7 +23,10 @@ if [ ! -d times ]; then
   mkdir times
 fi
 
-for i in {0..$2}; do ./contrast >> times/output.txt; done
+for ((i = 0; i <= $2; i++))
+do
+  ./contrast >> times/output.txt
+done
 
 cat times/output.txt | grep Processing > times/grey_processing.txt
 cat times/output.txt | grep Gris > times/grey_time.txt

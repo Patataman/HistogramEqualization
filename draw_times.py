@@ -34,16 +34,42 @@ if args.type in ["color", "todo"]:
         for l in color_time.readlines()
     ])
 
+    hsl_proc_mean = hsl_processing.mean()
+    yuv_proc_mean = yuv_processing.mean()
+    color_time_mean = color_time.mean()
+
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=[i for i in range(len(color_time))], y=hsl_processing,
-                        mode='lines+markers',
-                        name='HSL Processing'))
-    fig.add_trace(go.Scatter(x=[i for i in range(len(color_time))], y=yuv_processing,
-                        mode='lines+markers',
-                        name='YUV Processing'))
-    fig.add_trace(go.Scatter(x=[i for i in range(len(color_time))], y=color_time,
-                        mode='lines+markers',
-                        name='Color Time'))
+    fig.add_trace(go.Scatter(
+        x=[i for i in range(len(color_time))],
+        y=hsl_processing,
+        mode='lines+markers',
+        name='HSL Processing'))
+    fig.add_trace(go.Scatter(
+        x=[i for i in range(len(color_time))],
+        y=yuv_processing,
+        mode='lines+markers',
+        name='YUV Processing'))
+    fig.add_trace(go.Scatter(
+        x=[i for i in range(len(color_time))],
+        y=color_time,
+        mode='lines+markers',
+        name='Color Time'))
+    fig.add_trace(go.Scatter(
+        x=[i for i in range(len(color_time))],
+        y=[hsl_proc_mean]*len(color_time),
+        mode='lines',
+        name='HSL Processing Mean'))
+    fig.add_trace(go.Scatter(
+        x=[i for i in range(len(color_time))],
+        y=[yuv_proc_mean]*len(color_time),
+        mode='lines',
+        name='YUV Processing Mean'))
+    fig.add_trace(go.Scatter(
+        x=[i for i in range(len(color_time))],
+        y=[color_time_mean]*len(color_time),
+        mode='lines',
+        # line=dict(width=4, dash='dot'),
+        name='Color Time Mean'))
 
     fig.update_layout(
         title={
@@ -56,6 +82,7 @@ if args.type in ["color", "todo"]:
         xaxis_title="Iterations",
         yaxis_title="Time (s)",
     )
+    fig.update_xaxes(type='category')
 
     fig.show()
 
@@ -72,17 +99,30 @@ if args.type in ["gris", "todo"]:
         for l in grey_time.readlines()
     ])
 
+    grey_proc_mean = grey_processing.mean()
+    grey_time_mean = grey_time.mean()
+
     fig = go.Figure()
     fig.add_trace(go.Scatter(
         x=[i for i in range(len(grey_time))],
         y=grey_processing,
         mode='lines+markers',
-        name='Grey Processing'))
+        name='Processing'))
     fig.add_trace(go.Scatter(
         x=[i for i in range(len(grey_time))],
         y=grey_time,
         mode='lines+markers',
-        name='Grey Time'))
+        name='Total Time'))
+    fig.add_trace(go.Scatter(
+        x=[i for i in range(len(grey_time))],
+        y=[grey_proc_mean]*len(grey_time),
+        mode='lines',
+        name='Processing Mean'))
+    fig.add_trace(go.Scatter(
+        x=[i for i in range(len(grey_time))],
+        y=[grey_time_mean]*len(grey_time),
+        mode='lines',
+        name='Total Time Mean'))
 
     fig.update_layout(
         title={
@@ -95,5 +135,6 @@ if args.type in ["gris", "todo"]:
         xaxis_title="Iterations",
         yaxis_title="Time (s)",
     )
+    fig.update_xaxes(type='category')
 
     fig.show()
