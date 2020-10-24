@@ -75,11 +75,11 @@ hmargin=3cm
 {}
 \titlespacing{\chapter}{0pt}{0pt}{*3}
 \titlecontents{chapter}
-[0pt]                                               
+[0pt]
 {}
 {\contentsmargin{0pt}\thecontentslabel.\enspace\uppercase}
-{\contentsmargin{0pt}\uppercase}                        
-{\titlerule*[.7pc]{.}\contentspage}                 
+{\contentsmargin{0pt}\uppercase}
+{\titlerule*[.7pc]{.}\contentspage}
 
 \titleformat{\section}
 {\bfseries}
@@ -87,7 +87,7 @@ hmargin=3cm
 {5pt}
 {}
 \titlecontents{section}
-[5pt]                                               
+[5pt]
 {}
 {\contentsmargin{0pt}\thecontentslabel.\enspace}
 {\contentsmargin{0pt}}
@@ -99,18 +99,18 @@ hmargin=3cm
 {5pt}
 {}
 \titlecontents{subsection}
-[10pt]                                               
+[10pt]
 {}
-{\contentsmargin{0pt}                          
+{\contentsmargin{0pt}
 	\thecontentslabel.\enspace}
-{\contentsmargin{0pt}}                        
-{\titlerule*[.7pc]{.}\contentspage}  
+{\contentsmargin{0pt}}
+{\titlerule*[.7pc]{.}\contentspage}
 
 
 % DISEÑO DE TABLAS. Puedes elegir entre el estilo para ingeniería o para ciencias sociales y humanidades. Por defecto, está activado el estilo de ingeniería. Si deseas utilizar el otro, comenta las líneas del diseño de ingeniería y descomenta las del diseño de ciencias sociales y humanidades
-\usepackage{multirow} % permite combinar celdas 
+\usepackage{multirow} % permite combinar celdas
 \usepackage{caption} % para personalizar el título de tablas y figuras
-\usepackage{floatrow} % utilizamos este paquete y sus macros \ttabbox y \ffigbox para alinear los nombres de tablas y figuras de acuerdo con el estilo definido. Para su uso ver archivo de ejemplo 
+\usepackage{floatrow} % utilizamos este paquete y sus macros \ttabbox y \ffigbox para alinear los nombres de tablas y figuras de acuerdo con el estilo definido. Para su uso ver archivo de ejemplo
 \usepackage{array} % con este paquete podemos definir en la siguiente línea un nuevo tipo de columna para tablas: ancho personalizado y contenido centrado
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 \DeclareCaptionFormat{upper}{#1#2\uppercase{#3}\par}
@@ -147,7 +147,7 @@ hmargin=3cm
 	singlelinecheck=off,
 	labelsep=period,
 	labelfont=small,
-	font=small		
+	font=small
 }
 
 % Diseño de figuras para ciencias sociales y humanidades
@@ -157,7 +157,7 @@ hmargin=3cm
 %	singlelinecheck=off,
 %	labelsep=period,
 %	labelfont=small,
-%	font=small		
+%	font=small
 %}
 
 
@@ -185,7 +185,7 @@ hmargin=3cm
 	keywordstyle=\bfseries,
 	stringstyle=\ttfamily,
 	showstringspaces = false,
-	commentstyle=\color{gray45},     
+	commentstyle=\color{gray45},
 	%
 	numbers=left,
 	numbersep=15pt,
@@ -196,7 +196,7 @@ hmargin=3cm
 }
 
 \captionsetup[lstlisting]{font=small, labelsep=period}
-% fijamos el estilo a utilizar 
+% fijamos el estilo a utilizar
 \lstset{style=estilo}
 \renewcommand{\lstlistingname}{\uppercase{Código}}
 
@@ -237,10 +237,10 @@ hmargin=3cm
 
 \begin{document}
 \pagenumbering{roman} % Se utilizan cifras romanas en la numeración de las páginas previas al cuerpo del trabajo
-	
+
 %----------
 %	PORTADA
-%----------	
+%----------
 \begin{titlepage}
 	\begin{sffamily}
 	\color{azulUC3M}
@@ -250,18 +250,18 @@ hmargin=3cm
 		\end{figure}
 		\vspace{2.5cm}
 		\begin{Large}
-			Grado Universitario...\\			
+			Grado Universitario...\\
 			Indique el curso académico (ej. 2016-2017)\\
-			\vspace{2cm}		
+			\vspace{2cm}
 			\textsl{Trabajo Fin de Grado}
 			\bigskip
-			
+
 		\end{Large}
 		 	{\Huge ``Título del trabajo''}\\
 		 	\vspace*{0.5cm}
 	 		\rule{10.5cm}{0.1mm}\\
 			\vspace*{0.9cm}
-			{\LARGE Nombre Apellido1 Apellido2}\\ 
+			{\LARGE Nombre Apellido1 Apellido2}\\
 			\vspace*{1cm}
 		\begin{Large}
 			Tutor/es\\
@@ -285,17 +285,17 @@ hmargin=3cm
 
 %----------
 %	RESUMEN Y PALABRAS CLAVE
-%----------	
+%----------
 \renewcommand\abstractname{\large\bfseries\filcenter\uppercase{Resumen}}
 \begin{abstract}
 \thispagestyle{plain}
 \setcounter{page}{3}
-	
+
 	% ESCRIBIR EL RESUMEN AQUÍ
-	
+
 	\textbf{Palabras clave:}
 	% Escribir las palabras clave aquí
-	
+
 	\vfill
 \end{abstract}
 	\newpage % página en blanco o de cortesía
@@ -305,23 +305,20 @@ hmargin=3cm
 
 %----------
 %	DEDICATORIA
-%----------	
+%----------
 \chapter*{Dedicatoria}
 
 \setcounter{page}{5}
-	
-	% ESCRIBIR LA DEDICATORIA AQUÍ	
-		
+
+	% ESCRIBIR LA DEDICATORIA AQUÍ
 	\vfill
-	
 	\newpage % página en blanco o de cortesía
 	\thispagestyle{empty}
 	\mbox{}
-	
 
 %----------
 %	ÍNDICES
-%----------	
+%----------
 
 %--
 % Índice general
@@ -356,19 +353,18 @@ hmargin=3cm
 
 %----------
 %	TRABAJO
-%----------	
+%----------
 \clearpage
-\pagenumbering{arabic} % numeración con múmeros arábigos para el resto de la publicación	
+\pagenumbering{arabic} % numeración con múmeros arábigos para el resto de la publicación
 
 \chapter{Introducción}
 
 	% COMENZAR A ESCRIBIR EL TRABAJO
 
 
-
 %----------
 %	BIBLIOGRAFÍA
-%----------	
+%----------
 
 %\nocite{*} % Si quieres que aparezcan en la bibliografía todos los documentos que la componen (también los que no estén citados en el texto) descomenta está lína
 
@@ -381,7 +377,7 @@ hmargin=3cm
 
 %----------
 %	ANEXOS
-%----------	
+%----------
 
 % Si tu trabajo incluye anexos, puedes descomentar las siguientes líneas
 %\chapter* {Anexo x}
