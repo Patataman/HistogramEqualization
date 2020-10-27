@@ -1,0 +1,1111 @@
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058715 (ms)
+Gris 1.540648 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 1.651232 (ms)
+YUV processing time: 0.295689 (ms)
+Color 10.025826 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058422 (ms)
+Gris 1.632194 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 1.519525 (ms)
+YUV processing time: 0.274271 (ms)
+Color 9.877212 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058397 (ms)
+Gris 1.801734 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.946154 (ms)
+YUV processing time: 0.271005 (ms)
+Color 9.133208 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058452 (ms)
+Gris 1.607843 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.955031 (ms)
+YUV processing time: 0.270529 (ms)
+Color 8.422640 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058529 (ms)
+Gris 1.651757 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.945409 (ms)
+YUV processing time: 0.269739 (ms)
+Color 9.371849 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.059962 (ms)
+Gris 1.789397 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 1.355761 (ms)
+YUV processing time: 0.274339 (ms)
+Color 9.797012 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058463 (ms)
+Gris 1.620749 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.965356 (ms)
+YUV processing time: 0.273500 (ms)
+Color 9.157309 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058518 (ms)
+Gris 1.347212 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 1.118603 (ms)
+YUV processing time: 0.268900 (ms)
+Color 9.500391 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058386 (ms)
+Gris 1.614956 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.948303 (ms)
+YUV processing time: 0.298740 (ms)
+Color 9.076400 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.059979 (ms)
+Gris 1.622692 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.960670 (ms)
+YUV processing time: 0.274902 (ms)
+Color 8.963959 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058866 (ms)
+Gris 1.655936 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.945614 (ms)
+YUV processing time: 0.295089 (ms)
+Color 9.180896 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.057980 (ms)
+Gris 1.596323 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.948316 (ms)
+YUV processing time: 0.302518 (ms)
+Color 9.011815 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058048 (ms)
+Gris 1.980569 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.959300 (ms)
+YUV processing time: 0.271034 (ms)
+Color 8.203427 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058560 (ms)
+Gris 1.847439 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.941369 (ms)
+YUV processing time: 0.261135 (ms)
+Color 9.338884 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058447 (ms)
+Gris 1.618586 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 1.335610 (ms)
+YUV processing time: 0.269211 (ms)
+Color 9.537187 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.060128 (ms)
+Gris 1.788179 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.961584 (ms)
+YUV processing time: 0.270618 (ms)
+Color 9.138242 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058012 (ms)
+Gris 1.612892 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 1.164070 (ms)
+YUV processing time: 0.273615 (ms)
+Color 9.422610 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058352 (ms)
+Gris 1.804749 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 1.079671 (ms)
+YUV processing time: 0.270319 (ms)
+Color 9.163112 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058429 (ms)
+Gris 1.791503 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.938904 (ms)
+YUV processing time: 0.273966 (ms)
+Color 8.250109 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058745 (ms)
+Gris 1.849217 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.938030 (ms)
+YUV processing time: 0.273407 (ms)
+Color 9.210148 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058864 (ms)
+Gris 1.590966 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.942116 (ms)
+YUV processing time: 0.273163 (ms)
+Color 8.965825 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058232 (ms)
+Gris 2.415658 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.944307 (ms)
+YUV processing time: 0.270135 (ms)
+Color 8.397033 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058546 (ms)
+Gris 1.658188 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.952156 (ms)
+YUV processing time: 0.269696 (ms)
+Color 9.564560 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058345 (ms)
+Gris 1.795279 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.945281 (ms)
+YUV processing time: 0.247831 (ms)
+Color 9.296482 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058490 (ms)
+Gris 1.613992 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.967284 (ms)
+YUV processing time: 0.270929 (ms)
+Color 8.223930 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058409 (ms)
+Gris 1.600283 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 1.549685 (ms)
+YUV processing time: 0.270325 (ms)
+Color 9.657074 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058428 (ms)
+Gris 1.604943 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 1.179475 (ms)
+YUV processing time: 0.265288 (ms)
+Color 9.358201 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058316 (ms)
+Gris 1.605643 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.946044 (ms)
+YUV processing time: 0.270723 (ms)
+Color 8.414936 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058011 (ms)
+Gris 1.803928 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.941852 (ms)
+YUV processing time: 0.274799 (ms)
+Color 9.341143 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058607 (ms)
+Gris 1.595807 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.950060 (ms)
+YUV processing time: 0.272959 (ms)
+Color 8.930526 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058421 (ms)
+Gris 1.632156 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.949099 (ms)
+YUV processing time: 0.270546 (ms)
+Color 8.254421 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058522 (ms)
+Gris 1.655367 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.949646 (ms)
+YUV processing time: 0.273408 (ms)
+Color 9.539805 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058460 (ms)
+Gris 1.613740 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.949774 (ms)
+YUV processing time: 0.273050 (ms)
+Color 8.947686 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058369 (ms)
+Gris 1.596489 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.941132 (ms)
+YUV processing time: 0.269415 (ms)
+Color 8.213561 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058368 (ms)
+Gris 1.661050 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 1.390326 (ms)
+YUV processing time: 0.258053 (ms)
+Color 9.551415 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058259 (ms)
+Gris 1.802643 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.944107 (ms)
+YUV processing time: 0.270016 (ms)
+Color 8.964802 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058244 (ms)
+Gris 1.603031 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.948028 (ms)
+YUV processing time: 0.273092 (ms)
+Color 9.569928 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.059451 (ms)
+Gris 1.348305 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.946482 (ms)
+YUV processing time: 0.271055 (ms)
+Color 9.415103 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058108 (ms)
+Gris 1.621977 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.970202 (ms)
+YUV processing time: 0.270512 (ms)
+Color 9.233757 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058416 (ms)
+Gris 1.830827 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.940772 (ms)
+YUV processing time: 0.268843 (ms)
+Color 8.040738 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058268 (ms)
+Gris 1.603585 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.946952 (ms)
+YUV processing time: 0.273879 (ms)
+Color 9.178770 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058592 (ms)
+Gris 1.611307 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.942697 (ms)
+YUV processing time: 0.271439 (ms)
+Color 9.557268 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058394 (ms)
+Gris 1.591874 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 1.352839 (ms)
+YUV processing time: 0.273362 (ms)
+Color 9.611344 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058093 (ms)
+Gris 2.011674 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.934380 (ms)
+YUV processing time: 0.269414 (ms)
+Color 8.977189 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058396 (ms)
+Gris 1.623404 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.942276 (ms)
+YUV processing time: 0.270751 (ms)
+Color 9.156511 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058555 (ms)
+Gris 1.655773 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 1.259033 (ms)
+YUV processing time: 0.266888 (ms)
+Color 8.693394 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058473 (ms)
+Gris 1.617525 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.948423 (ms)
+YUV processing time: 0.269117 (ms)
+Color 8.950707 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058635 (ms)
+Gris 1.605024 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.946378 (ms)
+YUV processing time: 0.269177 (ms)
+Color 9.476995 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058618 (ms)
+Gris 1.642621 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 1.294197 (ms)
+YUV processing time: 0.268795 (ms)
+Color 8.712455 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.061567 (ms)
+Gris 2.006596 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.949588 (ms)
+YUV processing time: 0.271366 (ms)
+Color 9.363399 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058331 (ms)
+Gris 1.645418 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.946653 (ms)
+YUV processing time: 0.272753 (ms)
+Color 10.057032 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058480 (ms)
+Gris 1.707700 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 1.357096 (ms)
+YUV processing time: 0.253507 (ms)
+Color 9.916668 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058672 (ms)
+Gris 1.533555 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.949134 (ms)
+YUV processing time: 0.274050 (ms)
+Color 9.176195 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058478 (ms)
+Gris 1.609890 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.944070 (ms)
+YUV processing time: 0.269371 (ms)
+Color 8.989132 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058360 (ms)
+Gris 1.816533 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.947238 (ms)
+YUV processing time: 0.268603 (ms)
+Color 8.252836 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058446 (ms)
+Gris 1.603269 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.952054 (ms)
+YUV processing time: 0.270097 (ms)
+Color 8.969531 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058520 (ms)
+Gris 1.588870 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.952360 (ms)
+YUV processing time: 0.269991 (ms)
+Color 9.532908 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058181 (ms)
+Gris 1.594322 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 1.140223 (ms)
+YUV processing time: 0.299192 (ms)
+Color 9.335215 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058635 (ms)
+Gris 1.791955 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.976390 (ms)
+YUV processing time: 0.271066 (ms)
+Color 9.180654 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058371 (ms)
+Gris 1.812204 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.969680 (ms)
+YUV processing time: 0.294979 (ms)
+Color 8.034675 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058111 (ms)
+Gris 1.993105 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.947119 (ms)
+YUV processing time: 0.249140 (ms)
+Color 9.328868 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058522 (ms)
+Gris 1.789161 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.938055 (ms)
+YUV processing time: 0.273423 (ms)
+Color 9.171221 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058433 (ms)
+Gris 1.622789 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.962968 (ms)
+YUV processing time: 0.270257 (ms)
+Color 8.944087 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.059772 (ms)
+Gris 1.792847 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.949925 (ms)
+YUV processing time: 0.271527 (ms)
+Color 8.199729 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.062189 (ms)
+Gris 1.807029 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 1.239146 (ms)
+YUV processing time: 0.275077 (ms)
+Color 9.870332 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058174 (ms)
+Gris 1.626743 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.940271 (ms)
+YUV processing time: 0.274873 (ms)
+Color 9.148479 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058494 (ms)
+Gris 1.785068 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.945763 (ms)
+YUV processing time: 0.290681 (ms)
+Color 9.355902 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058237 (ms)
+Gris 1.607663 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.948410 (ms)
+YUV processing time: 0.247464 (ms)
+Color 8.969878 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058323 (ms)
+Gris 1.800166 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 1.181845 (ms)
+YUV processing time: 0.251777 (ms)
+Color 9.398548 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058630 (ms)
+Gris 1.641982 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.948360 (ms)
+YUV processing time: 0.278527 (ms)
+Color 9.745739 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058390 (ms)
+Gris 1.590335 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.952121 (ms)
+YUV processing time: 0.269103 (ms)
+Color 9.013671 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058519 (ms)
+Gris 1.619628 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.949828 (ms)
+YUV processing time: 0.268044 (ms)
+Color 9.351768 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058889 (ms)
+Gris 1.991598 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.934342 (ms)
+YUV processing time: 0.270217 (ms)
+Color 9.341008 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.059225 (ms)
+Gris 1.814193 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.957193 (ms)
+YUV processing time: 0.270260 (ms)
+Color 8.991056 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.059231 (ms)
+Gris 1.779492 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.964564 (ms)
+YUV processing time: 0.261896 (ms)
+Color 8.060260 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058094 (ms)
+Gris 1.658639 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 1.399609 (ms)
+YUV processing time: 0.253593 (ms)
+Color 9.807787 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.061247 (ms)
+Gris 1.997322 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.940709 (ms)
+YUV processing time: 0.282720 (ms)
+Color 9.363981 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058381 (ms)
+Gris 1.610327 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.950369 (ms)
+YUV processing time: 0.272204 (ms)
+Color 9.900038 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058563 (ms)
+Gris 2.023377 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.949710 (ms)
+YUV processing time: 0.268264 (ms)
+Color 9.320439 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058516 (ms)
+Gris 1.612857 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.938569 (ms)
+YUV processing time: 0.295204 (ms)
+Color 8.979793 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058274 (ms)
+Gris 1.600352 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.949105 (ms)
+YUV processing time: 0.274674 (ms)
+Color 8.032549 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058370 (ms)
+Gris 2.058058 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.956524 (ms)
+YUV processing time: 0.293665 (ms)
+Color 9.202658 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058795 (ms)
+Gris 1.595073 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.949155 (ms)
+YUV processing time: 0.249709 (ms)
+Color 9.014928 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.059005 (ms)
+Gris 1.628704 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 1.203675 (ms)
+YUV processing time: 0.265339 (ms)
+Color 9.406527 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058069 (ms)
+Gris 1.802351 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.963576 (ms)
+YUV processing time: 0.271780 (ms)
+Color 8.581395 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058732 (ms)
+Gris 1.615070 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.940725 (ms)
+YUV processing time: 0.248707 (ms)
+Color 9.367700 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.057847 (ms)
+Gris 1.344630 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.924820 (ms)
+YUV processing time: 0.273167 (ms)
+Color 9.355728 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058510 (ms)
+Gris 1.634707 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.948741 (ms)
+YUV processing time: 0.267867 (ms)
+Color 8.223171 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.057944 (ms)
+Gris 1.606777 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.931548 (ms)
+YUV processing time: 0.272463 (ms)
+Color 8.977480 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058995 (ms)
+Gris 1.815979 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.938418 (ms)
+YUV processing time: 0.270906 (ms)
+Color 9.320988 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058296 (ms)
+Gris 1.816030 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.950624 (ms)
+YUV processing time: 0.273808 (ms)
+Color 9.226418 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058410 (ms)
+Gris 1.793562 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 1.402730 (ms)
+YUV processing time: 0.274277 (ms)
+Color 9.828083 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058419 (ms)
+Gris 1.595554 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.937751 (ms)
+YUV processing time: 0.273461 (ms)
+Color 9.344482 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058401 (ms)
+Gris 1.609917 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.951366 (ms)
+YUV processing time: 0.278478 (ms)
+Color 9.018469 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058314 (ms)
+Gris 1.615838 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 1.244520 (ms)
+YUV processing time: 0.249302 (ms)
+Color 9.423320 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058019 (ms)
+Gris 1.784822 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.945585 (ms)
+YUV processing time: 0.269018 (ms)
+Color 9.542899 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058420 (ms)
+Gris 1.980121 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.948834 (ms)
+YUV processing time: 0.272643 (ms)
+Color 9.371144 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058486 (ms)
+Gris 1.598459 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.946308 (ms)
+YUV processing time: 0.269797 (ms)
+Color 9.742880 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058282 (ms)
+Gris 1.607242 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 1.100313 (ms)
+YUV processing time: 0.273665 (ms)
+Color 9.550255 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.057963 (ms)
+Gris 2.005436 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 1.333594 (ms)
+YUV processing time: 0.274044 (ms)
+Color 9.591782 
+Running contrast enhancement for gray-scale images.
+Image size: 11472 x 6429
+Starting CPU processing...
+Processing time: 0.058354 (ms)
+Gris 1.597165 
+Running contrast enhancement for color images.
+Image size: 11472 x 6429
+Starting CPU processing...
+HSL processing time: 0.944889 (ms)
+YUV processing time: 0.257223 (ms)
+Color 9.309884 

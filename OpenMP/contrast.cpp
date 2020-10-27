@@ -12,15 +12,15 @@ int main(){
     PGM_IMG img_ibuf_g;
     PPM_IMG img_ibuf_c;
 
-	double tiempo = omp_get_wtime();
+    double tiempo = omp_get_wtime();
     
     printf("Running contrast enhancement for gray-scale images.\n");
     img_ibuf_g = read_pgm("in.pgm");
     run_cpu_gray_test(img_ibuf_g);
     free_pgm(img_ibuf_g);
     
-	printf("Gris %f \n",omp_get_wtime()-tiempo);
-	tiempo = omp_get_wtime();
+    printf("Gris %f \n",omp_get_wtime()-tiempo);
+    tiempo = omp_get_wtime();
 
     printf("Running contrast enhancement for color images.\n");
     img_ibuf_c = read_ppm("in.ppm");
@@ -44,14 +44,13 @@ void run_cpu_color_test(PPM_IMG img_in)
     printf("HSL processing time: %f (ms)\n", omp_get_wtime()-tiempo /* TIMER */ );
 
     write_ppm(img_obuf_hsl, "out_hsl.ppm");
+    free_ppm(img_obuf_hsl);
 
     tiempo = omp_get_wtime();
     img_obuf_yuv = contrast_enhancement_c_yuv(img_in);
     printf("YUV processing time: %f (ms)\n", omp_get_wtime()-tiempo /* TIMER */);
 
     write_ppm(img_obuf_yuv, "out_yuv.ppm");
-
-    free_ppm(img_obuf_hsl);
     free_ppm(img_obuf_yuv);
 }
 
@@ -99,6 +98,7 @@ PPM_IMG read_ppm(const char * path){
     
     fread(ibuf,sizeof(unsigned char), 3 * result.w*result.h, in_file);
 
+    #pragma omp parallel for
     for(i = 0; i < result.w*result.h; i ++){
         result.img_r[i] = ibuf[3*i + 0];
         result.img_g[i] = ibuf[3*i + 1];
@@ -117,6 +117,7 @@ void write_ppm(PPM_IMG img, const char * path){
     
     char * obuf = (char *)malloc(3 * img.w * img.h * sizeof(char));
 
+    #pragma omp parallel for
     for(i = 0; i < img.w*img.h; i ++){
         obuf[3*i + 0] = img.img_r[i];
         obuf[3*i + 1] = img.img_g[i];
