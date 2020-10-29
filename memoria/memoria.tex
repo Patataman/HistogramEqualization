@@ -202,14 +202,6 @@
 	\end{sffamily}
 \end{titlepage}
 
-%----------
-%	RESUMEN Y PALABRAS CLAVE
-%----------
-
-%----------
-%	ÍNDICES
-%----------
-
 %--
 % Índice general
 %-
@@ -236,10 +228,21 @@
 
 \chapter{Introducción}
 
-DANI DICE QUE: ESTO DANI
+La presente memoria explica los pasos seguidos, experimentacón y resultados obtenidos durante la paralelización del código de equalización de histograma entregado inicialmente. Pero antes de entrar en resultados, conviene explicar en qué consiste una equalización de histograma.
 
-Aquí se habla sobre la práctica, en qué consiste una equalización de histograma, pasos que hemos seguido durante la práctica y se explica brevemente la experimentación
-	% COMENZAR A ESCRIBIR EL TRABAJO
+De forma simplista, una equalización de histograma consiste en estirar el rango de valores en una imagen para aplanar su histograma de valores.
+
+\begin{figure}[H]
+    \makebox[\textwidth][c]{\includegraphics[width=12cm]{histogram_equalization.png}}
+    \caption{Ejemplo de Equalización de Histograma}
+    \label{fig:hist_eq}
+\end{figure}
+
+De forma un poco más técnica, una equalización de histograma distribuye los valores de color en una imagen de forma que todos se encuentran presentes de forma equitativa dentro de la imagen, como se puede apreciar en la \autoref{fig:hist_eq}
+
+Para calcular estos histogramas se debe recorrer la imagen multiples veces, tanto para calcular los valores iniciales como para establecer los valores finales, por lo tanto hemos orientado nuestros esfuerzos con OpenMP(PODRÍAMOS METER REFERENCIA A LA WEB DE OPENMP, PERO NO SE USAR LA BIBLIOGRAFÍA EN LATEX XD) en optimizar estas iteraciones sobre la imagen, mientras que con MPI(MISMO QUE CON OPENMP) nos hemos centrado en el reparto de fragmentos de la imagen entre distintos procesos para reducir el número de iteraciones.
+
+No obstante para poder obtener un análisis más completo de las distintas alternativas y \textit{speed-ups} posibles, se han realizado 3 versiones distintas de paralelización: \nameref{chap:OpenMP}, \nameref{chap:MPI} y \nameref{chap:OpenMP+MPI}. De igual forma, para poder comparar los resultados de forma fiable, se ha utilizado las mismas imágenes de prueba, entorno de ejecución (guernika) y número de ejecuciones.
 
 \section{Análisis}
 
@@ -253,6 +256,7 @@ El Amdhal inicial y el otro, el que variaba con la carga de trabajo
 
 
 \chapter{OpenMP}
+\label{chap:OpenMP}
 
 Explicar nuestro objetivo con OpenMP y cómo hemos paralelizado cosas
 
@@ -262,6 +266,7 @@ Explicar nuestro objetivo con OpenMP y cómo hemos paralelizado cosas
 
 
 \chapter{MPI}
+\label{chap:MPI}
 
 Explicar nuestro objetivo con MPI y cómo hemos paralelizado cosas
 
@@ -271,7 +276,7 @@ Explicar nuestro objetivo con MPI y cómo hemos paralelizado cosas
 
 
 \chapter{OpenMP + MPI}
-
+\label{chap:OpenMP+MPI}
 Explicar "conclusiones" o yuqse sobre porqué en base a lo anterior hemos decidido hacer el OpenMP+MPI final, quizás no es exáctamente igual que simplemente juntar lo anterior
 
 \section{Paralelización}
