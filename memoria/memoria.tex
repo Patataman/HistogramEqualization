@@ -227,6 +227,7 @@
 \pagenumbering{arabic} % numeración con múmeros arábigos para el resto de la publicación
 
 \chapter{Introducción}
+\label{chap:Intro}
 
 La presente memoria explica los pasos seguidos, experimentacón y resultados obtenidos durante la paralelización del código de equalización de histograma entregado inicialmente. Pero antes de entrar en resultados, conviene explicar en qué consiste una equalización de histograma.
 
@@ -258,12 +259,21 @@ El Amdhal inicial y el otro, el que variaba con la carga de trabajo
 \chapter{OpenMP}
 \label{chap:OpenMP}
 
-Explicar nuestro objetivo con OpenMP y cómo hemos paralelizado cosas
+Como se comentó brevemente en la \nameref{chap:Intro} nuestro objetivo con OpenMP en la versión combinada se centrará en optimizar las iteraciones de cálculos sobre las imágenes. De igual forma, en esta versión que usa únicamente OpenMP también nos hemos centrado en lo mismo, ya que resulta, además de mucho más sencillo, igual o más óptimo repartir la carga de trabajo en cada una de las iteraciones, que dividir la imagen al inicio y luego juntar todos los resultados cada vez que sea necesario, ya que existen pasos intermedios que deben ser calculados con toda la imagen.
+
 
 \section{Paralelización}
 
+Dada la premisa anterior, dividir la imagen desde el comienzo sería perjudicial para el rendimiento ya que habría que estar haciendo varios \texttt{join} que nos podríamos evitar si paralelizamos los bucles en vez de particionar la imagen desde el comienzo.
+
+Sin embargo no hemos paralelizado todos los bucles existentes en el código, ya que aquellos con pocas iteraciones se verían afectados negativamente al parelelizar por el \textit{overhead} que introducimos con OpenMP. Estos bucles que han sido ignorados son aquellos que dependen de la variable \texttt{nbr\_bin}, se debe a que sus valores van desde 0 hasta 255, que son todos los valores posibles en la escala de grises. Al ser tan pocas iteraciones y además tratarse de bucles con poca carga computacional no compensa paralelizarlos. Por otro lado, los bucles que sí han sido paralelizados y compensa notablemente son aquellos que dependen del tamaño de la imagen, ya que incluso una imagen pequeña de 200x200 se transforma en 40000 iteraciones.
+
+
 \section{Experimentación}
 
+La experimentación se ha realizado usando la imagen proporcionada de ejemplo (11472 x 6429 píxeles), usando el entorno de guernika (6 núcleos físicos y otros 6 virtuales, 12 en total a 3,4GHz) y repitiendo durante 100 ejecuciones.
+
+En los resultados se pueden observar los tiempos obtenidos con el código original y los nuevos tiempos de esta versión.
 
 \chapter{MPI}
 \label{chap:MPI}
@@ -274,6 +284,9 @@ Explicar nuestro objetivo con MPI y cómo hemos paralelizado cosas
 
 \section{Experimentación}
 
+La experimentación se ha realizado usando la imagen proporcionada de ejemplo (11472 x 6429 píxeles), usando el entorno de guernika (6 núcleos físicos y otros 6 virtuales, 12 en total a 3,4GHz) y repitiendo durante 100 ejecuciones.
+
+En los resultados se pueden observar los tiempos obtenidos con el código original y los nuevos tiempos de esta versión.
 
 \chapter{OpenMP + MPI}
 \label{chap:OpenMP+MPI}
@@ -282,6 +295,10 @@ Explicar "conclusiones" o yuqse sobre porqué en base a lo anterior hemos decidi
 \section{Paralelización}
 
 \section{Experimentación}
+
+La experimentación se ha realizado usando la imagen proporcionada de ejemplo (11472 x 6429 píxeles), usando el entorno de guernika (6 núcleos físicos y otros 6 virtuales, 12 en total a 3,4GHz) y repitiendo durante 100 ejecuciones.
+
+En los resultados se pueden observar los tiempos obtenidos con el código original y los nuevos tiempos de esta versión.
 
 \chapter{Conclusiones}
 
