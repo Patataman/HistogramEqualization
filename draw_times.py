@@ -25,6 +25,34 @@ args = parser.parse_args()
 
 folder_names = [Path("{}/times".format(folder)) for folder in args.folder]
 
+if args.type in ["speed"]:
+    amd_fig = go.Figure()
+    amd_fig.add_trace(
+        go.Scatter(
+            x=[x for x in range(1, 17)],
+            y=[1/((1 - 0.32638) + 0.32638/n) for n in range(1, 17)],
+            text=[round(1/((1 - 0.32638) + 0.32638/n), 2) for n in range(1, 17)],
+            textposition="top center",
+            mode='lines+markers+text',
+            name='Speed up'
+        )
+    )
+
+    amd_fig.update_layout(
+        title={
+            'text': "Ley de Amdahl",
+            'y':0.9,
+            'x':0.5,
+            'xanchor': 'center',
+            'yanchor': 'top'
+        },
+        xaxis_title="Nº procesadores",
+        yaxis_title="Speed up",
+    )
+    amd_fig.update_xaxes(type='category')
+    amd_fig.show()
+
+
 if args.type in ["color", "todo"]:
     # HSL
     hsl_fig = go.Figure()

@@ -253,7 +253,35 @@ Aquí creo que habría que comentar de qué formas hemos visto que es posible pa
 
 \subsection{Speed up teóricos}
 
-El Amdhal inicial y el otro, el que variaba con la carga de trabajo
+Antes de empezar a realizar ningún cambio sobre el código, con el objetivo de conocer qué mejoras podemos esperar a la hora de paralelizarlo, se ha calculado un \textit{speed up} teórico para la \nameref{sec:Amdahl} y para la \nameref{sec:Gustafson}.
+
+\subsubsection{Ley de Amdahl}
+\label{sec:Amdahl}
+
+La Ley de Amdahl nos permite dado un programa con carga fija, el \textit{speed up} máximo que podríamos alcanzar
+
+\[ S = \frac{1}{(1 - P) + \frac{P}{N}} \]
+
+Siendo S el \textit{speed up}, P la fracción paralela de código y N el número de núcleos entre los que la dividimos.
+
+%total = 19+7+59+17+116+70
+%paralelo = 7+17+70
+De esta forma, en el código original tenemos 288 líneas de código, de las cuales hemos identificado 94 como parelizables, dándo lugar a una $P = 0.32638$.
+
+\begin{figure}[H]
+    \makebox[\textwidth][c]{\includegraphics[width=14cm]{amdahl.png}}
+    \caption{Ley de Amdahl con distinto N}
+    \label{fig:fig_amdahl}
+\end{figure}
+
+Como se puede observar el \textit{speed up} se empieza a detener a partir de los 8 procesadores, ya que de un \textit{speed up} de 1.4 pasamos a 1.44 con 16 procesadores, por lo que no tiene mucho sentido aumentar el número de procesadores ya que la ganancia sería mínima.
+
+\subsubsection{Ley de Gustafson}
+\label{sec:Gustafson}
+
+\[ S = P - \alpha \cdot (P - 1)\]
+
+Siendo P el número de procesadores y $\alpha$ la parte de código no paralelizable.
 
 
 \chapter{OpenMP}

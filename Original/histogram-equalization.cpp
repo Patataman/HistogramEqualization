@@ -1,3 +1,6 @@
+// Líneas totales 19
+// Líneas paralelizables 7
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
