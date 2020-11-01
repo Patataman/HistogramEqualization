@@ -159,6 +159,27 @@
 \renewcommand{\lstlistingname}{\uppercase{Código}}
 
 
+\usepackage[backend=biber, style=ieee, isbn=false,sortcites, maxbibnames=5, minbibnames=1]{biblatex} 
+
+% Añadimos las siguientes indicaciones para mejorar la adaptación de los estilos en español
+\DefineBibliographyStrings{spanish}{%
+	andothers = {et\addabbrvspace al\adddot}
+}
+\DefineBibliographyStrings{spanish}{
+	url = {\adddot\space[En línea]\adddot\space Disponible en:}
+}
+\DefineBibliographyStrings{spanish}{
+	urlseen = {Acceso:}
+}
+\DefineBibliographyStrings{spanish}{
+	pages = {pp\adddot},
+	page = {p.\adddot}
+}
+
+\addbibresource{./bibliografia/CAAPP.bib} % llama al archivo bibliografia.bib en el que debería estar la bibliografía utilizada
+
+
+
 %-------------
 %	DOCUMENTO
 %-------------
@@ -241,7 +262,7 @@ De forma simplista, una equalización de histograma consiste en estirar el rango
 
 De forma un poco más técnica, una equalización de histograma distribuye los valores de color en una imagen de forma que todos se encuentran presentes de forma equitativa dentro de la imagen, como se puede apreciar en la \autoref{fig:hist_eq}
 
-Para calcular estos histogramas se debe recorrer la imagen multiples veces, tanto para calcular los valores iniciales como para establecer los valores finales, por lo tanto hemos orientado nuestros esfuerzos con OpenMP(PODRÍAMOS METER REFERENCIA A LA WEB DE OPENMP, PERO NO SE USAR LA BIBLIOGRAFÍA EN LATEX XD) en optimizar estas iteraciones sobre la imagen, mientras que con MPI(MISMO QUE CON OPENMP) nos hemos centrado en el reparto de fragmentos de la imagen entre distintos procesos para reducir el número de iteraciones.
+Para calcular estos histogramas se debe recorrer la imagen multiples veces, tanto para calcular los valores iniciales como para establecer los valores finales, por lo tanto hemos orientado nuestros esfuerzos con OpenMP \parencite{timlewis_openmp_nodate} en optimizar estas iteraciones sobre la imagen, mientras que con MPI \parencite{noauthor_open_nodate} nos hemos centrado en el reparto de fragmentos de la imagen entre distintos procesos para reducir el número de iteraciones.
 
 No obstante para poder obtener un análisis más completo de las distintas alternativas y \textit{speed-ups} posibles, se han realizado 3 versiones distintas de paralelización: \nameref{chap:OpenMP}, \nameref{chap:MPI} y \nameref{chap:OpenMP+MPI}. De igual forma, para poder comparar los resultados de forma fiable, se ha utilizado las mismas imágenes de prueba, entorno de ejecución (guernika) y número de ejecuciones.
 
@@ -337,5 +358,20 @@ En los resultados se pueden observar los tiempos obtenidos con el código origin
 \chapter{Conclusiones}
 
 Buah colega, hemos aprendido tope mazo
+
+
+
+
+%----------
+%	BIBLIOGRAFÍA
+%----------	
+
+\nocite{*} % Si quieres que aparezcan en la bibliografía todos los documentos que la componen (también los que no estén citados en el texto) descomenta está lína
+
+\clearpage
+\addcontentsline{toc}{chapter}{Bibliografía}
+\setquotestyle{english} % Cambiamos el tipo de cita porque en el estilo IEEE se usan las comillas inglesas.
+\printbibliography
+
 
 \end{document}
