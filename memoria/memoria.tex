@@ -247,9 +247,15 @@ No obstante para poder obtener un análisis más completo de las distintas alter
 
 \section{Análisis}
 
-CARLOS DICE QUE: ESTO CARLOS
+%CARLOS DICE QUE: ESTO CARLOS
 
-Aquí creo que habría que comentar de qué formas hemos visto que es posible paralelizar el código inicial y que partes hacerlas por OpenMP y otras por MPI
+%Aquí creo que habría que comentar de qué formas hemos visto que es posible paralelizar el código inicial y que partes hacerlas por OpenMP y otras por MPI
+En esta parte vamos a describir como hemos analizado el código para determinar que partes se van a paralelizar mediante OpenMP y cuales con MPI.	También comentaremos las razones por las cuales hemos optado por elegir cada método en cada caso.
+
+\par A la hora de ver qué código paralelizábamos con OpenMP, empezamos mirando los bucles \textit{for}, ya que son fáciles de paralelizar mediante ese método y comprobar si realmente mejoran los tiempos de ejecución del programa. \\ Empezamos por el fichero principal, \textit{contrast.cpp} donde paralelizamos los bucles \textit{for} que se ejecutan a la hora de realizar las lecturas y escrituras de las imágenes de tipo \textit{PPM}.\\ En el fichero \textit{contrast-enhancement.cpp} también paralelizamos los bucles que se encuentran dentro de las funciones que cambian los formatos de color de las imágenes: de \textit{rgb} a \textit{hsl}, de \textit{hsl} a \textit{rgb}, de \textit{rgb} a \textit{yuv} y de \textit{yuv} a \textit{rgb}.\\ En el tercer fichero, \textit{histogram-equalization.cpp}, también realizamos la paralelización de ciertos bucles. Los dos primeros, que se encuentranr en la función que calcula el histograma decidimos optar por paralelizarlos como \textit{SIMD} en vez de como bucles for, ya que al tener pocas iteraciones, el particionarlos no ofrecería ninguna ventaja, pero por otro lado el utilizar las operaciones vectoriales de \textit{Single Instruction / Multiple Data} nos aportaría mayor velocidad ya que esos bucles utilizan la misma operación sobre un gran conjunto de datos. Por otro lado, en ese mismo fichero se ha optado por paralelizar también el bucle for que escribe la imagen final	tras ecualizar el historgrama, en este caso usando las directivas propias de los bucles \textit{for} y de las instrucciones de tipo \textit{SIMD}. El bucle que ecualiza el histograma no ha sido paralelizado debido a las dependencias que tienen entre una iteración y la anterior.
+
+\par En el caso de MPI...
+
 
 \subsection{Speed up teóricos}
 
