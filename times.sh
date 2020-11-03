@@ -23,13 +23,26 @@ if [ ! -d times ]; then
   mkdir times
 fi
 
-for ((i = 0; i <= $2; i++))
-do
-  ./contrast >> times/output.txt
-done
 
-cat times/output.txt | grep Processing > times/grey_processing.txt
-cat times/output.txt | grep Gris > times/grey_time.txt
-cat times/output.txt | grep HSL > times/hsl_processing.txt
-cat times/output.txt | grep YUV > times/yuv_processing.txt
-cat times/output.txt | grep Color > times/color_time.txt
+if [ $1 == "OpenMP" ]; then
+  echo "Enter OpenMP"
+  for ((j = 1; j <= 16; j++))
+  do
+    echo "OpenMP Threads $j"
+    export OMP_NUM_THREADS=$j
+
+    for ((i = 0; i < $2; i++))
+    do
+      mkdir -p times/$j
+      ./contrast >> times/$j/output.txt
+    done
+
+    cat times/$j/output.txt | grep Processing > times/$j/grey_processing.txt
+    cat times/$j/output.txt | grep Gris > times/$j/grey_time.txt
+    cat times/$j/output.txt | grep HSL > times/$j/hsl_processing.txt
+    cat times/$j/output.txt | grep YUV > times/$j/yuv_processing.txt
+    cat times/$j/output.txt | grep Color > times/$j/color_time.txt
+
+  done
+fi
+echo "Done"
