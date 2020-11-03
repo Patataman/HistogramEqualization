@@ -32,15 +32,16 @@ void run_cpu_color_test(PPM_IMG img_in)
 {
     PPM_IMG img_obuf_hsl, img_obuf_yuv;
     
-    printf("Starting CPU processing...\n");
-    
+    double start = MPI_Wtime();
+    printf("Starting CPU processing...\n"); 
     img_obuf_hsl = contrast_enhancement_c_hsl(img_in);
-    printf("HSL processing time: %f (ms)\n", 0.0f /* TIMER */ );
+    printf("HSL processing time: %f (ms)\n", MPI_Wtime()-start /* TIMER */ );
     
     write_ppm(img_obuf_hsl, "out_hsl.ppm");
 
+    start = MPI_Wtime();
     img_obuf_yuv = contrast_enhancement_c_yuv(img_in);
-    printf("YUV processing time: %f (ms)\n", 0.0f /* TIMER */);
+    printf("YUV processing time: %f (ms)\n", MPI_Wtime()-start /* TIMER */);
     
     write_ppm(img_obuf_yuv, "out_yuv.ppm");
     
@@ -55,11 +56,10 @@ void run_cpu_gray_test(PGM_IMG img_in)
 {
     PGM_IMG img_obuf;
     
-    
+    double start = MPI_Wtime();
     printf("Starting CPU processing...\n");
-    
     img_obuf = contrast_enhancement_g(img_in);
-    printf("Processing time: %f (ms)\n", 0.0f /* TIMER */ );
+    printf("Processing time: %f (ms)\n", MPI_Wtime()-start /* TIMER */ );
     
     write_pgm(img_obuf, "out.pgm");
     free_pgm(img_obuf);
