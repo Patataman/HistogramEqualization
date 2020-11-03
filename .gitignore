@@ -341,3 +341,4 @@ TSWLatexianTemp*
 **/times/*
 venv
 *.pdf
+**/contrast
