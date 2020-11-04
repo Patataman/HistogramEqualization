@@ -54,6 +54,7 @@ if args.type in ["speed"]:
 
 
 if args.type in ["color", "todo"]:
+    color_processing = {f.parent.stem: {} for f in folder_names}
     # HSL
     hsl_fig = go.Figure()
     for folder in folder_names:
@@ -66,6 +67,8 @@ if args.type in ["color", "todo"]:
                     for l in hsl_processing.readlines()
                 ]).mean()
             )
+
+        color_processing[folder.parent.stem]['hsl'] = hsl_means[:]
         hsl_fig.add_trace(go.Scatter(
             x=[i for i in range(1, len(hsl_means)+1)],
             y=hsl_means,
@@ -100,6 +103,7 @@ if args.type in ["color", "todo"]:
                 ]).mean()
             )
 
+        color_processing[folder.parent.stem]['yuv'] = yuv_means[:]
         yuv_fig.add_trace(go.Scatter(
             x=[i for i in range(1, len(yuv_means)+1)],
             y=yuv_means,
@@ -121,41 +125,34 @@ if args.type in ["color", "todo"]:
     yuv_fig.update_xaxes(type='category')
     yuv_fig.show()
 
-    #color_fig = go.Figure()
-    #for i, f in enumerate(folder_names):
-    #    color_processing = open("{}/color_time.txt".format(f))
-    #    color_processing = np.asarray([
-    #        float(l.split(" ")[-2])
-    #        for l in color_processing.readlines()
-    #    ])
-    #    color_fig.add_trace(go.Scatter(
-    #        x=[i for i in range(len(color_processing))],
-    #        y=color_processing,
-    #        mode='lines+markers',
-    #        name='{} Time'.format(f.parent.stem),
-    #        line=dict(color=colors[i])
-    #    ))
-    #    color_fig.add_trace(go.Scatter(
-    #        x=[i for i in range(len(color_processing))],
-    #        y=[color_processing.mean()]*len(color_processing),
-    #        mode='lines',
-    #        name='{} Mean'.format(f.parent.stem),
-    #        line=dict(color=colors[i])
-    #    ))
+    color_fig = go.Figure()
+    for i, f in enumerate(folder_names):
+        total = np.array(
+            color_processing[f.parent.stem]['hsl']
+        ) +  np.array(
+            color_processing[f.parent.stem]['yuv']
+        )
+        color_fig.add_trace(go.Scatter(
+            x=[i for i in range(1, len(total)+1)],
+            y=total.tolist(),
+            mode='lines+markers',
+            name='{} Time'.format(f.parent.stem),
+            line=dict(color=colors[i])
+        ))
 
-    #color_fig.update_layout(
-    #    title={
-    #        'text': "Color Time",
-    #        'y':0.9,
-    #        'x':0.5,
-    #        'xanchor': 'center',
-    #        'yanchor': 'top'
-    #    },
-    #    xaxis_title="Iterations",
-    #    yaxis_title="Time (s)",
-    #)
-    #color_fig.update_xaxes(type='category')
-    #color_fig.show()
+    color_fig.update_layout(
+        title={
+            'text': "Color Time",
+            'y':0.9,
+            'x':0.5,
+            'xanchor': 'center',
+            'yanchor': 'top'
+        },
+        xaxis_title="Iterations",
+        yaxis_title="Time (s)",
+    )
+    color_fig.update_xaxes(type='category')
+    color_fig.show()
 
 
 if args.type in ["gris", "todo"]:
