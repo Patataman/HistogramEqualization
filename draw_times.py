@@ -56,17 +56,21 @@ if args.type in ["speed"]:
 if args.type in ["color", "todo"]:
     # HSL
     hsl_fig = go.Figure()
-    for f in folder_names:
-        hsl_processing = open("{}/hsl_processing.txt".format(f))
-        hsl_processing = np.asarray([
-            float(l.split(" ")[-2])
-            for l in hsl_processing.readlines()
-        ])
+    for folder in folder_names:
+        hsl_means = []
+        for it in folder.iterdir():
+            hsl_processing = open("{}/hsl_processing.txt".format(it))
+            hsl_means.append(
+                np.asarray([
+                    float(l.split(" ")[-2])
+                    for l in hsl_processing.readlines()
+                ]).mean()
+            )
         hsl_fig.add_trace(go.Scatter(
-            x=[i for i in range(len(hsl_processing))],
-            y=hsl_processing,
+            x=[i for i in range(1, len(hsl_means)+1)],
+            y=hsl_means,
             mode='lines+markers',
-            name='{} Processing'.format(f.parent.stem))
+            name='{} Processing'.format(folder.parent.stem))
         )
 
     hsl_fig.update_layout(
@@ -77,7 +81,7 @@ if args.type in ["color", "todo"]:
             'xanchor': 'center',
             'yanchor': 'top'
         },
-        xaxis_title="Iterations",
+        xaxis_title="Num. Threads",
         yaxis_title="Time (s)",
     )
     hsl_fig.update_xaxes(type='category')
@@ -85,17 +89,22 @@ if args.type in ["color", "todo"]:
 
     # YUV
     yuv_fig = go.Figure()
-    for f in folder_names:
-        yuv_processing = open("{}/yuv_processing.txt".format(f))
-        yuv_processing = np.asarray([
-            float(l.split(" ")[-2])
-            for l in yuv_processing.readlines()
-        ])
+    for folder in folder_names:
+        yuv_means = []
+        for it in folder.iterdir():
+            yuv_processing = open("{}/yuv_processing.txt".format(it))
+            yuv_means.append(
+                np.asarray([
+                    float(l.split(" ")[-2])
+                    for l in yuv_processing.readlines()
+                ]).mean()
+            )
+
         yuv_fig.add_trace(go.Scatter(
-            x=[i for i in range(len(yuv_processing))],
-            y=yuv_processing,
+            x=[i for i in range(1, len(yuv_means)+1)],
+            y=yuv_means,
             mode='lines+markers',
-            name='{} Processing'.format(f.parent.stem))
+            name='{} Processing'.format(folder.parent.stem))
         )
 
     yuv_fig.update_layout(
@@ -106,66 +115,70 @@ if args.type in ["color", "todo"]:
             'xanchor': 'center',
             'yanchor': 'top'
         },
-        xaxis_title="Iterations",
+        xaxis_title="Num. Threads",
         yaxis_title="Time (s)",
     )
     yuv_fig.update_xaxes(type='category')
     yuv_fig.show()
 
-    color_fig = go.Figure()
-    for i, f in enumerate(folder_names):
-        color_processing = open("{}/color_time.txt".format(f))
-        color_processing = np.asarray([
-            float(l.split(" ")[-2])
-            for l in color_processing.readlines()
-        ])
-        color_fig.add_trace(go.Scatter(
-            x=[i for i in range(len(color_processing))],
-            y=color_processing,
-            mode='lines+markers',
-            name='{} Time'.format(f.parent.stem),
-            line=dict(color=colors[i])
-        ))
-        color_fig.add_trace(go.Scatter(
-            x=[i for i in range(len(color_processing))],
-            y=[color_processing.mean()]*len(color_processing),
-            mode='lines',
-            name='{} Mean'.format(f.parent.stem),
-            line=dict(color=colors[i])
-        ))
+    #color_fig = go.Figure()
+    #for i, f in enumerate(folder_names):
+    #    color_processing = open("{}/color_time.txt".format(f))
+    #    color_processing = np.asarray([
+    #        float(l.split(" ")[-2])
+    #        for l in color_processing.readlines()
+    #    ])
+    #    color_fig.add_trace(go.Scatter(
+    #        x=[i for i in range(len(color_processing))],
+    #        y=color_processing,
+    #        mode='lines+markers',
+    #        name='{} Time'.format(f.parent.stem),
+    #        line=dict(color=colors[i])
+    #    ))
+    #    color_fig.add_trace(go.Scatter(
+    #        x=[i for i in range(len(color_processing))],
+    #        y=[color_processing.mean()]*len(color_processing),
+    #        mode='lines',
+    #        name='{} Mean'.format(f.parent.stem),
+    #        line=dict(color=colors[i])
+    #    ))
 
-    color_fig.update_layout(
-        title={
-            'text': "Color Time",
-            'y':0.9,
-            'x':0.5,
-            'xanchor': 'center',
-            'yanchor': 'top'
-        },
-        xaxis_title="Iterations",
-        yaxis_title="Time (s)",
-    )
-    color_fig.update_xaxes(type='category')
-    color_fig.show()
+    #color_fig.update_layout(
+    #    title={
+    #        'text': "Color Time",
+    #        'y':0.9,
+    #        'x':0.5,
+    #        'xanchor': 'center',
+    #        'yanchor': 'top'
+    #    },
+    #    xaxis_title="Iterations",
+    #    yaxis_title="Time (s)",
+    #)
+    #color_fig.update_xaxes(type='category')
+    #color_fig.show()
 
 
 if args.type in ["gris", "todo"]:
 
-    grey_proc_fig = go.Figure()
-    for f in folder_names:
-        grey_processing = open("{}/grey_processing.txt".format(f))
-        grey_processing = np.asarray([
-            float(l.split(" ")[-2])
-            for l in grey_processing.readlines()
-        ])
-        grey_proc_fig.add_trace(go.Scatter(
-            x=[i for i in range(len(grey_processing))],
-            y=grey_processing,
+    grey_fig = go.Figure()
+    for folder in folder_names:
+        grey_means = []
+        for it in folder.iterdir():
+            grey_processing = open("{}/grey_processing.txt".format(it))
+            grey_means.append(
+                np.asarray([
+                    float(l.split(" ")[-2])
+                    for l in grey_processing.readlines()
+                ]).mean()
+            )
+        grey_fig.add_trace(go.Scatter(
+            x=[i for i in range(1, len(grey_means)+1)],
+            y=grey_means,
             mode='lines+markers',
-            name='{} Processing'.format(f.parent.stem))
+            name='{} Processing'.format(folder.parent.stem))
         )
 
-    grey_proc_fig.update_layout(
+    grey_fig.update_layout(
         title={
             'text': "Greyscale Processing",
             'y':0.9,
@@ -173,43 +186,7 @@ if args.type in ["gris", "todo"]:
             'xanchor': 'center',
             'yanchor': 'top'
         },
-        xaxis_title="Iterations",
-        yaxis_title="Time (s)",
-    )
-    grey_proc_fig.update_xaxes(type='category')
-    grey_proc_fig.show()
-
-    grey_fig = go.Figure()
-    for i, f in enumerate(folder_names):
-        grey_processing = open("{}/grey_time.txt".format(f))
-        grey_processing = np.asarray([
-            float(l.split(" ")[-2])
-            for l in grey_processing.readlines()
-        ])
-        grey_fig.add_trace(go.Scatter(
-            x=[i for i in range(len(grey_processing))],
-            y=grey_processing,
-            mode='lines+markers',
-            name='{} Time'.format(f.parent.stem),
-            line=dict(color=colors[i])
-        ))
-        grey_fig.add_trace(go.Scatter(
-            x=[i for i in range(len(grey_processing))],
-            y=[grey_processing.mean()]*len(grey_processing),
-            mode='lines',
-            name='{} Mean'.format(f.parent.stem),
-            line=dict(color=colors[i])
-        ))
-
-    grey_fig.update_layout(
-        title={
-            'text': "Greyscale Time",
-            'y':0.9,
-            'x':0.5,
-            'xanchor': 'center',
-            'yanchor': 'top'
-        },
-        xaxis_title="Iterations",
+        xaxis_title="Num. Threads",
         yaxis_title="Time (s)",
     )
     grey_fig.update_xaxes(type='category')
