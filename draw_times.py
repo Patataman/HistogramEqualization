@@ -26,31 +26,121 @@ args = parser.parse_args()
 folder_names = [Path("{}/times".format(folder)) for folder in args.folder]
 
 if args.type in ["speed"]:
-    amd_fig = go.Figure()
-    amd_fig.add_trace(
-        go.Scatter(
-            x=[x for x in range(1, 17)],
-            y=[1/((1 - 0.32638) + 0.32638/n) for n in range(1, 17)],
-            text=[round(1/((1 - 0.32638) + 0.32638/n), 2) for n in range(1, 17)],
-            textposition="top center",
-            mode='lines+markers+text',
-            name='Speed up'
-        )
-    )
+    # Coge los tiempos del original para poder comparar
+    # Gris + Color
+    original_processing_grey = open("Original/times/1/grey_processing.txt")
+    original_processing_hsl = open("Original/times/1/hsl_processing.txt")
+    original_processing_yuv = open("Original/times/1/yuv_processing.txt")
+    fake_mean = np.asarray([
+        float(l.split(" ")[-2])
+        for l in original_processing_grey.readlines()
+    ]).mean() + np.asarray([
+        float(l.split(" ")[-2])
+        for l in original_processing_hsl.readlines()
+    ]).mean() + np.asarray([
+        float(l.split(" ")[-2])
+        for l in original_processing_yuv.readlines()
+    ]).mean()
 
-    amd_fig.update_layout(
-        title={
-            'text': "Ley de Amdahl",
-            'y':0.9,
-            'x':0.5,
-            'xanchor': 'center',
-            'yanchor': 'top'
-        },
-        xaxis_title="Nº procesadores",
-        yaxis_title="Speed up",
-    )
-    amd_fig.update_xaxes(type='category')
-    amd_fig.show()
+    original_time_grey = open("Original/times/1/grey_time.txt")
+    original_time_color = open("Original/times/1/color_time.txt")
+    original_mean = np.asarray([
+        float(l.split(" ")[-2])
+        for l in original_time_grey.readlines()
+    ]).mean() + np.asarray([
+        float(l.split(" ")[-2])
+        for l in original_time_color.readlines()
+    ]).mean()
+
+    for f in folder_names:
+        if f.parent.stem == "Original":
+            continue
+
+        amd_fig = go.Figure()
+
+        max_iter = 17 if f.parent.stem == "OpenMP" else 9
+        amd_teorico = [1/((1 - 0.32638) + 0.32638/n) for n in range(1, max_iter)]
+
+        # Teórico
+        amd_fig.add_trace(
+            go.Scatter(
+                x=[x for x in range(1, max_iter)],
+                y=amd_teorico,
+                text=[round(1/((1 - 0.32638) + 0.32638/n), 2) for n in range(1, max_iter)],
+                textposition="top center",
+                mode='lines+markers+text',
+                name='Perfect Speed up'
+            )
+        )
+
+        if f.parent.stem == "MPI":
+            pass
+
+        if f.parent.stem == "OpenMP":
+            omp_means = []
+            for it in f.iterdir():
+                omp_time_grey = open("{}/grey_time.txt".format(it))
+                omp_time_color = open("{}/color_time.txt".format(it))
+
+                omp_means.append(
+                    np.asarray([
+                        float(l.split(" ")[-2])
+                        for l in omp_time_grey.readlines()
+                    ]).mean() + np.asarray([
+                        float(l.split(" ")[-2])
+                        for l in omp_time_color.readlines()
+                    ]).mean()
+                )
+
+            amd_fig.add_trace(go.Scatter(
+                x=[i for i in range(1, max_iter)],
+                y=(np.asarray(original_mean)/np.asarray(omp_means)).tolist(),
+                mode='lines+markers',
+                name='{} OMP I/O'.format(f.parent.stem))
+            )
+
+            fake_omp_means = []
+            for it in f.iterdir():
+                omp_proc_grey = open("{}/grey_processing.txt".format(it))
+                omp_proc_hsv = open("{}/hsl_processing.txt".format(it))
+                omp_proc_yuv = open("{}/yuv_processing.txt".format(it))
+
+                fake_omp_means.append(
+                    np.asarray([
+                        float(l.split(" ")[-2])
+                        for l in omp_proc_grey.readlines()
+                    ]).mean() + np.asarray([
+                        float(l.split(" ")[-2])
+                        for l in omp_proc_hsv.readlines()
+                    ]).mean() + np.asarray([
+                        float(l.split(" ")[-2])
+                        for l in omp_proc_yuv.readlines()
+                    ]).mean()
+                )
+
+            amd_fig.add_trace(go.Scatter(
+                x=[i for i in range(1, max_iter)],
+                y=(np.asarray(fake_mean)/np.asarray(fake_omp_means)).tolist(),
+                mode='lines+markers',
+                name='{} OMP NO I/O'.format(f.parent.stem))
+            )
+
+        if f.stem == "Combinado":
+            pass
+
+        amd_fig.update_layout(
+            title={
+                'text': "Amdahl's Law",
+                'y':0.9,
+                'x':0.5,
+                'xanchor': 'center',
+                'yanchor': 'top'
+            },
+            xaxis_title="Num processors",
+            yaxis_title="Speed up",
+        )
+        amd_fig.update_xaxes(type='category')
+        amd_fig.show()
 
 
 if args.type in ["color", "todo"]:
