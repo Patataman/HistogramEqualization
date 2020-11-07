@@ -250,9 +250,12 @@
 \chapter{Introducción}
 \label{chap:Intro}
 
-La presente memoria explica los pasos seguidos, experimentacón y resultados obtenidos durante la paralelización del código de equalización de histograma entregado inicialmente. Pero antes de entrar en resultados, conviene explicar en qué consiste una equalización de histograma.
+La presente memoria explica los pasos seguidos, experimentacón y resultados obtenidos durante la
+paralelización del código de equalización de histograma entregado inicialmente. Pero antes de entrar
+en resultados, conviene explicar en qué consiste una equalización de histograma.
 
-De forma simplista, una equalización de histograma consiste en estirar el rango de valores en una imagen para aplanar su histograma de valores.
+De forma simplista, una equalización de histograma consiste en estirar el rango de valores en una
+imagen para aplanar su histograma de valores.
 
 \begin{figure}[H]
     \makebox[\textwidth][c]{\includegraphics[width=12cm]{histogram_equalization.png}}
@@ -262,25 +265,31 @@ De forma simplista, una equalización de histograma consiste en estirar el rango
 
 De forma un poco más técnica, una equalización de histograma distribuye los valores de color en una imagen de forma que todos se encuentran presentes de forma equitativa dentro de la imagen, como se puede apreciar en la \autoref{fig:hist_eq}
 
-Para calcular estos histogramas se debe recorrer la imagen multiples veces, tanto para calcular los valores iniciales como para establecer los valores finales, por lo tanto hemos orientado nuestros esfuerzos con OpenMP \parencite{timlewis_openmp_nodate} en optimizar estas iteraciones sobre la imagen, mientras que con MPI \parencite{noauthor_open_nodate} nos hemos centrado en el reparto de fragmentos de la imagen entre distintos procesos para reducir el número de iteraciones.
+Para calcular estos histogramas se debe recorrer la imagen multiples veces, tanto para
+calcular los valores iniciales como para establecer los valores finales, por lo tanto hemos orientado
+nuestros esfuerzos con OpenMP \parencite{timlewis_openmp_nodate} en optimizar estas iteraciones sobre
+la imagen, mientras que con MPI \parencite{noauthor_open_nodate} nos hemos centrado en el reparto
+de fragmentos de la imagen entre distintos procesos para reducir el número de iteraciones.
 
-No obstante para poder obtener un análisis más completo de las distintas alternativas y \textit{speed-ups} posibles, se han realizado 3 versiones distintas de paralelización: \nameref{chap:OpenMP}, \nameref{chap:MPI} y \nameref{chap:OpenMP+MPI}. De igual forma, para poder comparar los resultados de forma fiable, se ha utilizado las mismas imágenes de prueba, entorno de ejecución (guernika) y número de ejecuciones.
+No obstante para poder obtener un análisis más completo de las distintas alternativas y \textit{speed-ups}
+posibles, se han realizado 3 versiones distintas de paralelización: \nameref{chap:OpenMP}, \nameref{chap:MPI}
+y \nameref{chap:OpenMP+MPI}. De igual forma, para poder comparar los resultados de forma fiable, se ha
+utilizado las mismas imágenes de prueba, entorno de ejecución (guernika) y número de ejecuciones.
 
-\section{Análisis}
 
-%CARLOS DICE QUE: ESTO CARLOS
+\subsection{OpenMP}
 
-%Aquí creo que habría que comentar de qué formas hemos visto que es posible paralelizar el código inicial y que partes hacerlas por OpenMP y otras por MPI
-En esta parte vamos a describir como hemos analizado el código para determinar que partes se van a paralelizar mediante OpenMP y cuales con MPI.	También comentaremos las razones por las cuales hemos optado por elegir cada método en cada caso.
 
-\par A la hora de ver qué código paralelizábamos con OpenMP, empezamos mirando los bucles \textit{for}, ya que son fáciles de paralelizar mediante ese método y comprobar si realmente mejoran los tiempos de ejecución del programa. \\ Empezamos por el fichero principal, \textit{contrast.cpp} donde paralelizamos los bucles \textit{for} que se ejecutan a la hora de realizar las lecturas y escrituras de las imágenes de tipo \textit{PPM}.\\ En el fichero \textit{contrast-enhancement.cpp} también paralelizamos los bucles que se encuentran dentro de las funciones que cambian los formatos de color de las imágenes: de \textit{rgb} a \textit{hsl}, de \textit{hsl} a \textit{rgb}, de \textit{rgb} a \textit{yuv} y de \textit{yuv} a \textit{rgb}.\\ En el tercer fichero, \textit{histogram-equalization.cpp}, también realizamos la paralelización de ciertos bucles. Los dos primeros, que se encuentranr en la función que calcula el histograma decidimos optar por paralelizarlos como \textit{SIMD} en vez de como bucles for, ya que al tener pocas iteraciones, el particionarlos no ofrecería ninguna ventaja, pero por otro lado el utilizar las operaciones vectoriales de \textit{Single Instruction / Multiple Data} nos aportaría mayor velocidad ya que esos bucles utilizan la misma operación sobre un gran conjunto de datos. Por otro lado, en ese mismo fichero se ha optado por paralelizar también el bucle for que escribe la imagen final	tras ecualizar el historgrama, en este caso usando las directivas propias de los bucles \textit{for} y de las instrucciones de tipo \textit{SIMD}. El bucle que ecualiza el histograma no ha sido paralelizado debido a las dependencias que tienen entre una iteración y la anterior.
+\subsection{MPI}
 
-\par En el caso de MPI...
+En el caso de MPI...
 
 
 \subsection{Speed up teóricos}
 
-Antes de empezar a realizar ningún cambio sobre el código, con el objetivo de conocer qué mejoras podemos esperar a la hora de paralelizarlo, se ha calculado un \textit{speed up} teórico para la \nameref{sec:Amdahl} y para la \nameref{sec:Gustafson}.
+Antes de empezar a realizar ningún cambio sobre el código, con el objetivo de conocer qué mejoras
+podemos esperar a la hora de paralelizarlo, se ha calculado un \textit{speed up} teórico para
+la \nameref{sec:Amdahl} y para la \nameref{sec:Gustafson}.
 
 \subsubsection{Ley de Amdahl}
 \label{sec:Amdahl}
@@ -289,11 +298,13 @@ La Ley de Amdahl nos permite dado un programa con carga fija, el \textit{speed u
 
 \[ S = \frac{1}{(1 - P) + \frac{P}{N}} \]
 
-Siendo S el \textit{speed up}, P la fracción paralela de código y N el número de núcleos entre los que la dividimos.
+Siendo S el \textit{speed up}, P la fracción paralela de código y N el número de núcleos entre
+los que la dividimos.
 
 %total = 19+7+59+17+116+70
 %paralelo = 7+17+70
-De esta forma, en el código original tenemos 288 líneas de código, de las cuales hemos identificado 94 como parelizables, dándo lugar a una $P = 0.32638$.
+De esta forma, en el código original tenemos 288 líneas de código, de las cuales hemos identificado
+94 como parelizables, dándo lugar a una $P = 0.32638$.
 
 \begin{figure}[H]
     \makebox[\textwidth][c]{\includegraphics[width=14cm]{amdahl.png}}
@@ -301,7 +312,9 @@ De esta forma, en el código original tenemos 288 líneas de código, de las cua
     \label{fig:fig_amdahl}
 \end{figure}
 
-Como se puede observar el \textit{speed up} se empieza a detener a partir de los 8 procesadores, ya que de un \textit{speed up} de 1.4 pasamos a 1.44 con 16 procesadores, por lo que no tiene mucho sentido aumentar el número de procesadores ya que la ganancia sería mínima.
+Como se puede observar el \textit{speed up} se empieza a detener a partir de los 8 procesadores, ya que
+de un \textit{speed up} de 1.4 pasamos a 1.44 con 16 procesadores, por lo que no tiene mucho sentido
+aumentar el número de procesadores ya que la ganancia sería mínima.
 
 \subsubsection{Ley de Gustafson}
 \label{sec:Gustafson}
@@ -311,49 +324,96 @@ Como se puede observar el \textit{speed up} se empieza a detener a partir de los
 Siendo P el número de procesadores y $\alpha$ la parte de código no paralelizable.
 
 
-\chapter{OpenMP}
-\label{chap:OpenMP}
+\chapter{Análisis y experimentación}
 
-Como se comentó brevemente en la \nameref{chap:Intro} nuestro objetivo con OpenMP en la versión combinada se centrará en optimizar las iteraciones de cálculos sobre las imágenes. De igual forma, en esta versión que usa únicamente OpenMP también nos hemos centrado en lo mismo, ya que resulta, además de mucho más sencillo, igual o más óptimo repartir la carga de trabajo en cada una de las iteraciones, que dividir la imagen al inicio y luego juntar todos los resultados cada vez que sea necesario, ya que existen pasos intermedios que deben ser calculados con toda la imagen.
+En esta sección se describe el análisis de código realizado para determinar qué partes se van a
+paralelizar mediante OpenMP y cuales con MPI. También se comentarán las razones por las cuales se ha optado
+por elegir cada método en cada caso.
+
+\section{Análisis}
+
+LO DEL VALGRIND
+
+\section{OpenMP}
+\label{sec:OpenMP}
+
+La paralelización de código se ha centrado en bucles \textit{for} que operan sobre la imagen,
+dado que con OpenMP es muy sencillo seguir un modelo SIMD (\textit{Single Instruction / Multiple Data})
+y, además representan un mayor número de iteraciones que cualquier otro tipo de bucles dado que una
+imagen pequeña de 200x200 píxeles, se traduciría en 40000 iteraciones.
+
+Empezando por el fichero principal, \textit{contrast.cpp} se han paralelizados los bucles
+\textit{for} que se ejecutan a la hora de realizar las lecturas y escrituras de las imágenes de
+tipo \textit{PPM}, ya que se itera sobre los tres canales RGB por separado.
+
+En el fichero \textit{contrast-enhancement.cpp} se han paralelizado los bucles que
+se encuentran dentro de las funciones que cambian los formatos de color de las imágenes: de \textit{rgb}
+a \textit{hsl}, de \textit{hsl} a \textit{rgb}, de \textit{rgb} a \textit{yuv} y de \textit{yuv}
+a \textit{rgb}.
+
+En el tercer fichero, \textit{histogram-equalization.cpp}, también se ha realizado la paralelización
+de ciertos bucles. Los dos primeros, que se encuentran en la función \textit{histogram}, se ha decidido
+optar por paralelizarlos como \textit{SIMD} en vez de como simples bucles for, ya que al tener pocas
+iteraciones, el particionarlos no ofrecería ninguna ventaja, pero por otro lado el utilizar las operaciones
+vectoriales nos aportaría la velocidad suficiente para contrarestar el \textit{overhead} de paralelizarlo.
+
+Por otro lado, en este mismo fichero también se ha paralelizado el bucle \textit{for} que escribe la imagen
+final tras ecualizar el histograma, en este caso usando las directivas propias de los bucles \textit{for} y
+de las instrucciones de tipo \textit{SIMD}. El bucle que ecualiza el histograma no ha sido paralelizado
+debido a las dependencias que tienen entre una iteración y la anterior.
+
+\subsection{Experimentación}
+
+La experimentación se ha realizado usando la imagen proporcionada de ejemplo (11472 x 6429 píxeles),
+usando el entorno de guernika (6 núcleos físicos y otros 6 virtuales, 12 en total a 3,4GHz), variando
+el números de hilos usados (desde 1 hasta 16) y repitiendo cada ejecución 100.
+
+En los resultados se pueden observar el tiempo medio obtenido con el código original (para 100 ejecuciones)
+y los tiempos medios obtenidos para cada número de hilos de esta versión.
+
+\section{MPI}
+\label{sec:MPI}
+
+La paralelización de código se ha centrado en repartir la carga de trabajo inicial entre los distintos
+procesos existentes. De forma similar a OpenMP, la parelización de MPI, aunque puede seguir otros
+patrones como MISD (\textit{Multiple Instruction / Single Data}) o MIMD (\textit{Multiple Instruction
+/ Multiple Data}), se ha seguido un planteamiento SIMD.
+
+Para decidir en qué secciones del código se puede paralelizar siguiendo un modelo SIMD, hay que identificar
+las operaciones que dependen de la imagen completa, para evitar realizar esas operaciones con fragmentos de
+la imagen total, ya que se obtendrían resultados distintos de la versión secuencial y por tanto, incorrectos.
+
+Estas secciones de código que dependen de la imagen original se encuentran en la lectura inicial y escritura
+final de la misma e inicialización de variables en \textit{contrast.cpp}, en la definición del histograma
+inicial y en la normalización del histograma final en \textit{histogram-equalization.cpp}. Sin embargo,
+a pesar de depender de la imagen inicial, la inicialización del histograma es fácilmente paralelizable sin
+un impacto negativo en el rendimiento al tratarse de un array de números.
 
 
-\section{Paralelización}
+\subsection{Experimentación}
 
-Dada la premisa anterior, dividir la imagen desde el comienzo sería perjudicial para el rendimiento ya que habría que estar haciendo varios \texttt{join} que nos podríamos evitar si paralelizamos los bucles en vez de particionar la imagen desde el comienzo.
+La experimentación se ha realizado usando la imagen proporcionada de ejemplo (11472 x 6429 píxeles),
+usando el entorno de guernika (6 núcleos físicos y otros 6 virtuales, 12 en total a 3,4GHz), variando
+el números de procesos usados (desde 1 hasta 8) y repitiendo cada ejecución 100. El número máximo
+de procesos viene limitado por el hardware de la máquina.
 
-Sin embargo no hemos paralelizado todos los bucles existentes en el código, ya que aquellos con pocas iteraciones se verían afectados negativamente al parelelizar por el \textit{overhead} que introducimos con OpenMP. Estos bucles que han sido ignorados son aquellos que dependen de la variable \texttt{nbr\_bin}, se debe a que sus valores van desde 0 hasta 255, que son todos los valores posibles en la escala de grises. Al ser tan pocas iteraciones y además tratarse de bucles con poca carga computacional no compensa paralelizarlos. Por otro lado, los bucles que sí han sido paralelizados y compensa notablemente son aquellos que dependen del tamaño de la imagen, ya que incluso una imagen pequeña de 200x200 se transforma en 40000 iteraciones.
+En los resultados se pueden observar el tiempo medio obtenido con el código original (para 100 ejecuciones)
+y los tiempos medios obtenidos para cada número de procesos de esta versión.
 
-
-\section{Experimentación}
-
-La experimentación se ha realizado usando la imagen proporcionada de ejemplo (11472 x 6429 píxeles), usando el entorno de guernika (6 núcleos físicos y otros 6 virtuales, 12 en total a 3,4GHz) y repitiendo durante 100 ejecuciones.
-
-En los resultados se pueden observar los tiempos obtenidos con el código original y los nuevos tiempos de esta versión.
-
-\chapter{MPI}
-\label{chap:MPI}
-
-Explicar nuestro objetivo con MPI y cómo hemos paralelizado cosas
-
-\section{Paralelización}
-
-\section{Experimentación}
-
-La experimentación se ha realizado usando la imagen proporcionada de ejemplo (11472 x 6429 píxeles), usando el entorno de guernika (6 núcleos físicos y otros 6 virtuales, 12 en total a 3,4GHz) y repitiendo durante 100 ejecuciones.
-
-En los resultados se pueden observar los tiempos obtenidos con el código original y los nuevos tiempos de esta versión.
-
-\chapter{OpenMP + MPI}
-\label{chap:OpenMP+MPI}
+\section{OpenMP + MPI}
+\label{sec:OpenMP+MPI}
 Explicar "conclusiones" o yuqse sobre porqué en base a lo anterior hemos decidido hacer el OpenMP+MPI final, quizás no es exáctamente igual que simplemente juntar lo anterior
 
-\section{Paralelización}
 
-\section{Experimentación}
+\subsection{Experimentación}
 
-La experimentación se ha realizado usando la imagen proporcionada de ejemplo (11472 x 6429 píxeles), usando el entorno de guernika (6 núcleos físicos y otros 6 virtuales, 12 en total a 3,4GHz) y repitiendo durante 100 ejecuciones.
+La experimentación se ha realizado usando la imagen proporcionada de ejemplo (11472 x 6429 píxeles),
+usando el entorno de guernika (6 núcleos físicos y otros 6 virtuales, 12 en total a 3,4GHz), escogiendo
+combinaciones de los mejores parámetros para cada una de las versiones anteriores y repitiendo
+durante 100 ejecuciones.
 
-En los resultados se pueden observar los tiempos obtenidos con el código original y los nuevos tiempos de esta versión.
+En los resultados se pueden observar el tiempo medio obtenido con el código original (para 100 ejecuciones)
+y el tiempo medio obtenido para distintas configuraciones de esta versión.
 
 \chapter{Conclusiones}
 
@@ -361,10 +421,9 @@ Buah colega, hemos aprendido tope mazo
 
 
 
-
 %----------
 %	BIBLIOGRAFÍA
-%----------	
+%----------
 
 \nocite{*} % Si quieres que aparezcan en la bibliografía todos los documentos que la componen (también los que no estén citados en el texto) descomenta está lína
 
