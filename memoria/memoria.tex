@@ -369,7 +369,19 @@ usando el entorno de guernika (6 núcleos físicos y otros 6 virtuales, 12 en to
 el números de hilos usados (desde 1 hasta 16) y repitiendo cada ejecución 100.
 
 En los resultados se pueden observar el tiempo medio obtenido con el código original (para 100 ejecuciones)
-y los tiempos medios obtenidos para cada número de hilos de esta versión.
+y los tiempos medios obtenidos para cada número de hilos de esta versión. 
+
+Partiendo de un valor promedio de ejecuciones secuenciales que se situa en valores cercanos a 0.092 s en grises
+y 3.2s en color, diviendo a su ver esto en 0.63s cuando se procesa en formato yuv y 2.48 s cuando se procesa
+en hsl. Los valores promedio de la paralelización del codigo son los siguientes:
+
+\begin{figure}[H]
+    \makebox[\textwidth][c]{\includegraphics[width=14cm]{omp_grey.png}}
+    \caption{Tiempos paralelos sobre tiempo secuencial con OMP}
+    \label{fig:fig_omp_grey}
+\end{figure}
+
+En esta figura se puede ver que el tiempo empieza siendo peor que en la ejecución secuencial
 
 \section{MPI}
 \label{sec:MPI}
