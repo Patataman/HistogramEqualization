@@ -95,7 +95,9 @@ if args.type in ["speed"]:
             amd_fig.add_trace(go.Scatter(
                 x=[i for i in range(1, max_iter)],
                 y=(np.asarray(original_mean)/np.asarray(omp_means)).tolist(),
-                mode='lines+markers',
+                text=[round(i,2) for i in (np.asarray(original_mean)/np.asarray(omp_means)).tolist()],
+                textposition="top center",
+                mode='lines+markers+text',
                 name='{} OMP I/O'.format(f.parent.stem))
             )
 
@@ -121,7 +123,9 @@ if args.type in ["speed"]:
             amd_fig.add_trace(go.Scatter(
                 x=[i for i in range(1, max_iter)],
                 y=(np.asarray(fake_mean)/np.asarray(fake_omp_means)).tolist(),
-                mode='lines+markers',
+                text=[round(i,2) for i in (np.asarray(fake_mean)/np.asarray(fake_omp_means)).tolist()],
+                textposition="top center",
+                mode='lines+markers+text',
                 name='{} OMP NO I/O'.format(f.parent.stem))
             )
 
@@ -141,6 +145,10 @@ if args.type in ["speed"]:
         )
         amd_fig.update_xaxes(type='category')
         amd_fig.show()
+
+        amd_fig.write_image("amdalh_omp_todo.svg")
+        # amd_fig.write_image("amdalh_omp_IO.svg")
+        # amd_fig.write_image("amdalh_omp_no_IO.svg")
 
 
 if args.type in ["color", "todo"]:
@@ -162,7 +170,9 @@ if args.type in ["color", "todo"]:
         hsl_fig.add_trace(go.Scatter(
             x=[i for i in range(1, len(hsl_means)+1)],
             y=hsl_means,
-            mode='lines+markers',
+            text=[round(i,2) for i in hsl_means],
+            textposition="top center",
+            mode='lines+markers+text',
             name='{} Processing'.format(folder.parent.stem))
         )
 
@@ -179,7 +189,7 @@ if args.type in ["color", "todo"]:
     )
     hsl_fig.update_xaxes(type='category')
     hsl_fig.show()
-
+    hsl_fig.write_image("omp_hsl_proc.svg")
     # YUV
     yuv_fig = go.Figure()
     for folder in folder_names:
@@ -197,7 +207,9 @@ if args.type in ["color", "todo"]:
         yuv_fig.add_trace(go.Scatter(
             x=[i for i in range(1, len(yuv_means)+1)],
             y=yuv_means,
-            mode='lines+markers',
+            text=[round(i,2) for i in yuv_means],
+            textposition="top center",
+            mode='lines+markers+text',
             name='{} Processing'.format(folder.parent.stem))
         )
 
@@ -214,6 +226,7 @@ if args.type in ["color", "todo"]:
     )
     yuv_fig.update_xaxes(type='category')
     yuv_fig.show()
+    yuv_fig.write_image("omp_yuv_proc.svg")
 
     color_fig = go.Figure()
     for i, f in enumerate(folder_names):
@@ -225,7 +238,9 @@ if args.type in ["color", "todo"]:
         color_fig.add_trace(go.Scatter(
             x=[i for i in range(1, len(total)+1)],
             y=total.tolist(),
-            mode='lines+markers',
+            text=[round(i,2) for i in total],
+            textposition="top center",
+            mode='lines+markers+text',
             name='{} Time'.format(f.parent.stem),
             line=dict(color=colors[i])
         ))
@@ -238,11 +253,12 @@ if args.type in ["color", "todo"]:
             'xanchor': 'center',
             'yanchor': 'top'
         },
-        xaxis_title="Iterations",
+        xaxis_title="Num. Threads",
         yaxis_title="Time (s)",
     )
     color_fig.update_xaxes(type='category')
     color_fig.show()
+    color_fig.write_image("omp_color_total.svg")
 
 
 if args.type in ["gris", "todo"]:
@@ -261,7 +277,9 @@ if args.type in ["gris", "todo"]:
         grey_fig.add_trace(go.Scatter(
             x=[i for i in range(1, len(grey_means)+1)],
             y=grey_means,
-            mode='lines+markers',
+            text=[round(i,2) for i in grey_means],
+            textposition="top center",
+            mode='lines+markers+text',
             name='{} Processing'.format(folder.parent.stem))
         )
 
@@ -278,3 +296,4 @@ if args.type in ["gris", "todo"]:
     )
     grey_fig.update_xaxes(type='category')
     grey_fig.show()
+    grey_fig.write_image("omp_grey.svg")
