@@ -253,7 +253,7 @@ if args.type in ["color", "todo"]:
             'xanchor': 'center',
             'yanchor': 'top'
         },
-        xaxis_title="Iterations",
+        xaxis_title="Num. Threads",
         yaxis_title="Time (s)",
     )
     color_fig.update_xaxes(type='category')
@@ -296,4 +296,4 @@ if args.type in ["gris", "todo"]:
     )
     grey_fig.update_xaxes(type='category')
     grey_fig.show()
-    color_fig.write_image("omp_grey.svg")
+    grey_fig.write_image("omp_grey.svg")
