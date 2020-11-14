@@ -3,9 +3,17 @@
 #include <stdlib.h>
 #include "hist-equ.h"
 #include <mpi.h>
-// prueba de comentario desde linux
+
+//extern int num_proc;
+int aRepartir=3;
+
+
+
 PGM_IMG contrast_enhancement_g(PGM_IMG img_in)
 {
+	
+	printf("****************************************A Repartir: %d \n", aRepartir);
+
     PGM_IMG result;
     int hist[256];
 
@@ -14,12 +22,12 @@ PGM_IMG contrast_enhancement_g(PGM_IMG img_in)
     result.img = (unsigned char *)malloc(result.w * result.h * sizeof(unsigned char));
 
 
-	MPI_Scatter (result.img, sizeof(result.img)/3 , MPI_UNSIGNED_CHAR , result.img , sizeof(result.img)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
+	MPI_Scatter (result.img, sizeof(result.img)/aRepartir , MPI_UNSIGNED_CHAR , result.img , sizeof(result.img)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
 
     histogram(hist, img_in.img, img_in.h * img_in.w, 256);
     histogram_equalization(result.img,img_in.img,hist,result.w*result.h, 256);
 
-	MPI_Gather (result.img, sizeof(result.img)/3 , MPI_UNSIGNED_CHAR , result.img , sizeof(result.img)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
+	MPI_Gather (result.img, sizeof(result.img)/aRepartir , MPI_UNSIGNED_CHAR , result.img , sizeof(result.img)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
 
 
     return result;
@@ -65,12 +73,12 @@ PPM_IMG contrast_enhancement_c_yuv(PPM_IMG img_in)
     y_equ = (unsigned char *)malloc(yuv_med.h*yuv_med.w*sizeof(unsigned char));
 // PROBABLEMENTE AQUI UN SCATTER
 
-	MPI_Scatter (y_equ, sizeof(y_equ)/3 , MPI_UNSIGNED_CHAR , y_equ , sizeof(y_equ)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
+	MPI_Scatter (y_equ, sizeof(y_equ)/aRepartir , MPI_UNSIGNED_CHAR , y_equ , sizeof(y_equ)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
 
     histogram(hist, yuv_med.img_y, yuv_med.h * yuv_med.w, 256);
     histogram_equalization(y_equ,yuv_med.img_y,hist,yuv_med.h * yuv_med.w, 256);
 
-	MPI_Gather (y_equ, sizeof(y_equ)/3 , MPI_UNSIGNED_CHAR , y_equ , sizeof(y_equ)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
+	MPI_Gather (y_equ, sizeof(y_equ)/aRepartir , MPI_UNSIGNED_CHAR , y_equ , sizeof(y_equ)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
 
 
 // PROBABLEMENTE AQUI UN GATHER
@@ -100,13 +108,13 @@ PPM_IMG contrast_enhancement_c_hsl(PPM_IMG img_in)
 
 // PROBABLEMENTE AQUI UN SCATTER
 
-	MPI_Scatter (l_equ, sizeof(l_equ)/3 , MPI_UNSIGNED_CHAR , l_equ , sizeof(l_equ)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
+	MPI_Scatter (l_equ, sizeof(l_equ)/aRepartir , MPI_UNSIGNED_CHAR , l_equ , sizeof(l_equ)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
 
 
     histogram(hist, hsl_med.l, hsl_med.height * hsl_med.width, 256);
     histogram_equalization(l_equ, hsl_med.l,hist,hsl_med.width*hsl_med.height, 256);
 
-	MPI_Gather (l_equ, sizeof(l_equ)/3 , MPI_UNSIGNED_CHAR , l_equ , sizeof(l_equ)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
+	MPI_Gather (l_equ, sizeof(l_equ)/aRepartir , MPI_UNSIGNED_CHAR , l_equ , sizeof(l_equ)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
 // PROBABLEMENTE AQUI UN GATHER
     free(hsl_med.l);
     hsl_med.l = l_equ;

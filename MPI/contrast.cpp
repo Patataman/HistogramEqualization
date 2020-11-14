@@ -3,14 +3,16 @@
 #include <stdlib.h>
 #include "hist-equ.h"
 #include <omp.h>
+#include <mpi.h>
 
 void run_cpu_color_test(PPM_IMG img_in);
 void run_cpu_gray_test(PGM_IMG img_in);
 
+int num_proc;
 
 int main(int argc, char* argv[])
 {
-	int num_proc , my_rank ;
+	int my_rank ;
     MPI_Init ( & argc , & argv );
     MPI_Comm_size ( MPI_COMM_WORLD , & num_proc );
     MPI_Comm_rank ( MPI_COMM_WORLD , & my_rank );
@@ -29,6 +31,8 @@ int main(int argc, char* argv[])
     run_cpu_color_test(img_ibuf_c);
     free_ppm(img_ibuf_c);
 
+
+	MPI_Finalize ();
     return 0;
 }
 

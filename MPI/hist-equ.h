@@ -3,6 +3,7 @@
 
 #include "mpi.h"
 
+
 typedef struct{
     int w;
     int h;
