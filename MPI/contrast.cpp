@@ -8,8 +8,14 @@ void run_cpu_color_test(PPM_IMG img_in);
 void run_cpu_gray_test(PGM_IMG img_in);
 
 
-int main()
+int main(int argc, char* argv[])
 {
+	int num_proc , my_rank ;
+    MPI_Init ( & argc , & argv );
+    MPI_Comm_size ( MPI_COMM_WORLD , & num_proc );
+    MPI_Comm_rank ( MPI_COMM_WORLD , & my_rank );
+
+
     PGM_IMG img_ibuf_g;
     PPM_IMG img_ibuf_c;
 
