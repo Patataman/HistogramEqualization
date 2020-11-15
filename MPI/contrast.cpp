@@ -2,22 +2,17 @@
 #include <string.h>
 #include <stdlib.h>
 #include "hist-equ.h"
-#include <omp.h>
-#include <mpi.h>
+
 
 void run_cpu_color_test(PPM_IMG img_in);
 void run_cpu_gray_test(PGM_IMG img_in);
 
-int num_proc;
 
 int main(int argc, char* argv[])
 {
-	int my_rank ;
-    MPI_Init ( & argc , & argv );
-    MPI_Comm_size ( MPI_COMM_WORLD , & num_proc );
-    MPI_Comm_rank ( MPI_COMM_WORLD , & my_rank );
-
-
+    int my_rank;
+    MPI_Init(&argc, &argv);
+    MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
     PGM_IMG img_ibuf_g;
     PPM_IMG img_ibuf_c;
 
@@ -31,8 +26,7 @@ int main(int argc, char* argv[])
     run_cpu_color_test(img_ibuf_c);
     free_ppm(img_ibuf_c);
 
-
-	MPI_Finalize ();
+    MPI_Finalize();
     return 0;
 }
 
@@ -40,19 +34,23 @@ int main(int argc, char* argv[])
 void run_cpu_color_test(PPM_IMG img_in)
 {
     PPM_IMG img_obuf_hsl, img_obuf_yuv;
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     double start = MPI_Wtime();
     printf("Starting CPU processing...\n");
     img_obuf_hsl = contrast_enhancement_c_hsl(img_in);
     printf("HSL processing time: %f (ms)\n", MPI_Wtime()-start /* TIMER */ );
 
-    write_ppm(img_obuf_hsl, "out_hsl.ppm");
+    if (rank == 0)
+        write_ppm(img_obuf_hsl, "out_hsl.ppm");
 
     start = MPI_Wtime();
     img_obuf_yuv = contrast_enhancement_c_yuv(img_in);
     printf("YUV processing time: %f (ms)\n", MPI_Wtime()-start /* TIMER */);
 
-    write_ppm(img_obuf_yuv, "out_yuv.ppm");
+    if (rank == 0)
+        write_ppm(img_obuf_yuv, "out_yuv.ppm");
 
     free_ppm(img_obuf_hsl);
     free_ppm(img_obuf_yuv);
@@ -68,7 +66,11 @@ void run_cpu_gray_test(PGM_IMG img_in)
     img_obuf = contrast_enhancement_g(img_in);
     printf("Processing time: %f (ms)\n", MPI_Wtime()-start /* TIMER */ );
 
-    write_pgm(img_obuf, "out.pgm");
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    if (rank == 0)
+        write_pgm(img_obuf, "out.pgm");
+
     free_pgm(img_obuf);
 }
 

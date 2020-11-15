@@ -2,36 +2,43 @@
 #include <string.h>
 #include <stdlib.h>
 #include "hist-equ.h"
-#include <mpi.h>
-
-//extern int num_proc;
-int aRepartir=3;
-
 
 
 PGM_IMG contrast_enhancement_g(PGM_IMG img_in)
 {
-	
-	printf("****************************************A Repartir: %d \n", aRepartir);
+    int comm_size, rank;
+    MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    PGM_IMG result;
+    PGM_IMG result, w_result;
     int hist[256];
 
     result.w = img_in.w;
     result.h = img_in.h;
     result.img = (unsigned char *)malloc(result.w * result.h * sizeof(unsigned char));
+    w_result.img = (unsigned char *)malloc(result.w * result.h * sizeof(unsigned char));
 
+    MPI_Scatter(
+        result.img, sizeof(result.img), MPI_UNSIGNED_CHAR,
+        w_result.img, sizeof(w_result.img), MPI_UNSIGNED_CHAR,
+        0, MPI_COMM_WORLD
+    );
 
-	MPI_Scatter (result.img, sizeof(result.img)/aRepartir , MPI_UNSIGNED_CHAR , result.img , sizeof(result.img)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
+    if (rank != 0) {
+        std::cout << "rank " << rank << " haciendo histograma" << std::endl;
+        histogram(hist, img_in.img, img_in.h * img_in.w, 256);
+        histogram_equalization(w_result.img, img_in.img, hist, result.w*result.h, 256);
+    }
 
-    histogram(hist, img_in.img, img_in.h * img_in.w, 256);
-    histogram_equalization(result.img,img_in.img,hist,result.w*result.h, 256);
-
-	MPI_Gather (result.img, sizeof(result.img)/aRepartir , MPI_UNSIGNED_CHAR , result.img , sizeof(result.img)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
-
+	MPI_Gather(
+        w_result.img, sizeof(w_result.img), MPI_UNSIGNED_CHAR,
+        result.img, sizeof(result.img), MPI_UNSIGNED_CHAR,
+        0, MPI_COMM_WORLD
+    );
 
     return result;
 }
+
 //Esta funcion nunca se llama
 PPM_IMG contrast_enhancement_c_rgb(PPM_IMG img_in)
 {
@@ -44,45 +51,47 @@ PPM_IMG contrast_enhancement_c_rgb(PPM_IMG img_in)
     result.img_r = (unsigned char *)malloc(result.w * result.h * sizeof(unsigned char));
     result.img_g = (unsigned char *)malloc(result.w * result.h * sizeof(unsigned char));
     result.img_b = (unsigned char *)malloc(result.w * result.h * sizeof(unsigned char));
-	
-// PROBABLEMENTE AQUI UN SCATTER DE CADA CANAL
 
     histogram(hist, img_in.img_r, img_in.h * img_in.w, 256);
     histogram_equalization(result.img_r,img_in.img_r,hist,result.w*result.h, 256);
-
 
     histogram(hist, img_in.img_g, img_in.h * img_in.w, 256);
     histogram_equalization(result.img_g,img_in.img_g,hist,result.w*result.h, 256);
     histogram(hist, img_in.img_b, img_in.h * img_in.w, 256);
     histogram_equalization(result.img_b,img_in.img_b,hist,result.w*result.h, 256);
-// PROBABLEMENTE AQUI UN GATHER DE CADA CANAL
     return result;
 }
 
 
 PPM_IMG contrast_enhancement_c_yuv(PPM_IMG img_in)
 {
+    int comm_size, rank;
+    MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
     YUV_IMG yuv_med;
     PPM_IMG result;
-
 
     unsigned char * y_equ;
     int hist[256];
 
     yuv_med = rgb2yuv(img_in);
     y_equ = (unsigned char *)malloc(yuv_med.h*yuv_med.w*sizeof(unsigned char));
-// PROBABLEMENTE AQUI UN SCATTER
 
-	MPI_Scatter (y_equ, sizeof(y_equ)/aRepartir , MPI_UNSIGNED_CHAR , y_equ , sizeof(y_equ)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
+	MPI_Scatter(
+        y_equ, sizeof(y_equ)/(comm_size-1), MPI_UNSIGNED_CHAR,
+        y_equ ,sizeof(y_equ)/(comm_size-1), MPI_UNSIGNED_CHAR,
+        0, MPI_COMM_WORLD
+    );
 
     histogram(hist, yuv_med.img_y, yuv_med.h * yuv_med.w, 256);
     histogram_equalization(y_equ,yuv_med.img_y,hist,yuv_med.h * yuv_med.w, 256);
 
-	MPI_Gather (y_equ, sizeof(y_equ)/aRepartir , MPI_UNSIGNED_CHAR , y_equ , sizeof(y_equ)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
-
-
-// PROBABLEMENTE AQUI UN GATHER
-
+	MPI_Gather(
+        y_equ, sizeof(y_equ)/(comm_size-1), MPI_UNSIGNED_CHAR,
+        y_equ, sizeof(y_equ)/(comm_size-1), MPI_UNSIGNED_CHAR,
+        0, MPI_COMM_WORLD
+    );
 
     free(yuv_med.img_y);
     yuv_med.img_y = y_equ;
@@ -97,6 +106,10 @@ PPM_IMG contrast_enhancement_c_yuv(PPM_IMG img_in)
 
 PPM_IMG contrast_enhancement_c_hsl(PPM_IMG img_in)
 {
+    int comm_size, rank;
+    MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
     HSL_IMG hsl_med;
     PPM_IMG result;
 
@@ -106,16 +119,21 @@ PPM_IMG contrast_enhancement_c_hsl(PPM_IMG img_in)
     hsl_med = rgb2hsl(img_in);
     l_equ = (unsigned char *)malloc(hsl_med.height*hsl_med.width*sizeof(unsigned char));
 
-// PROBABLEMENTE AQUI UN SCATTER
-
-	MPI_Scatter (l_equ, sizeof(l_equ)/aRepartir , MPI_UNSIGNED_CHAR , l_equ , sizeof(l_equ)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
-
+	MPI_Scatter(
+        l_equ, sizeof(l_equ)/(comm_size-1), MPI_UNSIGNED_CHAR,
+        l_equ, sizeof(l_equ)/(comm_size-1), MPI_UNSIGNED_CHAR,
+        0, MPI_COMM_WORLD
+    );
 
     histogram(hist, hsl_med.l, hsl_med.height * hsl_med.width, 256);
     histogram_equalization(l_equ, hsl_med.l,hist,hsl_med.width*hsl_med.height, 256);
 
-	MPI_Gather (l_equ, sizeof(l_equ)/aRepartir , MPI_UNSIGNED_CHAR , l_equ , sizeof(l_equ)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
-// PROBABLEMENTE AQUI UN GATHER
+	MPI_Gather(
+        l_equ, sizeof(l_equ)/(comm_size-1), MPI_UNSIGNED_CHAR,
+        l_equ, sizeof(l_equ)/(comm_size-1), MPI_UNSIGNED_CHAR,
+        0, MPI_COMM_WORLD
+    );
+
     free(hsl_med.l);
     hsl_med.l = l_equ;
 

@@ -1,7 +1,7 @@
 #ifndef HIST_EQU_COLOR_H
 #define HIST_EQU_COLOR_H
 
-#include "mpi.h"
+#include <mpi.h>
 
 
 typedef struct{
