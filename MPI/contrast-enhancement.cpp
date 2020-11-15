@@ -10,31 +10,60 @@ PGM_IMG contrast_enhancement_g(PGM_IMG img_in)
     MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    PGM_IMG result, w_result;
-    int hist[256];
+    PGM_IMG result, w_img;
+
+    int hist[256], w_hist[256];
 
     result.w = img_in.w;
     result.h = img_in.h;
     result.img = (unsigned char *)malloc(result.w * result.h * sizeof(unsigned char));
-    w_result.img = (unsigned char *)malloc(result.w * result.h * sizeof(unsigned char));
 
-    MPI_Scatter(
-        result.img, sizeof(result.img), MPI_UNSIGNED_CHAR,
-        w_result.img, sizeof(w_result.img), MPI_UNSIGNED_CHAR,
-        0, MPI_COMM_WORLD
-    );
+    int *slices = (int *)malloc(sizeof(int)*comm_size);
+    int *offsets = (int *)malloc(sizeof(int)*comm_size);
+    int total_size = result.w * result.h;
+    int rest = (result.w * result.h) % comm_size;
 
-    if (rank != 0) {
-        std::cout << "rank " << rank << " haciendo histograma" << std::endl;
-        histogram(hist, img_in.img, img_in.h * img_in.w, 256);
-        histogram_equalization(w_result.img, img_in.img, hist, result.w*result.h, 256);
+    // https://gist.github.com/ehamberg/1263868/cae1d85dee821d45fb0cd58747aaf33370f3f1ed
+    for (int i=0; i<comm_size; i++){
+        slices[i] = total_size/comm_size;
+        if (rest > 0){
+            slices[i]++;
+            rest--;
+        }
+        offsets[i] = (total_size/comm_size)*i;
     }
 
-	MPI_Gather(
-        w_result.img, sizeof(w_result.img), MPI_UNSIGNED_CHAR,
-        result.img, sizeof(result.img), MPI_UNSIGNED_CHAR,
+    w_img.img = (unsigned char *)malloc(slices[rank] * sizeof(unsigned char));
+
+    MPI_Scatterv(
+        img_in.img, slices, offsets, MPI_UNSIGNED_CHAR,
+        w_img.img, slices[rank], MPI_UNSIGNED_CHAR,
         0, MPI_COMM_WORLD
     );
+    std::cout << "rank " << rank << " post scatter" << std::endl;
+
+    histogram(w_hist, w_img.img, slices[rank], 256);
+    std::cout << "rank " << rank << " post histo 1 - " << w_hist[0] << std::endl;
+
+    MPI_Allreduce(w_hist, hist, 256, MPI_INT, MPI_SUM, MPI_COMM_WORLD);
+    std::cout << "rank " << rank << " post reduce"<< std::endl;
+    // En este punto todos deberían tener el mismo histograma
+    // if (rank == 0){
+    //     for (int i=0; i<256;i++)
+    //         std::cout << hist[i] <<", ";
+    // }
+    histogram_equalization(w_img.img, w_img.img, hist, slices[rank], result.w*result.h, 256);
+
+    std::cout << "rank " << rank << " post histogram" << std::endl;
+
+	MPI_Gatherv(
+        w_img.img, slices[rank], MPI_UNSIGNED_CHAR,
+        result.img, slices, offsets, MPI_UNSIGNED_CHAR,
+        0, MPI_COMM_WORLD
+    );
+    std::cout << "rank " << rank << " post gather" << std::endl;
+
+    free(w_img.img);
 
     return result;
 }

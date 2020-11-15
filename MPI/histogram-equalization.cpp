@@ -11,16 +11,20 @@ void histogram(int * hist_out, unsigned char * img_in, int img_size, int nbr_bin
         hist_out[i] = 0;
     }
 
-    // PPARALELIZABLE, PROBABLEMENTE IMG_IN YA VIENE DIVIDIDO CON UN SCATTER
     for ( i = 0; i < img_size; i ++){
         hist_out[img_in[i]] ++;
     }
-    // LUEGO HABRÍA QUE JUNTARLO CON UN GATHER (REDUCTION:+) YA QUE ES UN ARRAY DE NÚMEROS
-    // Y EL TOTAL SERÍA LA SUMA
 }
 
 void histogram_equalization(unsigned char * img_out, unsigned char * img_in,
                             int * hist_in, int img_size, int nbr_bin)
+{
+    histogram_equalization(img_out, img_in, hist_in, img_size, img_size, nbr_bin);
+    //ÑAPA PARA COMPILAR GRISES, HAY QUE ELIMINARLO AL HACER COLOR
+}
+
+void histogram_equalization(unsigned char * img_out, unsigned char * img_in,
+                            int * hist_in, int img_size, int total_size, int nbr_bin)
 {
     int *lut = (int *)malloc(sizeof(int)*nbr_bin);
     int i, cdf, min, d;
@@ -31,7 +35,7 @@ void histogram_equalization(unsigned char * img_out, unsigned char * img_in,
     while(min == 0){
         min = hist_in[i++];
     }
-    d = img_size - min;
+    d = total_size - min;
     for(i = 0; i < nbr_bin; i ++){
         cdf += hist_in[i];
         //lut[i] = (cdf - min)*(nbr_bin - 1)/d;
