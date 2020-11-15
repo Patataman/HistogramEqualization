@@ -371,17 +371,59 @@ el números de hilos usados (desde 1 hasta 16) y repitiendo cada ejecución 100.
 En los resultados se pueden observar el tiempo medio obtenido con el código original (para 100 ejecuciones)
 y los tiempos medios obtenidos para cada número de hilos de esta versión. 
 
-Partiendo de un valor promedio de ejecuciones secuenciales que se situa en valores cercanos a 0.092 s en grises
-y 3.2s en color, diviendo a su ver esto en 0.63s cuando se procesa en formato yuv y 2.48 s cuando se procesa
-en hsl. Los valores promedio de la paralelización del codigo son los siguientes:
-
+Partiendo de un valor promedio de ejecuciones secuenciales que se sitúa en valores cercanos a 0.092 s en grises y
+ 3.2s en color, dividiendo a su ver esto en 0.63s cuando se procesa en formato yuv y 2.48 s cuando se procesa
+en hsl. Los valores promedio de la paralelización del código son los siguientes:
+ 
 \begin{figure}[H]
-    \makebox[\textwidth][c]{\includegraphics[width=14cm]{omp_grey.png}}
-    \caption{Tiempos paralelos sobre tiempo secuencial con OMP}
+    \makebox[\textwidth][c]{\includegraphics[width=14cm]{omp/omp_hilos_svg/omp_grey.svg}}
+    \caption{Tiempos paralelos sobre tiempo secuencial con OMP en escala de grises.}
+    \label{fig:fig_omp_grey}
+\end{figure}
+ 
+En esta figura se puede ver que el tiempo empieza siendo peor que en la ejecución secuencial, ya que necesita invertir
+ tiempo en la creación del hilo y después asignarle la función, pero ejecutándose solo en ese hilo.
+ 
+En la gráfica se puede observar que, además del alto tiempo obtenido para un único hilo, también se encuentran dos picos
+ más de bajo rendimiento, estos se sitúan en 8 hilos y 14 hilos.
+ 
+Por otro lado, se puede observar que el mejor tiempo obtenido es el de dos hilos. 
+ 
+Ademas de en la grafica de ejecución en el cala de los grises, tambien se pueden observar estos mismos comportamintos
+ en la de color.
+ \begin{figure}[H]
+	\makebox[\textwidth][c]{\includegraphics[width=14cm]{omp/omp_hilos_svg/omp_color_total.svg}}
+    \caption{Tiempos paralelos sobre tiempo secuencial con OMP en el proceso de la imagen en color.}
+    \label{fig:fig_omp_grey}
+\end{figure}
+ 
+Con esto, también en las que se descompone esta última, HSL y YUV. 
+ 
+\begin{figure}[H]
+	\makebox[\textwidth][c]{\includegraphics[width=14cm]{omp/omp_hilos_svg/omp_hsl_proc.svg}}
+    \caption{Tiempos paralelos sobre tiempo secuencial con OMP en el proceso de la imagen en formato HSL.}
+    \label{fig:fig_omp_grey}
+\end{figure}
+ 
+\begin{figure}[H]
+	\makebox[\textwidth][c]{\includegraphics[width=14cm]{omp/omp_hilos_svg/omp_yuv_proc.svg}}
+    \caption{Tiempos paralelos sobre tiempo secuencial con OMP en el proceso de la imagen en formato YUV.}
     \label{fig:fig_omp_grey}
 \end{figure}
 
-En esta figura se puede ver que el tiempo empieza siendo peor que en la ejecución secuencial
+Estos tiempos se transforman en los siguientes speedups:
+ 
+\begin{figure}[H]
+	\makebox[\textwidth][c]{\includegraphics[width=14cm]{omp/omp_hilos_svg/amdalh_omp_todo.svg}}
+	\caption{Speedups con OpenMP con y sin IO frente a la ley de Amdahl.}
+    \label{fig:fig_omp_grey}
+\end{figure}
+
+Como se puede ver lo que más retrasa a la hora de la ejecución es el tiempo de input output, ya que salvo 
+en el número de procesadores indicados previamente, en este apartado se supera con creces el speedup estimado 
+con amdahl, no obstante si se introduce estos procesos de lectura y escritura el speedup empeora radicalmente, 
+siendo 2 y 15 hilos los únicos que ves una mejoría mínima sobre 1 de speedup, que representa ninguna mejora. 
+
 
 \section{MPI}
 \label{sec:MPI}
