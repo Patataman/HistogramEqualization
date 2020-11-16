@@ -41,11 +41,11 @@ void run_cpu_color_test(PPM_IMG img_in)
 
     double start = MPI_Wtime();
     printf("Starting CPU processing...\n");
-    img_obuf_hsl = contrast_enhancement_c_hsl(img_in);
+    //img_obuf_hsl = contrast_enhancement_c_hsl(img_in);
     printf("HSL processing time: %f (ms)\n", MPI_Wtime()-start /* TIMER */ );
 
-    if (rank == 0)
-        write_ppm(img_obuf_hsl, "out_hsl.ppm");
+    //if (rank == 0)
+     //   write_ppm(img_obuf_hsl, "out_hsl.ppm");
 
     start = MPI_Wtime();
     img_obuf_yuv = contrast_enhancement_c_yuv(img_in);
