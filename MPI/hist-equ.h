@@ -2,7 +2,7 @@
 #define HIST_EQU_COLOR_H
 
 #include <mpi.h>
-
+#include <iostream>
 
 typedef struct{
     int w;
