@@ -51,6 +51,8 @@ void histogram_equalization(unsigned char * img_out, unsigned char * img_in,
         }
         
     }
+
+    free(lut);
 }
 // 15 líneas en total para color y gris (sin declaraciones y en el if-else contando el más largo)
 // 3 líneas (el segundo for, el primero no es paralelizable por 

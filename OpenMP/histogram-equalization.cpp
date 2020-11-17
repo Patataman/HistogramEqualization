@@ -51,6 +51,8 @@ void histogram_equalization(unsigned char * img_out, unsigned char * img_in,
             img_out[i] = (unsigned char)lut[img_in[i]];
         }
     }
+
+    free(lut);
 }
 
 
