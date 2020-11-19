@@ -17,24 +17,40 @@ int main(int argc, char* argv[])
     PGM_IMG img_ibuf_g;
     PPM_IMG img_ibuf_c;
 
-    if (rank == 0)
+    if (rank == 0) {
         printf("Running contrast enhancement for gray-scale images.\n");
-    img_ibuf_g = read_pgm("in.pgm");
+        img_ibuf_g = read_pgm("in.pgm");
+    }
+    MPI_Bcast(&img_ibuf_g.w, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&img_ibuf_g.h, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    if (rank != 0)
+        img_ibuf_g.img = (unsigned char *)malloc(img_ibuf_g.w*img_ibuf_g.h * sizeof(unsigned char));
+    MPI_Bcast(img_ibuf_g.img, img_ibuf_g.w*img_ibuf_g.h, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
+
     run_cpu_gray_test(img_ibuf_g);
     free_pgm(img_ibuf_g);
 
-    MPI_Barrier(MPI_COMM_WORLD);
-
-    if (rank == 0)
+    if (rank == 0) {
         printf("Running contrast enhancement for color images.\n");
-    img_ibuf_c = read_ppm("in.ppm");
+        img_ibuf_c = read_ppm("in.ppm");
+    }
+    MPI_Bcast(&img_ibuf_c.w, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&img_ibuf_c.h, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    if (rank != 0) {
+        img_ibuf_c.img_r = (unsigned char *)malloc(img_ibuf_c.w*img_ibuf_c.h * sizeof(unsigned char));
+        img_ibuf_c.img_g = (unsigned char *)malloc(img_ibuf_c.w*img_ibuf_c.h * sizeof(unsigned char));
+        img_ibuf_c.img_b = (unsigned char *)malloc(img_ibuf_c.w*img_ibuf_c.h * sizeof(unsigned char));
+    }
+    MPI_Bcast(img_ibuf_c.img_r, img_ibuf_c.w*img_ibuf_c.h, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
+    MPI_Bcast(img_ibuf_c.img_g, img_ibuf_c.w*img_ibuf_c.h, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
+    MPI_Bcast(img_ibuf_c.img_b, img_ibuf_c.w*img_ibuf_c.h, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
+
     run_cpu_color_test(img_ibuf_c);
     free_ppm(img_ibuf_c);
 
     MPI_Finalize();
     return 0;
 }
-
 
 void run_cpu_color_test(PPM_IMG img_in)
 {

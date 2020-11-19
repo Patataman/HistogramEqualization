@@ -17,13 +17,6 @@ void histogram(int * hist_out, unsigned char * img_in, int img_size, int nbr_bin
 }
 
 void histogram_equalization(unsigned char * img_out, unsigned char * img_in,
-                            int * hist_in, int img_size, int nbr_bin)
-{
-    histogram_equalization(img_out, img_in, hist_in, img_size, img_size, nbr_bin);
-    //ÑAPA PARA COMPILAR GRISES, HAY QUE ELIMINARLO AL HACER COLOR
-}
-
-void histogram_equalization(unsigned char * img_out, unsigned char * img_in,
                             int * hist_in, int img_size, int total_size, int nbr_bin)
 {
     int *lut = (int *)malloc(sizeof(int)*nbr_bin);

@@ -7,17 +7,19 @@
 void histogram(int * hist_out, unsigned char * img_in, int img_size, int nbr_bin)
 {
     int i;
+    #pragma omp simd
     for ( i = 0; i < nbr_bin; i ++){
         hist_out[i] = 0;
     }
 
+    #pragma omp simd
     for ( i = 0; i < img_size; i ++){
         hist_out[img_in[i]] ++;
     }
 }
 
 void histogram_equalization(unsigned char * img_out, unsigned char * img_in,
-                            int * hist_in, int img_size, int nbr_bin)
+                            int * hist_in, int img_size, int total_size, int nbr_bin)
 {
     int *lut = (int *)malloc(sizeof(int)*nbr_bin);
     int i, cdf, min, d;
@@ -28,7 +30,7 @@ void histogram_equalization(unsigned char * img_out, unsigned char * img_in,
     while(min == 0){
         min = hist_in[i++];
     }
-    d = img_size - min;
+    d = total_size - min;
     for(i = 0; i < nbr_bin; i ++){
         cdf += hist_in[i];
         //lut[i] = (cdf - min)*(nbr_bin - 1)/d;
@@ -37,8 +39,8 @@ void histogram_equalization(unsigned char * img_out, unsigned char * img_in,
             lut[i] = 0;
         }
     }
-
     /* Get the result image */
+    #pragma omp parallel for simd
     for(i = 0; i < img_size; i ++){
         if(lut[img_in[i]] > 255){
             img_out[i] = 255;
@@ -50,6 +52,3 @@ void histogram_equalization(unsigned char * img_out, unsigned char * img_in,
 
     free(lut);
 }
-
-
-

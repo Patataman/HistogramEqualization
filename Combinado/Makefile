@@ -1,8 +1,8 @@
-CC = g++
+CC = mpiCC
 CFLAGS= -Wall -g -O3 -fopenmp
 PRGS = contrast
 OBJS = contrast-enhancement.cpp histogram-equalization.cpp  contrast.cpp
-LIBS = -lm 
+LIBS = -lm
 
 all:  $(PRGS)
 
