@@ -1,5 +1,5 @@
 CC = mpiCC
-CFLAGS= -Wall -g -O3 -fopenmp
+CFLAGS= -Wall -g -O3
 PRGS = contrast
 OBJS = contrast-enhancement.cpp histogram-equalization.cpp  contrast.cpp
 LIBS = -lm 

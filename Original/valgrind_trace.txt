@@ -1,0 +1,45 @@
+==3711== 
+==3711== HEAP SUMMARY:
+==3711==     in use at exit: 3,080 bytes in 4 blocks
+==3711==   total heap usage: 39 allocs, 35 frees, 2,507,751,456 bytes allocated
+==3711== 
+==3711== 1,024 bytes in 1 blocks are definitely lost in loss record 2 of 4
+==3711==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==3711==    by 0x10B5B2: histogram_equalization(unsigned char*, unsigned char*, int*, int, int) (histogram-equalization.cpp:26)
+==3711==    by 0x109350: contrast_enhancement_g(PGM_IMG) (contrast-enhancement.cpp:19)
+==3711==    by 0x10B6D1: run_cpu_gray_test(PGM_IMG) (contrast.cpp:70)
+==3711==    by 0x109146: main (contrast.cpp:22)
+==3711== 
+==3711== 1,024 bytes in 1 blocks are definitely lost in loss record 3 of 4
+==3711==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==3711==    by 0x10B5B2: histogram_equalization(unsigned char*, unsigned char*, int*, int, int) (histogram-equalization.cpp:26)
+==3711==    by 0x109B7F: contrast_enhancement_c_hsl(PPM_IMG) (contrast-enhancement.cpp:87)
+==3711==    by 0x10BA32: run_cpu_color_test(PPM_IMG) (contrast.cpp:47)
+==3711==    by 0x1091A7: main (contrast.cpp:30)
+==3711== 
+==3711== 1,024 bytes in 1 blocks are definitely lost in loss record 4 of 4
+==3711==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==3711==    by 0x10B5B2: histogram_equalization(unsigned char*, unsigned char*, int*, int, int) (histogram-equalization.cpp:26)
+==3711==    by 0x10B4CF: contrast_enhancement_c_yuv(PPM_IMG) (contrast-enhancement.cpp:60)
+==3711==    by 0x10BAA3: run_cpu_color_test(PPM_IMG) (contrast.cpp:53)
+==3711==    by 0x1091A7: main (contrast.cpp:30)
+==3711== 
+==3711== LEAK SUMMARY:
+==3711==    definitely lost: 3,072 bytes in 3 blocks
+==3711==    indirectly lost: 0 bytes in 0 blocks
+==3711==      possibly lost: 0 bytes in 0 blocks
+==3711==    still reachable: 8 bytes in 1 blocks
+==3711==         suppressed: 0 bytes in 0 blocks
+==3711== Reachable blocks (those to which a pointer was found) are not shown.
+==3711== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==3711== 
+==3711== For counts of detected and suppressed errors, rerun with: -v
+==3711== ERROR SUMMARY: 3 errors from 3 contexts (suppressed: 0 from 0)
+
+
+Línea de la traza:
+
+    int *lut = (int *)malloc(sizeof(int)*nbr_bin);
+
+al final del método se hace un free(lut) y arreglado.
+

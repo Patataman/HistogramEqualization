@@ -2,36 +2,62 @@
 #include <string.h>
 #include <stdlib.h>
 #include "hist-equ.h"
-#include <mpi.h>
-
-//extern int num_proc;
-int aRepartir=3;
-
 
 
 PGM_IMG contrast_enhancement_g(PGM_IMG img_in)
 {
-	
-	printf("****************************************A Repartir: %d \n", aRepartir);
+    int comm_size, rank;
+    MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    PGM_IMG result;
-    int hist[256];
+    PGM_IMG result, img_w;
+
+    int hist[256], hist_w[256];
 
     result.w = img_in.w;
     result.h = img_in.h;
     result.img = (unsigned char *)malloc(result.w * result.h * sizeof(unsigned char));
 
+    int *slices = (int *)malloc(sizeof(int)*comm_size);
+    int *offsets = (int *)malloc(sizeof(int)*comm_size);
+    int total_size = result.w * result.h;
+    int rest = total_size % comm_size;
 
-	MPI_Scatter (result.img, sizeof(result.img)/aRepartir , MPI_UNSIGNED_CHAR , result.img , sizeof(result.img)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
+    // https://gist.github.com/ehamberg/1263868/cae1d85dee821d45fb0cd58747aaf33370f3f1ed
+    for (int i=0; i<comm_size; i++){
+        slices[i] = total_size/comm_size;
+        if (rest > 0){
+            slices[i]++;
+            rest--;
+        }
+        offsets[i] = (total_size/comm_size)*i;
+    }
 
-    histogram(hist, img_in.img, img_in.h * img_in.w, 256);
-    histogram_equalization(result.img,img_in.img,hist,result.w*result.h, 256);
+    img_w.img = (unsigned char *)malloc(slices[rank] * sizeof(unsigned char));
 
-	MPI_Gather (result.img, sizeof(result.img)/aRepartir , MPI_UNSIGNED_CHAR , result.img , sizeof(result.img)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
+    MPI_Scatterv(
+        img_in.img, slices, offsets, MPI_UNSIGNED_CHAR,
+        img_w.img, slices[rank], MPI_UNSIGNED_CHAR,
+        0, MPI_COMM_WORLD
+    );
 
+    histogram(hist_w, img_w.img, slices[rank], 256);
+    MPI_Allreduce(hist_w, hist, 256, MPI_INT, MPI_SUM, MPI_COMM_WORLD);
+    histogram_equalization(img_w.img, img_w.img, hist, slices[rank], total_size, 256);
+
+    MPI_Gatherv(
+        img_w.img, slices[rank], MPI_UNSIGNED_CHAR,
+        result.img, slices, offsets, MPI_UNSIGNED_CHAR,
+        0, MPI_COMM_WORLD
+    );
+
+    free(img_w.img);
+    free(slices);
+    free(offsets);
 
     return result;
 }
+
 //Esta funcion nunca se llama
 PPM_IMG contrast_enhancement_c_rgb(PPM_IMG img_in)
 {
@@ -44,85 +70,158 @@ PPM_IMG contrast_enhancement_c_rgb(PPM_IMG img_in)
     result.img_r = (unsigned char *)malloc(result.w * result.h * sizeof(unsigned char));
     result.img_g = (unsigned char *)malloc(result.w * result.h * sizeof(unsigned char));
     result.img_b = (unsigned char *)malloc(result.w * result.h * sizeof(unsigned char));
-	
-// PROBABLEMENTE AQUI UN SCATTER DE CADA CANAL
 
     histogram(hist, img_in.img_r, img_in.h * img_in.w, 256);
     histogram_equalization(result.img_r,img_in.img_r,hist,result.w*result.h, 256);
-
 
     histogram(hist, img_in.img_g, img_in.h * img_in.w, 256);
     histogram_equalization(result.img_g,img_in.img_g,hist,result.w*result.h, 256);
     histogram(hist, img_in.img_b, img_in.h * img_in.w, 256);
     histogram_equalization(result.img_b,img_in.img_b,hist,result.w*result.h, 256);
-// PROBABLEMENTE AQUI UN GATHER DE CADA CANAL
+
     return result;
 }
 
 
 PPM_IMG contrast_enhancement_c_yuv(PPM_IMG img_in)
 {
-    YUV_IMG yuv_med;
+    int comm_size, rank;
+    MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    YUV_IMG yuv_med, yuv_med_w;
     PPM_IMG result;
 
+    unsigned char * y_equ, * y_equ_w;
+    int hist[256], hist_w[256];
 
-    unsigned char * y_equ;
-    int hist[256];
+    /*Inicio slices*/
+    int *slices = (int *)malloc(sizeof(int)*comm_size);
+    int *offsets = (int *)malloc(sizeof(int)*comm_size);
+    int total_size = img_in.w * img_in.h;
+    int rest = total_size % comm_size;
 
-    yuv_med = rgb2yuv(img_in);
-    y_equ = (unsigned char *)malloc(yuv_med.h*yuv_med.w*sizeof(unsigned char));
-// PROBABLEMENTE AQUI UN SCATTER
+    // https://gist.github.com/ehamberg/1263868/cae1d85dee821d45fb0cd58747aaf33370f3f1ed
+    for (int i=0; i<comm_size; i++){
+        slices[i] = total_size/comm_size;
+        if (rest > 0){
+            slices[i]++;
+            rest--;
+        }
+        offsets[i] = (total_size/comm_size)*i;
+    }
+    /*Fin slices*/
 
-	MPI_Scatter (y_equ, sizeof(y_equ)/aRepartir , MPI_UNSIGNED_CHAR , y_equ , sizeof(y_equ)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
+    if (rank == 0) {
+        yuv_med = rgb2yuv(img_in);
+    }
 
-    histogram(hist, yuv_med.img_y, yuv_med.h * yuv_med.w, 256);
-    histogram_equalization(y_equ,yuv_med.img_y,hist,yuv_med.h * yuv_med.w, 256);
+    yuv_med_w.img_y = (unsigned char *)malloc(slices[rank]*sizeof(unsigned char));
+    y_equ = (unsigned char *)malloc(total_size*sizeof(unsigned char));
+    y_equ_w = (unsigned char *)malloc(slices[rank]*sizeof(unsigned char));
 
-	MPI_Gather (y_equ, sizeof(y_equ)/aRepartir , MPI_UNSIGNED_CHAR , y_equ , sizeof(y_equ)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
+    MPI_Scatterv(
+        yuv_med.img_y, slices, offsets, MPI_UNSIGNED_CHAR,
+        yuv_med_w.img_y, slices[rank], MPI_UNSIGNED_CHAR,
+        0, MPI_COMM_WORLD
+    );
 
+    histogram(hist_w, yuv_med_w.img_y, slices[rank], 256);
+    MPI_Allreduce(hist_w, hist, 256, MPI_INT, MPI_SUM, MPI_COMM_WORLD);
+    histogram_equalization(y_equ_w, yuv_med_w.img_y, hist, slices[rank], total_size, 256);
 
-// PROBABLEMENTE AQUI UN GATHER
+    MPI_Gatherv(
+        y_equ_w, slices[rank], MPI_UNSIGNED_CHAR,
+        y_equ, slices, offsets, MPI_UNSIGNED_CHAR,
+        0, MPI_COMM_WORLD
+    );
 
+    if (rank == 0) {
+        free(yuv_med.img_y);
+        yuv_med.img_y = y_equ;
 
-    free(yuv_med.img_y);
-    yuv_med.img_y = y_equ;
+        result = yuv2rgb(yuv_med);
 
-    result = yuv2rgb(yuv_med);
-    free(yuv_med.img_y);
-    free(yuv_med.img_u);
-    free(yuv_med.img_v);
+        //free(yuv_med.img_y);
+        free(yuv_med.img_u);
+        free(yuv_med.img_v);
+    }
+
+    free(y_equ);
+    free(y_equ_w);
+    free(slices);
+    free(offsets);
 
     return result;
 }
 
 PPM_IMG contrast_enhancement_c_hsl(PPM_IMG img_in)
 {
-    HSL_IMG hsl_med;
+    int comm_size, rank;
+    MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    HSL_IMG hsl_med, hsl_med_w;
     PPM_IMG result;
 
-    unsigned char * l_equ;
-    int hist[256];
+    unsigned char * l_equ, * l_equ_w;
+    int hist[256], hist_w[256];
 
-    hsl_med = rgb2hsl(img_in);
-    l_equ = (unsigned char *)malloc(hsl_med.height*hsl_med.width*sizeof(unsigned char));
+    /*Inicio slices*/
+    int *slices = (int *)malloc(sizeof(int)*comm_size);
+    int *offsets = (int *)malloc(sizeof(int)*comm_size);
+    int total_size = img_in.w * img_in.h;
+    int rest = total_size % comm_size;
 
-// PROBABLEMENTE AQUI UN SCATTER
+    // https://gist.github.com/ehamberg/1263868/cae1d85dee821d45fb0cd58747aaf33370f3f1ed
+    for (int i=0; i<comm_size; i++){
+        slices[i] = total_size/comm_size;
+        if (rest > 0){
+            slices[i]++;
+            rest--;
+        }
+        offsets[i] = (total_size/comm_size)*i;
+    }
 
-	MPI_Scatter (l_equ, sizeof(l_equ)/aRepartir , MPI_UNSIGNED_CHAR , l_equ , sizeof(l_equ)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
+    if (rank == 0)
+        hsl_med = rgb2hsl(img_in);
 
+    hsl_med_w.l = (unsigned char *)malloc(slices[rank]*sizeof(unsigned char));
+    l_equ = (unsigned char *)malloc(total_size*sizeof(unsigned char));
+    l_equ_w = (unsigned char *)malloc(slices[rank]*sizeof(unsigned char));
 
-    histogram(hist, hsl_med.l, hsl_med.height * hsl_med.width, 256);
-    histogram_equalization(l_equ, hsl_med.l,hist,hsl_med.width*hsl_med.height, 256);
+    MPI_Scatterv(
+        hsl_med.l, slices, offsets, MPI_UNSIGNED_CHAR,
+        hsl_med_w.l, slices[rank], MPI_UNSIGNED_CHAR,
+        0, MPI_COMM_WORLD
+    );
 
-	MPI_Gather (l_equ, sizeof(l_equ)/aRepartir , MPI_UNSIGNED_CHAR , l_equ , sizeof(l_equ)/3 , MPI_UNSIGNED_CHAR , 0 , MPI_COMM_WORLD );
-// PROBABLEMENTE AQUI UN GATHER
-    free(hsl_med.l);
-    hsl_med.l = l_equ;
+    histogram(hist_w, hsl_med_w.l, slices[rank], 256);
+    MPI_Allreduce(hist_w, hist, 256, MPI_INT, MPI_SUM, MPI_COMM_WORLD);
+    histogram_equalization(l_equ_w, hsl_med_w.l, hist, slices[rank], total_size, 256);;
 
-    result = hsl2rgb(hsl_med);
-    free(hsl_med.h);
-    free(hsl_med.s);
-    free(hsl_med.l);
+    MPI_Gatherv(
+        l_equ_w, slices[rank], MPI_UNSIGNED_CHAR,
+        l_equ, slices, offsets, MPI_UNSIGNED_CHAR,
+        0, MPI_COMM_WORLD
+    );
+
+    if (rank == 0) {
+        free(hsl_med.l);
+        hsl_med.l = l_equ;
+
+        result = hsl2rgb(hsl_med);
+
+        free(hsl_med.h);
+        free(hsl_med.s);
+        //free(hsl_med.l); No se necesita porque como es referecia por puntero, se libera en free(l_equ)
+    }
+
+    free(l_equ);
+    free(l_equ_w);
+    free(slices);
+    free(offsets);
+
     return result;
 }
 
@@ -131,10 +230,9 @@ PPM_IMG contrast_enhancement_c_hsl(PPM_IMG img_in)
 //Output H, S in [0.0, 1.0] and L in [0, 255]
 HSL_IMG rgb2hsl(PPM_IMG img_in)
 {
-    // PROBABLEMENTE IMG_IN YA ESTÁ FRACCIONADA AQUÍ
     int i;
     float H, S, L;
-    HSL_IMG img_out;// = (HSL_IMG *)malloc(sizeof(HSL_IMG));
+    HSL_IMG img_out;
     img_out.width  = img_in.w;
     img_out.height = img_in.h;
     img_out.h = (float *)malloc(img_in.w * img_in.h * sizeof(float));
@@ -189,7 +287,6 @@ HSL_IMG rgb2hsl(PPM_IMG img_in)
         img_out.s[i] = S;
         img_out.l[i] = (unsigned char)(L*255);
     }
-    // PROBABLEMENTE DONDE SE LLAMA ESTA FUNCIÓN LUEGO HAYA QUE HACER UN GATHER
     return img_out;
 }
 
@@ -207,7 +304,6 @@ float Hue_2_RGB( float v1, float v2, float vH )             //Function Hue_2_RGB
 //Output R,G,B in [0, 255]
 PPM_IMG hsl2rgb(HSL_IMG img_in)
 {
-    // PROBABLEMENTE IMG_IN YA ESTÁ FRACCIONADA AQUÍ
     int i;
     PPM_IMG result;
 
@@ -254,7 +350,6 @@ PPM_IMG hsl2rgb(HSL_IMG img_in)
 //Convert RGB to YUV, all components in [0, 255]
 YUV_IMG rgb2yuv(PPM_IMG img_in)
 {
-    // PROBABLEMENTE IMG_IN YA ESTÁ FRACCIONADA AQUÍ
     YUV_IMG img_out;
     int i;//, j;
     unsigned char r, g, b;
@@ -279,7 +374,6 @@ YUV_IMG rgb2yuv(PPM_IMG img_in)
         img_out.img_u[i] = cb;
         img_out.img_v[i] = cr;
     }
-    // PROBABLEMENTE UN GATHER DONDE SE LLAMA
     return img_out;
 }
 
@@ -296,7 +390,6 @@ unsigned char clip_rgb(int x)
 //Convert YUV to RGB, all components in [0, 255]
 PPM_IMG yuv2rgb(YUV_IMG img_in)
 {
-    // PROBABLEMENTE RECIBE YA UN FRAGMENTO
     PPM_IMG img_out;
     int i;
     int  rt,gt,bt;
@@ -321,6 +414,5 @@ PPM_IMG yuv2rgb(YUV_IMG img_in)
         img_out.img_g[i] = clip_rgb(gt);
         img_out.img_b[i] = clip_rgb(bt);
     }
-    // PROBABLEMENTE UN GATHER DONDE SE LLAMA
     return img_out;
 }

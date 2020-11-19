@@ -42,7 +42,7 @@ void histogram_equalization(unsigned char * img_out, unsigned char * img_in,
     }
 
     /* Get the result image */
-    #pragma omp parallel for simd 
+    #pragma omp parallel for simd
     for(i = 0; i < img_size; i ++){
         if(lut[img_in[i]] > 255){
             img_out[i] = 255;
@@ -51,6 +51,8 @@ void histogram_equalization(unsigned char * img_out, unsigned char * img_in,
             img_out[i] = (unsigned char)lut[img_in[i]];
         }
     }
+
+    free(lut);
 }
 
 

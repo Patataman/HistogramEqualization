@@ -342,3 +342,4 @@ TSWLatexianTemp*
 venv
 *.pdf
 **/contrast
+.vscode
