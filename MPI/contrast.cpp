@@ -10,20 +10,23 @@ void run_cpu_gray_test(PGM_IMG img_in);
 
 int main(int argc, char* argv[])
 {
-    int my_rank;
+    int rank;
     MPI_Init(&argc, &argv);
-    MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
     PGM_IMG img_ibuf_g;
     PPM_IMG img_ibuf_c;
 
-    printf("Running contrast enhancement for gray-scale images.\n");
+    if (rank == 0)
+        printf("Running contrast enhancement for gray-scale images.\n");
     img_ibuf_g = read_pgm("in.pgm");
     run_cpu_gray_test(img_ibuf_g);
     free_pgm(img_ibuf_g);
 
     MPI_Barrier(MPI_COMM_WORLD);
 
-    printf("Running contrast enhancement for color images.\n");
+    if (rank == 0)
+        printf("Running contrast enhancement for color images.\n");
     img_ibuf_c = read_ppm("in.ppm");
     run_cpu_color_test(img_ibuf_c);
     free_ppm(img_ibuf_c);
@@ -40,38 +43,43 @@ void run_cpu_color_test(PPM_IMG img_in)
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     double start = MPI_Wtime();
-    printf("Starting CPU processing...\n");
-    img_obuf_hsl = contrast_enhancement_c_hsl(img_in);
-    printf("HSL processing time: %f (ms)\n", MPI_Wtime()-start /* TIMER */ );
-
     if (rank == 0)
+        printf("Starting CPU processing...\n");
+    img_obuf_hsl = contrast_enhancement_c_hsl(img_in);
+    if (rank == 0) {
+        printf("HSL processing time: %f (ms)\n", MPI_Wtime()-start /* TIMER */ );
         write_ppm(img_obuf_hsl, "out_hsl.ppm");
+    }
 
     start = MPI_Wtime();
     img_obuf_yuv = contrast_enhancement_c_yuv(img_in);
-    printf("YUV processing time: %f (ms)\n", MPI_Wtime()-start /* TIMER */);
-
-    if (rank == 0)
+    if (rank == 0) {
+        printf("YUV processing time: %f (ms)\n", MPI_Wtime()-start /* TIMER */);
         write_ppm(img_obuf_yuv, "out_yuv.ppm");
+    }
 
-    free_ppm(img_obuf_hsl);
-    free_ppm(img_obuf_yuv);
+    if (rank == 0) {
+        // SOLO EL 0 TIENE ESTO INICIALIZADO
+        free_ppm(img_obuf_hsl);
+        free_ppm(img_obuf_yuv);
+    }
 }
 
 
 void run_cpu_gray_test(PGM_IMG img_in)
 {
     PGM_IMG img_obuf;
-
-    double start = MPI_Wtime();
-    printf("Starting CPU processing...\n");
-    img_obuf = contrast_enhancement_g(img_in);
-    printf("Processing time: %f (ms)\n", MPI_Wtime()-start /* TIMER */ );
-
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    double start = MPI_Wtime();
     if (rank == 0)
+        printf("Starting CPU processing...\n");
+    img_obuf = contrast_enhancement_g(img_in);
+    if (rank == 0) {
+        printf("Processing time: %f (ms)\n", MPI_Wtime()-start /* TIMER */ );
         write_pgm(img_obuf, "out.pgm");
+    }
 
     free_pgm(img_obuf);
 }
