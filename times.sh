@@ -24,6 +24,21 @@ if [ ! -d times ]; then
   mkdir times
 fi
 
+if [ $1 == "Original" ]; then
+    mkdir -p times/1
+
+    for ((i = 0; i < $2; i++))
+    do
+      ./contrast >> times/1/output.txt
+    done
+
+    cat times/1/output.txt | grep Processing > times/1/grey_processing.txt
+    cat times/1/output.txt | grep Gris > times/1/grey_time.txt
+    cat times/1/output.txt | grep HSL > times/1/hsl_processing.txt
+    cat times/1/output.txt | grep YUV > times/1/yuv_processing.txt
+    cat times/1/output.txt | grep Color > times/1/color_time.txt
+fi
+
 
 if [ $1 == "OpenMP" ]; then
   for ((j = 1; j <= 16; j++))
@@ -71,14 +86,14 @@ if [ $1 == "Combinado" ]; then
   for ((i = 2; i<= 4; i++))
   do
     echo "MPI Processes $i"
-    for ((j = 1; j <= 16; j++))
+    for ((j = 1; j <= 8; j++))
     do
       echo "OpenMP Threads $j"
       export OMP_NUM_THREADS=$j
 
       mkdir -p times/$i-$j
 
-      for ((i = 0; i < $2; i++))
+      for ((w = 0; w < $2; w++))
       do
         mpirun -np $j contrast >> times/$i-$j/output.txt
       done

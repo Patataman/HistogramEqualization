@@ -1,3 +1,3 @@
-pdflatex memoria.tex
+pdflatex --shell-escape memoria.tex
 biber memoria.bcf
-pdflatex memoria.tex
+pdflatex --shell-escape memoria.tex
