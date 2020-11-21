@@ -52,26 +52,37 @@ if args.type in ["speed"]:
         for l in original_time_color.readlines()
     ]).mean()
 
+    amd_fig = go.Figure()
+    gstv_fig = go.Figure()
+
+    max_iter = 17
+    amd_teorico = [1/((1 - 0.32638) + 0.32638/n) for n in range(1, max_iter)]
+    gstv_teorico = [n - (1 - 0.32638)*(n-1) for n in range(1, max_iter)]
+
+    scatter_amd = go.Scatter(
+        x=[x for x in range(1, max_iter)],
+        y=amd_teorico,
+        text=[round(1/((1 - 0.32638) + 0.32638/n), 2) for n in range(1, max_iter)],
+        textposition="top center",
+        mode='lines+markers+text',
+        name='Perfect Speed up'
+    )
+    scatter_gstv = go.Scatter(
+        x=[x for x in range(1, max_iter)],
+        y=gstv_teorico,
+        text=[round(i,2) for i in gstv_teorico],
+        textposition="top center",
+        mode='lines+markers+text',
+        name='Perfect Speed up'
+    )
+
+    # Teórico
+    amd_fig.add_trace(scatter_amd)
+    gstv_fig.add_trace(scatter_gstv)
+
     for f in folder_names:
         if f.parent.stem == "Original":
             continue
-
-        amd_fig = go.Figure()
-
-        max_iter = 9
-        amd_teorico = [1/((1 - 0.32638) + 0.32638/n) for n in range(1, max_iter)]
-
-        # Teórico
-        amd_fig.add_trace(
-            go.Scatter(
-                x=[x for x in range(1, max_iter)],
-                y=amd_teorico,
-                text=[round(1/((1 - 0.32638) + 0.32638/n), 2) for n in range(1, max_iter)],
-                textposition="top center",
-                mode='lines+markers+text',
-                name='Perfect Speed up'
-            )
-        )
 
         if f.parent.stem == "Combinado":
             # Tiene que calcular N gráficas (por carpeta) con Y (subcarpetas) en el eje X
@@ -91,14 +102,16 @@ if args.type in ["speed"]:
                         ]).mean()
                     )
 
-                amd_fig.add_trace(go.Scatter(
+                scatter = go.Scatter(
                     x=[i for i in range(1, max_iter)],
                     y=(np.asarray(original_mean)/np.asarray(comb_means)).tolist(),
                     text=[round(i,2) for i in (np.asarray(original_mean)/np.asarray(comb_means)).tolist()],
                     textposition="top center",
                     mode='lines+markers+text',
-                    name='MPI N={} I/O'.format(n.stem))
+                    name='MPI N={} I/O'.format(n.stem)
                 )
+                amd_fig.add_trace(scatter)
+                gstv_fig.add_trace(scatter)
 
                 fake_comb_means = []
                 for it in sorted([it for it in n.iterdir()]):
@@ -119,15 +132,16 @@ if args.type in ["speed"]:
                         ]).mean()
                     )
 
-                amd_fig.add_trace(go.Scatter(
+                scatter = go.Scatter(
                     x=[i for i in range(1, max_iter)],
                     y=(np.asarray(fake_mean)/np.asarray(fake_comb_means)).tolist(),
                     text=[round(i,2) for i in (np.asarray(fake_mean)/np.asarray(fake_comb_means)).tolist()],
                     textposition="top center",
                     mode='lines+markers+text',
-                    name='MPI N={} NO I/O'.format(n.stem))
-
+                    name='MPI N={} NO I/O'.format(n.stem)
                 )
+                amd_fig.add_trace(scatter)
+                gstv_fig.add_trace(scatter)
 
         amd_fig.update_layout(
             title={
@@ -144,6 +158,22 @@ if args.type in ["speed"]:
         amd_fig.show()
 
         amd_fig.write_image("amdalh_comb_todo.svg")
+
+        gstv_fig.update_layout(
+            title={
+                'text': "Gustafson's Law",
+                'y':0.9,
+                'x':0.5,
+                'xanchor': 'center',
+                'yanchor': 'top'
+            },
+            xaxis_title="Num processors",
+            yaxis_title="Speed up",
+        )
+        gstv_fig.update_xaxes(type='category')
+        gstv_fig.show()
+
+        gstv_fig.write_image("gustafson_comb_todo.svg")
 
 
 if args.type in ["color", "todo"]:

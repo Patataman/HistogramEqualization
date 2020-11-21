@@ -297,14 +297,17 @@ De esta forma, en el código original tenemos 288 líneas de código, de las cua
 94 como parelizables, dándo lugar a una $P = 0.32638$.
 
 \begin{figure}[H]
-    \makebox[\textwidth][c]{\includegraphics[width=14cm]{amdahl.png}}
-    \caption{Ley de Amdahl con distinto N}
+    \makebox[\textwidth][c]{
+        \includesvg[width=15cm]{comb/amdalh_teorico.svg}
+    }
+    \caption{Speed ups teóricos}
     \label{fig:ley_amdahl}
 \end{figure}
 
-Como se puede observar el \textit{speed up} se empieza a detener a partir de los 8 procesadores, ya que
-de un \textit{speed up} de 1.4 pasamos a 1.44 con 16 procesadores, por lo que no tiene mucho sentido
+Como se puede observar, con Amdahl el \textit{speed up} se empieza a detener a partir de los 8 procesadores,
+ya que de un \textit{speed up} de 1.4 pasamos a 1.44 con 16 procesadores, por lo que no tiene mucho sentido
 aumentar el número de procesadores ya que la ganancia sería mínima.
+
 
 \subsubsection{Ley de Gustafson}
 \label{sec:Gustafson}
@@ -312,6 +315,21 @@ aumentar el número de procesadores ya que la ganancia sería mínima.
 \[ S = P - \alpha \cdot (P - 1)\]
 
 Siendo P el número de procesadores y $\alpha$ la parte de código no paralelizable.
+
+\begin{figure}[H]
+    \makebox[\textwidth][c]{
+        \includesvg[width=15cm]{comb/gustafson_teorico.svg}
+    }
+    \caption{Speed ups teóricos}
+    \label{fig:ley_amdahl}
+\end{figure}
+
+En cambio, si utilizásemos Gustafson, al ser dependiente del tamaño de los datos de entrada, el
+\textit{speed up} no se detiene. No obstante, dado que este problema depende completamente del tamaño
+de la imagen, es más conveniente utilizar este \textit{speed up} para realizar estimaciones y comparar
+mejoras. Suponiendo que para las pruebas del código paralelo se pudiese ejecutar en todas estas posibles
+configuraciones, se debería de ver una aumento constante del speed up (si el tamaño de la imagen aumenta
+también).
 
 
 \chapter{Análisis y experimentación}
@@ -462,7 +480,6 @@ sin sobrecargarlos se puede apreciar cómo se alcanza el máximo rendimiento.
 \begin{figure}[H]
     \makebox[\textwidth][c]{
         \includesvg[width=15cm]{comb/comb_grey_total.svg}
-        % \includegraphics[width=14cm]{omp/omp_hilos_svg/omp_grey.svg}
     }
     \caption{Grises. Tiempos (con I/O) Secuencial vs MPI+OpenMP}
     \label{fig:tiempos_io_gris}
@@ -480,7 +497,6 @@ trabajar sobre la mitad de la imagen.
 \begin{figure}[H]
 	\makebox[\textwidth][c]{
         \includesvg[width=15cm]{comb/comb_color_total.svg}
-        %\includegraphics[width=14cm]{omp/omp_hilos_svg/omp_color_total.svg}
     }
     \caption{Color. Tiempos paralelos (con I/O) Secuencial vs MPI+OpenMP.}
     \label{fig:color_tiempos}
@@ -501,7 +517,6 @@ Este mismo comportamiento se puede apreciar en el procesamiento de HSL y YUV.
 \begin{figure}[H]
 	\makebox[\textwidth][c]{
         \includesvg[width=15cm]{comb/comb_hsl_proc.svg}
-        % \includegraphics[width=14cm]{omp/omp_hilos_svg/omp_hsl_proc.svg}
     }
     \caption{HSL. Tiempos paralelos (sin I/O) Secuencial vs MPI+OpenMP.}
     \label{fig:hsl_tiempos}
@@ -510,7 +525,6 @@ Este mismo comportamiento se puede apreciar en el procesamiento de HSL y YUV.
 \begin{figure}[H]
 	\makebox[\textwidth][c]{
         \includesvg[width=15cm]{comb/comb_yuv_proc.svg}
-        % \includegraphics[width=14cm]{omp/omp_hilos_svg/omp_yuv_proc.svg}
     }
     \caption{YUV. Tiempos paralelos (sin I/O) Secuencial vs MPI+OpenMP.}
     \label{fig:yuv_tiempos}
@@ -521,7 +535,6 @@ Estos tiempos se transforman en los siguientes speedups:
 \begin{figure}[H]
 	\makebox[\textwidth][c]{
         \includesvg[width=15cm]{comb/amdalh_comb_todo.svg}
-        % \includegraphics[width=14cm]{omp/omp_hilos_svg/amdalh_omp_todo.svg}
     }
 	\caption{Speedup MPI+OPenMP con y sin I/O frente a la Ley de Amdahl.}
     \label{fig:comparacion_speedup}
@@ -529,6 +542,15 @@ Estos tiempos se transforman en los siguientes speedups:
 
 Como se puede ver lo que más retrasa a la hora de la ejecución es el tiempo de entrada y salida, siendo en estos casos cuando se consigue obtener un \textit{speed up} super lineal. No obstante si se introduce estos procesos de lectura y escritura el speedup empeora considerablemente, y por tanto, siendo más realista con lo que se puede esperar a la hora de paralelizar código.
 
+\begin{figure}[H]
+	\makebox[\textwidth][c]{
+        \includesvg[width=15cm]{comb/gustafson_comb_todo.svg}
+    }
+	\caption{Speedup MPI+OPenMP con y sin I/O frente a la Ley de Gustafson.}
+    \label{fig:comparacion_speedup}
+\end{figure}
+
+Como se puede apreciar, ocurre el mismo comportamiento que en la Ley de Amdahl y por los mismos motivos.
 
 \chapter{Conclusiones}
 
