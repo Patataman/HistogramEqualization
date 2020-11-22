@@ -352,7 +352,7 @@ a orientar a bucles e iteraciones mientras que con MPI se va a reducir la carga 
 cada hilo dividiendo la imagen de entrada en fragmentos más pequeños.
 
 Para identificar qué secciones de código son las más costosas se ha ejecutado callgrind y visualizado sus
-resultados con Kcachegrind.
+resultados con Kcachegrind. \textbf{REFERENCIA CARLOS POFAVO}
 
 \begin{figure}[H]
     \makebox[\textwidth][c]{\includegraphics[width=12cm]{kcachegrind.png}}
@@ -369,7 +369,8 @@ se gasta en funciones relacionadas con la equalización de una imagen en color (
 
 \subsection{Asignación}
 
-A través de las funciones identificadas en el paso anterior mediante cachegrind y Kcachegrind se puede analizar porqué son las más costosas de toda la aplicación.
+A través de las funciones identificadas en el paso anterior mediante cachegrind y Kcachegrind se puede
+analizar porqué son las más costosas de toda la aplicación.
 
 Esto se debe a que son funciones que iteran sobre todos los píxeles de la imagen, por lo tanto, siguiendo el
 planteamiento inicial de fragmentar la imagen en trozos más pequeños y paralelizar estos bucles mediante
@@ -378,15 +379,29 @@ OpenMP el tiempo final debería reducirse considerablemente.
 A excepción de \texttt{histogram\_equalization}, que está formado de dos bucles, y uno tiene dependencias
 con sus iteraciones previas, el resto de bucles carecen de este tipo de dependencias.
 
+El código no parece excesivamente dependiente del tamaño del grado, dado que casi todo es independiente de
+lo que pueda ocurrir en los otros fragmentos en los se decide dividir la imagen original, por lo tanto un
+grano más fino que grueso puede ayudar alcanzar un mayor \textit{speed up}
 
 \subsection{Orquestación}
 
 En esta sección se plantea la forma de comunicar los datos entre los distintos procesos e hilos que se van a generar.
+
 Sin embargo, en el entorno que se dispone para realizar la práctica no es un aspecto tan configurable como podría ser,
 dado que todas las ejecuciones se realizan sobre una misma máquina, por lo tanto no existe tiempo de red, y otras
-variables como localidad de datos no hay que tenerlo en cuenta, ya que todos los datos son locales.
+variables como localidad de datos no hay que tenerse en cuenta, ya que todos los datos son locales.
 
-% TODO, NO SE ME OCURRE QUÉ MÁS DECIR
+En cuanto a la comunicación y sincronización entre los distintos procesos e hilos que se puedan crear, solamente existen
+cuatro momentos en los que tener cuidado, dado que dependen de toda la imagen, y no de fragmentos de la misma:
+
+\begin{itemize}
+  \item Lectura de la imagen: Dado que solo 1 proceso debe leer, y comunicárselo al resto.
+  \item Escritura de la imagen: Para evitar conflictos en disco, 1 único proceso debería recuperar toda la imagen y
+      escribirla en disco.
+  \item Cálculo del histograma: El histograma debe ser de toda la imagen, si no la equalización estará mal.
+  \item Equalizar la imagen: Un paso previo antes de equalizar la imagen consiste en calcular una tabla de valores
+      que depende del valor mínimo presente en la imagen.
+\end{itemize}
 
 
 \subsection{Reparto}
@@ -540,7 +555,10 @@ Estos tiempos se transforman en los siguientes speedups:
     \label{fig:comparacion_speedup}
 \end{figure}
 
-Como se puede ver lo que más retrasa a la hora de la ejecución es el tiempo de entrada y salida, siendo en estos casos cuando se consigue obtener un \textit{speed up} super lineal. No obstante si se introduce estos procesos de lectura y escritura el speedup empeora considerablemente, y por tanto, siendo más realista con lo que se puede esperar a la hora de paralelizar código.
+Como se puede ver lo que más retrasa a la hora de la ejecución es el tiempo de entrada y salida,
+siendo en estos casos cuando se consigue obtener un \textit{speed up} super lineal. No obstante,
+si se introducen estos procesos de lectura y escritura, el speedup empeora considerablemente y, por
+tanto, obteniendo un resultado más realista con lo que se puede esperar a la hora de paralelizar código.
 
 \begin{figure}[H]
 	\makebox[\textwidth][c]{
@@ -550,11 +568,23 @@ Como se puede ver lo que más retrasa a la hora de la ejecución es el tiempo de
     \label{fig:comparacion_speedup}
 \end{figure}
 
-Como se puede apreciar, ocurre el mismo comportamiento que en la Ley de Amdahl y por los mismos motivos.
+Como se puede apreciar, ocurre el mismo comportamiento que en la Ley de Amdahl y exáctamente por
+los mismos motivos.
 
 \chapter{Conclusiones}
 
-Buah colega, hemos aprendido tope mazo
+La implementación de soluciones de computación distribuida mediante MPI es una forma relativamente sencilla
+de repartir datos a lo largo de varias máquinas sin mucha complicación, sin embargo las modificaciones y aspectos
+a tener en cuenta a la hora de adaptar programas secuenciales hace que sea un proceso delicado.
+
+Por otro lado, OpenMP es muchísimo más sencillo de utilizar y nos permite introducir un gran nivel de
+paralelismo sin ningún problema, ni apenas modificaciones en el código original. Sin embargo, a diferencia
+de MPI, es mucho más complicado paralelizar el reparto de datos cuando no se trabaja con tipos básicos,
+por ejemplo en el caso que nos atañe, dividir un array en trozos equitativos y repartirlos, operar sobre
+ellos y luego recomponerlo.
+
+Cada estándar tiene sus pros y sus contras, y es importante conocer de antemano el entorno de ejecución de
+nuestro programa para poder aprovechar el máximo de cada uno de ellos.
 
 %----------
 %	BIBLIOGRAFÍA
