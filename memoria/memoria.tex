@@ -270,8 +270,8 @@ en la \autoref{fig:hist_eq}
 
 Para calcular estos histogramas se debe recorrer la imagen multiples veces, tanto para
 calcular los valores iniciales como para establecer los valores finales, por lo tanto hemos orientado
-nuestros esfuerzos con OpenMP \parencite{timlewis_openmp_nodate} en optimizar estas iteraciones sobre
-la imagen, mientras que con MPI \parencite{noauthor_open_nodate} nos hemos centrado en el reparto
+nuestros esfuerzos con OpenMP \parencite{openmp_openmp_2004} en optimizar estas iteraciones sobre
+la imagen, mientras que con MPI \parencite{spi-inc_open_2004} nos hemos centrado en el reparto
 de fragmentos de la imagen entre distintos procesos para reducir el número de iteraciones.
 
 
@@ -352,7 +352,7 @@ a orientar a bucles e iteraciones mientras que con MPI se va a reducir la carga 
 cada hilo dividiendo la imagen de entrada en fragmentos más pequeños.
 
 Para identificar qué secciones de código son las más costosas se ha ejecutado callgrind y visualizado sus
-resultados con Kcachegrind. \textbf{REFERENCIA CARLOS POFAVO}
+resultados con Kcachegrind \parencite{weidendorfer_kcachegrind_2013}. 
 
 \begin{figure}[H]
     \makebox[\textwidth][c]{\includegraphics[width=12cm]{kcachegrind.png}}

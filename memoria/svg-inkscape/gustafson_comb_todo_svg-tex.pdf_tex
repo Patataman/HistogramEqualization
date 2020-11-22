@@ -1,0 +1,142 @@
+%% Creator: Inkscape 1.0.1 (3bc2e813f5, 2020-09-07), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'gustafson_comb_todo_svg-tex.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{525bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.71428571)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{gustafson_comb_todo_svg-tex.pdf}}%
+    \put(0.1525,0.1736857){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}1.0\end{tabular}}}}%
+    \put(0.23545714,0.22805714){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}1.33\end{tabular}}}}%
+    \put(0.31841428,0.28242857){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}1.65\end{tabular}}}}%
+    \put(0.40137144,0.33679999){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}1.98\end{tabular}}}}%
+    \put(0.48434287,0.39117144){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}2.31\end{tabular}}}}%
+    \put(0.56729998,0.44554285){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}2.63\end{tabular}}}}%
+    \put(0.65025713,0.49991428){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}2.96\end{tabular}}}}%
+    \put(0.73321429,0.55428571){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}3.28\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{gustafson_comb_todo_svg-tex.pdf}}%
+    \put(0.1525,0.16755716){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}0.96\end{tabular}}}}%
+    \put(0.23545714,0.17404284){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}1.0\end{tabular}}}}%
+    \put(0.31841428,0.20758571){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}1.2\end{tabular}}}}%
+    \put(0.40137144,0.21217141){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}1.23\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{gustafson_comb_todo_svg-tex.pdf}}%
+    \put(0.1525,0.15357143){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}0.88\end{tabular}}}}%
+    \put(0.23545714,0.18865714){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}1.09\end{tabular}}}}%
+    \put(0.31841428,0.31941428){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}1.87\end{tabular}}}}%
+    \put(0.40137144,0.3489857){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}2.05\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{gustafson_comb_todo_svg-tex.pdf}}%
+    \put(0.1525,0.17622855){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}1.02\end{tabular}}}}%
+    \put(0.23545714,0.18681427){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}1.08\end{tabular}}}}%
+    \put(0.31841428,0.21677141){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}1.26\end{tabular}}}}%
+    \put(0.40137144,0.22090001){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}1.28\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{gustafson_comb_todo_svg-tex.pdf}}%
+    \put(0.1525,0.15572859){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}0.89\end{tabular}}}}%
+    \put(0.23545714,0.18965716){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}1.1\end{tabular}}}}%
+    \put(0.31841428,0.3135143){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}1.84\end{tabular}}}}%
+    \put(0.40137144,0.35987143){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}2.12\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{gustafson_comb_todo_svg-tex.pdf}}%
+    \put(0.1525,0.17241429){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}0.99\end{tabular}}}}%
+    \put(0.23545714,0.18985713){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}1.1\end{tabular}}}}%
+    \put(0.31841428,0.2132857){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}1.24\end{tabular}}}}%
+    \put(0.40137144,0.21884286){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}1.27\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{gustafson_comb_todo_svg-tex.pdf}}%
+    \put(0.1525,0.15472857){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}0.89\end{tabular}}}}%
+    \put(0.23545714,0.1904143){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}1.1\end{tabular}}}}%
+    \put(0.31841428,0.3135){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}1.84\end{tabular}}}}%
+    \put(0.40137144,0.35811428){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}2.11\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=8]{gustafson_comb_todo_svg-tex.pdf}}%
+    \put(0.1525,0.09571429){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}1\end{tabular}}}}%
+    \put(0.23545714,0.09571429){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}2\end{tabular}}}}%
+    \put(0.31841429,0.09571429){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}3\end{tabular}}}}%
+    \put(0.40137143,0.09571429){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}4\end{tabular}}}}%
+    \put(0.48434286,0.09571429){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}5\end{tabular}}}}%
+    \put(0.5673,0.09571429){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}6\end{tabular}}}}%
+    \put(0.65025714,0.09571429){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}7\end{tabular}}}}%
+    \put(0.73321429,0.09571429){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}8\end{tabular}}}}%
+    \put(0.11285714,0.15661429){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}1\end{tabular}}}}%
+    \put(0.11285714,0.23991429){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}1.5\end{tabular}}}}%
+    \put(0.11285714,0.3232){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}2\end{tabular}}}}%
+    \put(0.11285714,0.4065){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}2.5\end{tabular}}}}%
+    \put(0.11285714,0.4898){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}3\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=9]{gustafson_comb_todo_svg-tex.pdf}}%
+    \put(0.84171429,0.54402857){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Perfect Speed up\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=10]{gustafson_comb_todo_svg-tex.pdf}}%
+    \put(0.81314286,0.56107143){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Aa\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=11]{gustafson_comb_todo_svg-tex.pdf}}%
+    \put(0.84171429,0.51688571){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}MPI N=4 I/O\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=12]{gustafson_comb_todo_svg-tex.pdf}}%
+    \put(0.81314286,0.53392857){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Aa\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=13]{gustafson_comb_todo_svg-tex.pdf}}%
+    \put(0.84171429,0.48974286){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}MPI N=4 NO I/O\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=14]{gustafson_comb_todo_svg-tex.pdf}}%
+    \put(0.81314286,0.50678571){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Aa\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=15]{gustafson_comb_todo_svg-tex.pdf}}%
+    \put(0.84171429,0.4626){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}MPI N=2 I/O\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=16]{gustafson_comb_todo_svg-tex.pdf}}%
+    \put(0.81314286,0.47964286){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Aa\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=17]{gustafson_comb_todo_svg-tex.pdf}}%
+    \put(0.84171429,0.43545714){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}MPI N=2 NO I/O\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=18]{gustafson_comb_todo_svg-tex.pdf}}%
+    \put(0.81314286,0.4525){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Aa\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=19]{gustafson_comb_todo_svg-tex.pdf}}%
+    \put(0.84171429,0.40831429){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}MPI N=3 I/O\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=20]{gustafson_comb_todo_svg-tex.pdf}}%
+    \put(0.81314286,0.42535714){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Aa\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=21]{gustafson_comb_todo_svg-tex.pdf}}%
+    \put(0.84171429,0.38117143){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}MPI N=3 NO I/O\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=22]{gustafson_comb_todo_svg-tex.pdf}}%
+    \put(0.81314286,0.39821429){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Aa\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=23]{gustafson_comb_todo_svg-tex.pdf}}%
+    \put(0.5,0.64285714){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Gustafson's Law\end{tabular}}}}%
+    \put(0.44285714,0.05600002){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Num processors\end{tabular}}}}%
+    \put(0.05358929,0.34285714){\color[rgb]{0.16470588,0.24705882,0.37254902}\rotatebox{90}{\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Speed up\end{tabular}}}}}%
+  \end{picture}%
+\endgroup%
