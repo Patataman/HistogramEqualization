@@ -19,11 +19,148 @@ colors = [
 
 parser = argparse.ArgumentParser(description='Draw grafiquitas.')
 parser.add_argument('--folder', nargs='+', required=True, type=str, help='Nombre de la carpeta [OpenMP, Original, MPI, Combinado]')
-parser.add_argument('--type', required=True, type=str, help='Tipo de gráfica [color, gris, todo, speed]')
+parser.add_argument('--type', required=True, type=str, help='Tipo de gráfica [color, gris, todo, speed, msg]')
 
 args = parser.parse_args()
 
 folder_names = [Path("{}/times".format(folder)) for folder in args.folder]
+
+if args.type in ['msg']:
+    histo_grey = go.Figure()
+    histo_color = go.Figure()
+
+    # Histograma Original
+    org_cpu_grey = open("Original/times/1/grey_processing.txt")
+    org_cpu_hsl = open("Original/times/1/hsl_processing.txt")
+    org_cpu_yuv = open("Original/times/1/yuv_processing.txt")
+    sec_grey_cpu = np.asarray([
+        float(l.split(" ")[-2])
+        for l in org_cpu_grey.readlines()
+    ]).mean()
+
+    sec_color_cpu = np.asarray([
+        float(l.split(" ")[-2])
+        for l in org_cpu_hsl.readlines()
+    ]).mean() + np.asarray([
+        float(l.split(" ")[-2])
+        for l in org_cpu_yuv.readlines()
+    ]).mean()
+
+    org_time_grey = open("Original/times/1/grey_time.txt")
+    org_time_color = open("Original/times/1/color_time.txt")
+
+    sec_grey_mean = np.asarray([
+        float(l.split(" ")[-2])
+        for l in org_time_grey.readlines()
+    ]).mean()
+    sec_color_mean = np.asarray([
+        float(l.split(" ")[-2])
+        for l in org_time_color.readlines()
+    ]).mean()
+
+    sec_io_grey = sec_grey_mean - sec_grey_cpu
+    sec_io_color = sec_color_mean - sec_color_cpu
+
+    # Histograma paralelo
+    for f in folder_names:
+        if f.parent.stem == "Combinado":
+            par_time_grey =  open("Combinado/times/2-4/grey_time.txt")
+            par_time_color = open("Combinado/times/2-4/color_time.txt")
+            par_cpu_grey =   open("Combinado/times/2-4/grey_processing.txt")
+            par_cpu_hsl =    open("Combinado/times/2-4/hsl_processing.txt")
+            par_cpu_yuv =    open("Combinado/times/2-4/yuv_processing.txt")
+            par_time_msg_gris =   open("Combinado/times/2-4/msg_time_gris.txt")
+            par_time_msg_color =   open("Combinado/times/2-4/msg_time_color.txt")
+
+            par_grey_cpu = np.asarray([
+                float(l.split(" ")[-2])
+                for l in par_cpu_grey.readlines()
+            ]).mean()
+
+            par_color_cpu = np.asarray([
+                float(l.split(" ")[-2])
+                for l in par_cpu_hsl.readlines()
+            ]).mean() + np.asarray([
+                float(l.split(" ")[-2])
+                for l in par_cpu_yuv.readlines()
+            ]).mean()
+
+            par_grey_mean = np.asarray([
+                float(l.split(" ")[-2])
+                for l in par_time_grey.readlines()
+            ]).mean()
+            par_color_mean = np.asarray([
+                float(l.split(" ")[-2])
+                for l in par_time_color.readlines()
+            ]).mean()
+
+            par_io_grey = par_grey_mean - par_grey_cpu
+            par_io_color = par_color_mean - par_color_cpu
+
+            par_msg_gris = []
+            aux = []
+            for l in par_time_msg_gris.readlines():
+                aux.append(float(l.split(" ")[-2]))
+                if len(aux) % 4 == 0:
+                    # Hay 4 mensajes del gris
+                    par_msg_gris.append(np.asarray(aux).sum())
+                    del aux[:]
+            par_msg_gris_mean = np.asarray(par_msg_gris).mean()
+
+            par_msg_color = []
+            aux = []
+            for l in par_time_msg_color.readlines():
+                aux.append(float(l.split(" ")[-2]))
+                if len(aux) % 7 == 0:
+                    # Hay 7 mensajes del color
+                    par_msg_color.append(np.asarray(aux).sum())
+                    del aux[:]
+            par_msg_color_mean = np.asarray(par_msg_color).mean()
+
+    #################
+
+    x_types = ["sequential", "parallel"]
+    histo_grey = go.Figure(data=[
+        go.Bar(name='cpu', x=x_types, y=[sec_grey_cpu, par_grey_cpu],
+            text=[round(sec_grey_cpu,2), round(par_grey_cpu,2)], textposition='auto'),
+        go.Bar(name='msg', x=x_types, y=[0, par_msg_gris_mean],
+            text=[0,round(par_msg_gris_mean,2)], textposition='auto'),
+        go.Bar(name='io',  x=x_types, y=[sec_io_grey, par_io_grey],
+            text=[round(sec_io_grey,2), round(par_io_grey, 2)], textposition='auto'),
+    ])
+
+    histo_grey.update_xaxes(type='category')
+    histo_grey.update_layout(
+        barmode='stack',
+        title_text='Greyscale Total times', # title of plot
+        xaxis_title_text='Sequential vs Parallel', # xaxis label
+        yaxis_title_text='Time (s)', # yaxis label
+        bargap=0.2, # gap between bars of adjacent location coordinates
+        bargroupgap=0.1 # gap between bars of the same location coordinates
+    )
+    histo_grey.show()
+    histo_grey.write_image("hist_times_grey.svg")
+
+    histo_color = go.Figure(data=[
+        go.Bar(name='cpu', x=x_types, y=[sec_color_cpu, par_color_cpu],
+            text=[round(sec_color_cpu,2), round(par_color_cpu, 2)], textposition='auto'),
+        go.Bar(name='msg', x=x_types, y=[0, par_msg_color_mean],
+            text=[0, round(par_msg_color_mean, 2)], textposition='auto'),
+        go.Bar(name='io',  x=x_types, y=[sec_io_color, par_io_color],
+            text=[round(sec_io_color, 2), round(par_io_color, 2)], textposition='auto'),
+    ])
+
+    histo_color.update_xaxes(type='category')
+    histo_color.update_layout(
+        barmode='stack',
+        title_text='Color Total times', # title of plot
+        xaxis_title_text='Sequential vs Parallel', # xaxis label
+        yaxis_title_text='Time (s)', # yaxis label
+        bargap=0.2, # gap between bars of adjacent location coordinates
+        bargroupgap=0.1 # gap between bars of the same location coordinates
+    )
+    histo_color.show()
+    histo_color.write_image("hist_times_color.svg")
 
 if args.type in ["speed"]:
     # Coge los tiempos del original para poder comparar

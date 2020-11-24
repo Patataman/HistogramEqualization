@@ -14,6 +14,7 @@ int main(int argc, char* argv[])
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     double start;
+    float msg_start;
 
     PGM_IMG img_ibuf_g;
     PPM_IMG img_ibuf_c;
@@ -22,12 +23,18 @@ int main(int argc, char* argv[])
         printf("Running contrast enhancement for gray-scale images.\n");
         start = MPI_Wtime();
         img_ibuf_g = read_pgm("in.pgm");
+        msg_start = MPI_Wtime();
     }
     MPI_Bcast(&img_ibuf_g.w, 1, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Bcast(&img_ibuf_g.h, 1, MPI_INT, 0, MPI_COMM_WORLD);
+
     if (rank != 0)
         img_ibuf_g.img = (unsigned char *)malloc(img_ibuf_g.w*img_ibuf_g.h * sizeof(unsigned char));
+
     MPI_Bcast(img_ibuf_g.img, img_ibuf_g.w*img_ibuf_g.h, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
+
+    if (rank == 0)
+        printf("MSGGRIS %f \n",MPI_Wtime()-msg_start);
 
     run_cpu_gray_test(img_ibuf_g);
     free_pgm(img_ibuf_g);
@@ -37,6 +44,7 @@ int main(int argc, char* argv[])
         printf("Running contrast enhancement for color images.\n");
         start = MPI_Wtime();
         img_ibuf_c = read_ppm("in.ppm");
+        msg_start = MPI_Wtime();
     }
     MPI_Bcast(&img_ibuf_c.w, 1, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Bcast(&img_ibuf_c.h, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -48,6 +56,8 @@ int main(int argc, char* argv[])
     MPI_Bcast(img_ibuf_c.img_r, img_ibuf_c.w*img_ibuf_c.h, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
     MPI_Bcast(img_ibuf_c.img_g, img_ibuf_c.w*img_ibuf_c.h, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
     MPI_Bcast(img_ibuf_c.img_b, img_ibuf_c.w*img_ibuf_c.h, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
+    if (rank == 0)
+        printf("MSGCOLOR %f \n",MPI_Wtime()-msg_start);
 
     run_cpu_color_test(img_ibuf_c);
     free_ppm(img_ibuf_c);

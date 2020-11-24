@@ -266,7 +266,7 @@ imagen para aplanar su histograma de valores.
 
 De forma un poco más técnica, una equalización de histograma distribuye los valores de color en una imagen de
 forma que todos se encuentran presentes de forma equitativa dentro de la imagen, como se puede apreciar
-en la \autoref{fig:hist_eq}
+en la \ref{fig:hist_eq} \nameref{fig:hist_eq}
 
 Para calcular estos histogramas se debe recorrer la imagen multiples veces, tanto para
 calcular los valores iniciales como para establecer los valores finales, por lo tanto hemos orientado
@@ -312,6 +312,9 @@ aumentar el número de procesadores ya que la ganancia sería mínima.
 \subsubsection{Ley de Gustafson}
 \label{sec:Gustafson}
 
+A diferencia de en la Ley de Amdahl, en Gustafson se considera que al mismo tiempo que se aumenta el número
+de procesadores disponibles, también aumenta el tamaño del problema.
+
 \[ S = P - \alpha \cdot (P - 1)\]
 
 Siendo P el número de procesadores y $\alpha$ la parte de código no paralelizable.
@@ -325,10 +328,10 @@ Siendo P el número de procesadores y $\alpha$ la parte de código no paraleliza
 \end{figure}
 
 En cambio, si utilizásemos Gustafson, al ser dependiente del tamaño de los datos de entrada, el
-\textit{speed up} no se detiene. No obstante, dado que este problema depende completamente del tamaño
+\textit{speed up} no se detiene. Por lo tanto, dado que este problema depende completamente del tamaño
 de la imagen, es más conveniente utilizar este \textit{speed up} para realizar estimaciones y comparar
 mejoras. Suponiendo que para las pruebas del código paralelo se pudiese ejecutar en todas estas posibles
-configuraciones, se debería de ver una aumento constante del speed up (si el tamaño de la imagen aumenta
+configuraciones, se debería de ver una aumento constante del speed up (si el tamaño de la imagen aumentase
 también).
 
 
@@ -360,7 +363,7 @@ resultados con Kcachegrind \parencite{weidendorfer_kcachegrind_2013}.
     \label{fig:kcachegrind}
 \end{figure}
 
-En la figura \nameref{fig:kcachegrind} se muestran ordenados de mayor a menor coste las llamadas que se
+En la figura \ref{fig:kcachegrind} \nameref{fig:kcachegrind} se muestran ordenados de mayor a menor coste las llamadas que se
 realizan al ejecutar la versión secuencial del código y, como se puede apreciar, alrededor del 50\% del tiempo
 se gasta en funciones relacionadas con la equalización de una imagen en color (\texttt{hsl2rgb}, \texttt{rgb2hsl},
 \texttt{yuv2rgb}, \texttt{rgb2yuv}). También alrededor del 10\% del tiempo se gasta en la equalización como tal
@@ -545,7 +548,36 @@ Este mismo comportamiento se puede apreciar en el procesamiento de HSL y YUV.
     \label{fig:yuv_tiempos}
 \end{figure}
 
-Estos tiempos se transforman en los siguientes speedups:
+Observando los resultados obtenidos, se puede deducir que para la configuración actual, los mejores
+resultados se van a obtener usando 2 procesos de MPI y 4 hilos de OpenMP. Con esta configuración, se
+obtiene el siguiente histograma de tiempos en comparación con su versión secuencial.
+
+\begin{figure}[H]
+	\makebox[\textwidth][c]{
+        \includesvg[width=15cm]{comb/hist_times_grey.svg}
+    }
+    \caption{Histograma acumulado - Escala de grises - Secuencial vs Parallel.}
+    \label{fig:hist_times_grey}
+\end{figure}
+\begin{figure}[H]
+	\makebox[\textwidth][c]{
+        \includesvg[width=15cm]{comb/hist_times_color.svg}
+    }
+    \caption{Histograma acumulado - Color - Secuencial vs Parallel.}
+    \label{fig:hist_times_color}
+\end{figure}
+
+Donde se aprecia claramente que los tiempos de entrada y salida se mantienen constantes en ambas versiones,
+dado que no se ha paralelizado esa región del código. Los tiempos de CPU descienden considerablemente y
+aparece un tiempo que antes no existía en la versión secuencial, el tiempo de los pasos de mensajes de MPI.
+
+Este tiempo de paso de mensajes hace que la versión paralela para imágenes en escala de grises sea
+exáctamente igual a la versión original, dado que el tiempo de CPU se reduce a la mitad, pero el
+tiempo de los mensajes es igual al de la CPU, por lo tanto se mantiene igual. En cambio, para las
+imágenes a color el tiempo de mensajes es bastante inferior al tiempo de cómputo (que se reduce casi
+4 veces), por lo que el \textit{overhead} que añade MPI es despreciable.
+
+Los tiempos previamente obtenidos durante las pruebas se pueden transforman en los siguientes \textit{speed ups}:
 
 \begin{figure}[H]
 	\makebox[\textwidth][c]{
@@ -555,9 +587,11 @@ Estos tiempos se transforman en los siguientes speedups:
     \label{fig:comparacion_speedup}
 \end{figure}
 
-Como se puede ver lo que más retrasa a la hora de la ejecución es el tiempo de entrada y salida,
-siendo en estos casos cuando se consigue obtener un \textit{speed up} super lineal. No obstante,
-si se introducen estos procesos de lectura y escritura, el speedup empeora considerablemente y, por
+Como se pudo apreciar en las figuras \ref{fig:hist_times_grey} \nameref{fig:hist_times_grey} y
+\ref{fig:hist_times_color} \nameref{fig:hist_times_color}, lo que más retrasa la
+ejecución es el tiempo de entrada y salida, siendo los casos en los que se ignora para el tiempo total
+cuando se consigue obtener un \textit{speed up} super lineal. No obstante,
+si se introducen estos procesos de lectura y escritura, el \textit{speed up} empeora considerablemente y, por
 tanto, obteniendo un resultado más realista con lo que se puede esperar a la hora de paralelizar código.
 
 \begin{figure}[H]
