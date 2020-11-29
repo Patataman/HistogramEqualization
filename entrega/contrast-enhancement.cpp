@@ -7,6 +7,7 @@
 PGM_IMG contrast_enhancement_g(PGM_IMG img_in)
 {
     int comm_size, rank;
+    float msg_start;
     MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
@@ -35,21 +36,35 @@ PGM_IMG contrast_enhancement_g(PGM_IMG img_in)
 
     img_w.img = (unsigned char *)malloc(slices[rank] * sizeof(unsigned char));
 
+    if (rank == 0)
+        msg_start = MPI_Wtime();
     MPI_Scatterv(
         img_in.img, slices, offsets, MPI_UNSIGNED_CHAR,
         img_w.img, slices[rank], MPI_UNSIGNED_CHAR,
         0, MPI_COMM_WORLD
     );
+    if (rank == 0)
+        printf("MSGGRIS %f \n",MPI_Wtime()-msg_start);
 
     histogram(hist_w, img_w.img, slices[rank], 256);
+    if (rank == 0)
+        msg_start = MPI_Wtime();
     MPI_Allreduce(hist_w, hist, 256, MPI_INT, MPI_SUM, MPI_COMM_WORLD);
+    if (rank == 0)
+        printf("MSGGRIS %f \n",MPI_Wtime()-msg_start);
+
     histogram_equalization(img_w.img, img_w.img, hist, slices[rank], total_size, 256);
 
+    if (rank == 0)
+        msg_start = MPI_Wtime();
     MPI_Gatherv(
         img_w.img, slices[rank], MPI_UNSIGNED_CHAR,
         result.img, slices, offsets, MPI_UNSIGNED_CHAR,
         0, MPI_COMM_WORLD
     );
+    if (rank == 0)
+        printf("MSGGRIS %f \n",MPI_Wtime()-msg_start);
+
 
     free(img_w.img);
     free(slices);
@@ -86,6 +101,7 @@ PGM_IMG contrast_enhancement_g(PGM_IMG img_in)
 PPM_IMG contrast_enhancement_c_yuv(PPM_IMG img_in)
 {
     int comm_size, rank;
+    float msg_start;
     MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
@@ -120,21 +136,34 @@ PPM_IMG contrast_enhancement_c_yuv(PPM_IMG img_in)
     y_equ = (unsigned char *)malloc(total_size*sizeof(unsigned char));
     y_equ_w = (unsigned char *)malloc(slices[rank]*sizeof(unsigned char));
 
+    if (rank == 0)
+        msg_start = MPI_Wtime();
     MPI_Scatterv(
         yuv_med.img_y, slices, offsets, MPI_UNSIGNED_CHAR,
         yuv_med_w.img_y, slices[rank], MPI_UNSIGNED_CHAR,
         0, MPI_COMM_WORLD
     );
+    if (rank == 0)
+        printf("MSGCOLOR %f \n",MPI_Wtime()-msg_start);
 
     histogram(hist_w, yuv_med_w.img_y, slices[rank], 256);
+    if (rank == 0)
+        msg_start = MPI_Wtime();
     MPI_Allreduce(hist_w, hist, 256, MPI_INT, MPI_SUM, MPI_COMM_WORLD);
+    if (rank == 0)
+        printf("MSGCOLOR %f \n",MPI_Wtime()-msg_start);
+
     histogram_equalization(y_equ_w, yuv_med_w.img_y, hist, slices[rank], total_size, 256);
 
+    if (rank == 0)
+        msg_start = MPI_Wtime();
     MPI_Gatherv(
         y_equ_w, slices[rank], MPI_UNSIGNED_CHAR,
         y_equ, slices, offsets, MPI_UNSIGNED_CHAR,
         0, MPI_COMM_WORLD
     );
+    if (rank == 0)
+        printf("MSGCOLOR %f \n",MPI_Wtime()-msg_start);
 
     if (rank == 0) {
         free(yuv_med.img_y);
@@ -158,6 +187,7 @@ PPM_IMG contrast_enhancement_c_yuv(PPM_IMG img_in)
 PPM_IMG contrast_enhancement_c_hsl(PPM_IMG img_in)
 {
     int comm_size, rank;
+    float msg_start;
     MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
@@ -190,21 +220,34 @@ PPM_IMG contrast_enhancement_c_hsl(PPM_IMG img_in)
     l_equ = (unsigned char *)malloc(total_size*sizeof(unsigned char));
     l_equ_w = (unsigned char *)malloc(slices[rank]*sizeof(unsigned char));
 
+    if (rank == 0)
+        msg_start = MPI_Wtime();
     MPI_Scatterv(
         hsl_med.l, slices, offsets, MPI_UNSIGNED_CHAR,
         hsl_med_w.l, slices[rank], MPI_UNSIGNED_CHAR,
         0, MPI_COMM_WORLD
     );
+    if (rank == 0)
+        printf("MSGCOLOR %f \n",MPI_Wtime()-msg_start);
 
     histogram(hist_w, hsl_med_w.l, slices[rank], 256);
+    if (rank == 0)
+        msg_start = MPI_Wtime();
     MPI_Allreduce(hist_w, hist, 256, MPI_INT, MPI_SUM, MPI_COMM_WORLD);
+    if (rank == 0)
+        printf("MSGCOLOR %f \n",MPI_Wtime()-msg_start);
+
     histogram_equalization(l_equ_w, hsl_med_w.l, hist, slices[rank], total_size, 256);;
 
+    if (rank == 0)
+        msg_start = MPI_Wtime();
     MPI_Gatherv(
         l_equ_w, slices[rank], MPI_UNSIGNED_CHAR,
         l_equ, slices, offsets, MPI_UNSIGNED_CHAR,
         0, MPI_COMM_WORLD
     );
+    if (rank == 0)
+        printf("MSGCOLOR %f \n",MPI_Wtime()-msg_start);
 
     if (rank == 0) {
         free(hsl_med.l);

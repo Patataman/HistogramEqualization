@@ -64,13 +64,13 @@ if args.type in ['msg']:
     # Histograma paralelo
     for f in folder_names:
         if f.parent.stem == "Combinado":
-            par_time_grey =  open("Combinado/times/2-4/grey_time.txt")
-            par_time_color = open("Combinado/times/2-4/color_time.txt")
-            par_cpu_grey =   open("Combinado/times/2-4/grey_processing.txt")
-            par_cpu_hsl =    open("Combinado/times/2-4/hsl_processing.txt")
-            par_cpu_yuv =    open("Combinado/times/2-4/yuv_processing.txt")
-            par_time_msg_gris =   open("Combinado/times/2-4/msg_time_gris.txt")
-            par_time_msg_color =   open("Combinado/times/2-4/msg_time_color.txt")
+            par_time_grey =  open("Combinado/times/4/8/grey_time.txt")
+            par_time_color = open("Combinado/times/4/8/color_time.txt")
+            par_cpu_grey =   open("Combinado/times/4/8/grey_processing.txt")
+            par_cpu_hsl =    open("Combinado/times/4/8/hsl_processing.txt")
+            par_cpu_yuv =    open("Combinado/times/4/8/yuv_processing.txt")
+            par_time_msg_gris =   open("Combinado/times/4/8/msg_time_gris.txt")
+            par_time_msg_color =   open("Combinado/times/4/8/msg_time_color.txt")
 
             par_grey_cpu = np.asarray([
                 float(l.split(" ")[-2])
@@ -192,20 +192,20 @@ if args.type in ["speed"]:
     amd_fig = go.Figure()
     gstv_fig = go.Figure()
 
-    max_iter = 17
-    amd_teorico = [1/((1 - 0.32638) + 0.32638/n) for n in range(1, max_iter)]
-    gstv_teorico = [n - (1 - 0.32638)*(n-1) for n in range(1, max_iter)]
+    max_iter = 4
+    amd_teorico = [1/((1 - 0.32638) + 0.32638/(2**n)) for n in range(0, max_iter)]
+    gstv_teorico = [2**n - (1 - 0.32638)*((2**n)-1) for n in range(0, max_iter)]
 
     scatter_amd = go.Scatter(
-        x=[x for x in range(1, max_iter)],
+        x=[2**x for x in range(0, max_iter)],
         y=amd_teorico,
-        text=[round(1/((1 - 0.32638) + 0.32638/n), 2) for n in range(1, max_iter)],
+        text=[round(i,2) for i in amd_teorico],
         textposition="top center",
         mode='lines+markers+text',
         name='Perfect Speed up'
     )
     scatter_gstv = go.Scatter(
-        x=[x for x in range(1, max_iter)],
+        x=[2**x for x in range(0, max_iter)],
         y=gstv_teorico,
         text=[round(i,2) for i in gstv_teorico],
         textposition="top center",
@@ -240,15 +240,15 @@ if args.type in ["speed"]:
                     )
 
                 scatter = go.Scatter(
-                    x=[i for i in range(1, max_iter)],
+                    x=[2**i for i in range(0, max_iter)],
                     y=(np.asarray(original_mean)/np.asarray(comb_means)).tolist(),
                     text=[round(i,2) for i in (np.asarray(original_mean)/np.asarray(comb_means)).tolist()],
                     textposition="top center",
                     mode='lines+markers+text',
                     name='MPI N={} I/O'.format(n.stem)
                 )
-                amd_fig.add_trace(scatter)
-                gstv_fig.add_trace(scatter)
+                # amd_fig.add_trace(scatter)
+                # gstv_fig.add_trace(scatter)
 
                 fake_comb_means = []
                 for it in sorted([it for it in n.iterdir()]):
@@ -270,7 +270,7 @@ if args.type in ["speed"]:
                     )
 
                 scatter = go.Scatter(
-                    x=[i for i in range(1, max_iter)],
+                    x=[2**i for i in range(0, max_iter)],
                     y=(np.asarray(fake_mean)/np.asarray(fake_comb_means)).tolist(),
                     text=[round(i,2) for i in (np.asarray(fake_mean)/np.asarray(fake_comb_means)).tolist()],
                     textposition="top center",
@@ -282,7 +282,7 @@ if args.type in ["speed"]:
 
         amd_fig.update_layout(
             title={
-                'text': "Amdahl's Law",
+                'text': "Amdahl's Law without I/O",
                 'y':0.9,
                 'x':0.5,
                 'xanchor': 'center',
@@ -294,11 +294,11 @@ if args.type in ["speed"]:
         amd_fig.update_xaxes(type='category')
         amd_fig.show()
 
-        amd_fig.write_image("amdalh_comb_todo.svg")
+        amd_fig.write_image("amdalh_comb_no_io.svg")
 
         gstv_fig.update_layout(
             title={
-                'text': "Gustafson's Law",
+                'text': "Gustafson's Law without I/O",
                 'y':0.9,
                 'x':0.5,
                 'xanchor': 'center',
@@ -310,7 +310,7 @@ if args.type in ["speed"]:
         gstv_fig.update_xaxes(type='category')
         gstv_fig.show()
 
-        gstv_fig.write_image("gustafson_comb_todo.svg")
+        gstv_fig.write_image("gustafson_comb_no_io.svg")
 
 
 if args.type in ["color", "todo"]:
@@ -348,7 +348,7 @@ if args.type in ["color", "todo"]:
                     )
 
                 hsl_fig.add_trace(go.Scatter(
-                    x=[i for i in range(1, len(hsl_means)+1)],
+                    x=[2**i for i in range(0, 4)],
                     y=hsl_means,
                     text=[round(i,2) for i in hsl_means],
                     textposition="top center",
@@ -357,7 +357,7 @@ if args.type in ["color", "todo"]:
                 )
 
     hsl_fig.add_trace(go.Scatter(
-        x=[i for i in range(1, len(hsl_means)+1)],
+        x=[2**i for i in range(0, 4)],
         y=[round(original_hsl_mean, 2)]*len(hsl_means),
         text=[round(original_hsl_mean, 2)]*len(hsl_means),
         textposition="top center",
@@ -397,7 +397,7 @@ if args.type in ["color", "todo"]:
                     )
 
                 yuv_fig.add_trace(go.Scatter(
-                    x=[i for i in range(1, len(yuv_means)+1)],
+                    x=[2**i for i in range(0, 4)],
                     y=yuv_means,
                     text=[round(i,2) for i in yuv_means],
                     textposition="top center",
@@ -406,7 +406,7 @@ if args.type in ["color", "todo"]:
                 )
 
     yuv_fig.add_trace(go.Scatter(
-        x=[i for i in range(1, len(yuv_means)+1)],
+        x=[2**i for i in range(0, 4)],
         y=[round(original_yuv_mean, 2)]*len(yuv_means),
         text=[round(original_yuv_mean, 2)]*len(yuv_means),
         textposition="top center",
@@ -445,7 +445,7 @@ if args.type in ["color", "todo"]:
                     )
 
                 color_fig.add_trace(go.Scatter(
-                    x=[i for i in range(1, len(color_means)+1)],
+                    x=[2**i for i in range(0, 4)],
                     y=color_means,
                     text=[round(i,2) for i in color_means],
                     textposition="top center",
@@ -454,7 +454,7 @@ if args.type in ["color", "todo"]:
                 )
 
     color_fig.add_trace(go.Scatter(
-        x=[i for i in range(1, len(color_means)+1)],
+        x=[2**i for i in range(0, 4)],
         y=[round(original_mean, 2)]*len(color_means),
         text=[round(original_mean, 2)]*len(color_means),
         textposition="top center",
@@ -505,7 +505,7 @@ if args.type in ["gris", "todo"]:
                         ]).mean()
                     )
                 grey_fig.add_trace(go.Scatter(
-                    x=[i for i in range(1, len(grey_means)+1)],
+                    x=[2**i for i in range(0, 4)],
                     y=grey_means,
                     text=[round(i,2) for i in grey_means],
                     textposition="top center",
@@ -514,7 +514,7 @@ if args.type in ["gris", "todo"]:
                 )
 
     grey_fig.add_trace(go.Scatter(
-        x=[i for i in range(1, len(grey_means)+1)],
+        x=[2**i for i in range(0, 4)],
         y=[round(original_gris_mean, 2)]*len(grey_means),
         text=[round(original_gris_mean, 2)]*len(grey_means),
         textposition="top center",
@@ -535,7 +535,7 @@ if args.type in ["gris", "todo"]:
     )
     grey_fig.update_xaxes(type='category')
     grey_fig.show()
-    grey_fig.write_image("comb_proc_grey.svg")
+    grey_fig.write_image("comb_grey_proc.svg")
 
     total_grey_fig = go.Figure()
     for f in folder_names:
@@ -552,7 +552,7 @@ if args.type in ["gris", "todo"]:
                         ]).mean()
                     )
                 total_grey_fig.add_trace(go.Scatter(
-                    x=[i for i in range(1, len(total_grey_means)+1)],
+                    x=[2**i for i in range(0, 4)],
                     y=total_grey_means,
                     text=[round(i,2) for i in total_grey_means],
                     textposition="top center",
@@ -561,7 +561,7 @@ if args.type in ["gris", "todo"]:
                 )
 
     total_grey_fig.add_trace(go.Scatter(
-        x=[i for i in range(1, len(total_grey_means)+1)],
+        x=[2**i for i in range(0, 4)],
         y=[round(original_mean, 2)]*len(total_grey_means),
         text=[round(original_mean, 2)]*len(total_grey_means),
         textposition="top center",
