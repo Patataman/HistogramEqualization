@@ -24,6 +24,21 @@ if [ ! -d times ]; then
   mkdir times
 fi
 
+if [ $1 == "Original" ]; then
+    mkdir -p times/1
+
+    for ((i = 0; i < $2; i++))
+    do
+      ./contrast >> times/1/output.txt
+    done
+
+    cat times/1/output.txt | grep Processing > times/1/grey_processing.txt
+    cat times/1/output.txt | grep Gris > times/1/grey_time.txt
+    cat times/1/output.txt | grep HSL > times/1/hsl_processing.txt
+    cat times/1/output.txt | grep YUV > times/1/yuv_processing.txt
+    cat times/1/output.txt | grep Color > times/1/color_time.txt
+fi
+
 
 if [ $1 == "OpenMP" ]; then
   for ((j = 1; j <= 16; j++))
@@ -68,26 +83,31 @@ if [ $1 == "MPI" ]; then
 fi
 
 if [ $1 == "Combinado" ]; then
-  for ((i = 2; i<= 4; i++))
+  for ((i = 2; i<= 2; i++))
   do
-    echo "MPI Processes $i"
-    for ((j = 1; j <= 16; j++))
+    np=$((2 ** $i))
+    echo "MPI Processes $np"
+    for ((j = 2; j <= 2; j++))
     do
-      echo "OpenMP Threads $j"
-      export OMP_NUM_THREADS=$j
+      proc=$((2 ** $j))
+      echo "OpenMP Threads $proc"
+      export OMP_NUM_THREADS=$proc
 
-      mkdir -p times/$i-$j
+      mkdir -p times/$np/$proc
 
-      for ((i = 0; i < $2; i++))
+      for ((w = 0; w < $2; w++))
       do
-        mpirun -np $j contrast >> times/$i-$j/output.txt
+        mpirun -np $np -hostfile hosts contrast >> times/$np/$proc/output.txt
       done
 
-      cat times/$i-$j/output.txt | grep Processing > times/$i-$j/grey_processing.txt
-      cat times/$i-$j/output.txt | grep Gris > times/$i-$j/grey_time.txt
-      cat times/$i-$j/output.txt | grep HSL > times/$i-$j/hsl_processing.txt
-      cat times/$i-$j/output.txt | grep YUV > times/$i-$j/yuv_processing.txt
-      cat times/$i-$j/output.txt | grep Color > times/$i-$j/color_time.txt
+      cat times/$np/$proc/output.txt | grep Processing > times/$np/$proc/grey_processing.txt
+      cat times/$np/$proc/output.txt | grep Gris > times/$np/$proc/grey_time.txt
+      cat times/$np/$proc/output.txt | grep HSL > times/$np/$proc/hsl_processing.txt
+      cat times/$np/$proc/output.txt | grep YUV > times/$np/$proc/yuv_processing.txt
+      cat times/$np/$proc/output.txt | grep Color > times/$np/$proc/color_time.txt
+      cat times/$np/$proc/output.txt | grep MSGGRIS > times/$np/$proc/msg_time_gris.txt
+      cat times/$np/$proc/output.txt | grep MSGCOLOR > times/$np/$proc/msg_time_color.txt
+
     done
   done
 fi

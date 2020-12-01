@@ -59,28 +59,28 @@ PGM_IMG contrast_enhancement_g(PGM_IMG img_in)
 }
 
 //Esta funcion nunca se llama
-PPM_IMG contrast_enhancement_c_rgb(PPM_IMG img_in)
-{
-
-    PPM_IMG result;
-    int hist[256];
-
-    result.w = img_in.w;
-    result.h = img_in.h;
-    result.img_r = (unsigned char *)malloc(result.w * result.h * sizeof(unsigned char));
-    result.img_g = (unsigned char *)malloc(result.w * result.h * sizeof(unsigned char));
-    result.img_b = (unsigned char *)malloc(result.w * result.h * sizeof(unsigned char));
-
-    histogram(hist, img_in.img_r, img_in.h * img_in.w, 256);
-    histogram_equalization(result.img_r,img_in.img_r,hist,result.w*result.h, 256);
-
-    histogram(hist, img_in.img_g, img_in.h * img_in.w, 256);
-    histogram_equalization(result.img_g,img_in.img_g,hist,result.w*result.h, 256);
-    histogram(hist, img_in.img_b, img_in.h * img_in.w, 256);
-    histogram_equalization(result.img_b,img_in.img_b,hist,result.w*result.h, 256);
-
-    return result;
-}
+// PPM_IMG contrast_enhancement_c_rgb(PPM_IMG img_in)
+// {
+// 
+//     PPM_IMG result;
+//     int hist[256];
+// 
+//     result.w = img_in.w;
+//     result.h = img_in.h;
+//     result.img_r = (unsigned char *)malloc(result.w * result.h * sizeof(unsigned char));
+//     result.img_g = (unsigned char *)malloc(result.w * result.h * sizeof(unsigned char));
+//     result.img_b = (unsigned char *)malloc(result.w * result.h * sizeof(unsigned char));
+// 
+//     histogram(hist, img_in.img_r, img_in.h * img_in.w, 256);
+//     histogram_equalization(result.img_r,img_in.img_r,hist,result.w*result.h, 256);
+// 
+//     histogram(hist, img_in.img_g, img_in.h * img_in.w, 256);
+//     histogram_equalization(result.img_g,img_in.img_g,hist,result.w*result.h, 256);
+//     histogram(hist, img_in.img_b, img_in.h * img_in.w, 256);
+//     histogram_equalization(result.img_b,img_in.img_b,hist,result.w*result.h, 256);
+// 
+//     return result;
+// }
 
 
 PPM_IMG contrast_enhancement_c_yuv(PPM_IMG img_in)
@@ -343,7 +343,6 @@ PPM_IMG hsl2rgb(HSL_IMG img_in)
         result.img_g[i] = g;
         result.img_b[i] = b;
     }
-    // PROBABLEMENTE UN GATHER DONDE SE LLAMA
     return result;
 }
 

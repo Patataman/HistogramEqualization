@@ -22,6 +22,7 @@
 
 \usepackage[a-1b]{pdfx}
 \usepackage{hyperref}
+\usepackage{svg}
 
 \hypersetup{colorlinks=true,
 	linkcolor=black, % enlaces a partes del documento (p.e. índice) en color negro
@@ -210,9 +211,9 @@
 		 	\vspace*{0.5cm}
 	 		\rule{10.5cm}{0.1mm}\\
 			\vspace*{0.9cm}
-			{\LARGE Carlos Vigil González}\\
-            {\LARGE David Gil López}\\
-			{\LARGE Daniel Alejandro Rodríguez López}\\
+			{\LARGE 100363974 - Carlos Vigil González}\\
+            {\LARGE 100363815 - David Gil López}\\
+			{\LARGE 100316890 - Daniel Alejandro Rodríguez López}\\
 			\vspace*{1cm}
 	\end{center}
 	\vfill
@@ -238,8 +239,8 @@
 %--
 % Índice de tablas. Si no se incluyen, comenta las líneas siguientes
 %-
-\listoftables
-\thispagestyle{fancy}
+% \listoftables
+% \thispagestyle{fancy}
 
 %----------
 %	TRABAJO
@@ -252,7 +253,7 @@
 
 La presente memoria explica los pasos seguidos, experimentacón y resultados obtenidos durante la
 paralelización del código de equalización de histograma entregado inicialmente. Pero antes de entrar
-en resultados, conviene explicar en qué consiste una equalización de histograma.
+en materia, conviene explicar en qué consiste una equalización de histograma.
 
 De forma simplista, una equalización de histograma consiste en estirar el rango de valores en una
 imagen para aplanar su histograma de valores.
@@ -263,26 +264,15 @@ imagen para aplanar su histograma de valores.
     \label{fig:hist_eq}
 \end{figure}
 
-De forma un poco más técnica, una equalización de histograma distribuye los valores de color en una imagen de forma que todos se encuentran presentes de forma equitativa dentro de la imagen, como se puede apreciar en la \autoref{fig:hist_eq}
+De forma un poco más técnica, una equalización de histograma distribuye los valores de color en una imagen de
+forma que todos se encuentran presentes de forma equitativa dentro de la imagen, como se puede apreciar
+en la figura \ref{fig:hist_eq} \nameref{fig:hist_eq}
 
-Para calcular estos histogramas se debe recorrer la imagen multiples veces, tanto para
+Para calcular estos histogramas se debe recorrer la imagen múltiples veces, tanto para
 calcular los valores iniciales como para establecer los valores finales, por lo tanto hemos orientado
-nuestros esfuerzos con OpenMP \parencite{timlewis_openmp_nodate} en optimizar estas iteraciones sobre
-la imagen, mientras que con MPI \parencite{noauthor_open_nodate} nos hemos centrado en el reparto
+nuestros esfuerzos con OpenMP \parencite{openmp_openmp_2004} en optimizar estas iteraciones sobre
+la imagen, mientras que con MPI \parencite{spi-inc_open_2004} nos hemos centrado en el reparto
 de fragmentos de la imagen entre distintos procesos para reducir el número de iteraciones.
-
-No obstante para poder obtener un análisis más completo de las distintas alternativas y \textit{speed-ups}
-posibles, se han realizado 3 versiones distintas de paralelización: \nameref{chap:OpenMP}, \nameref{chap:MPI}
-y \nameref{chap:OpenMP+MPI}. De igual forma, para poder comparar los resultados de forma fiable, se ha
-utilizado las mismas imágenes de prueba, entorno de ejecución (guernika) y número de ejecuciones.
-
-
-\subsection{OpenMP}
-
-
-\subsection{MPI}
-
-En el caso de MPI...
 
 
 \subsection{Speed up teóricos}
@@ -294,7 +284,7 @@ la \nameref{sec:Amdahl} y para la \nameref{sec:Gustafson}.
 \subsubsection{Ley de Amdahl}
 \label{sec:Amdahl}
 
-La Ley de Amdahl nos permite dado un programa con carga fija, el \textit{speed up} máximo que podríamos alcanzar
+La Ley de Amdahl nos permite dado un programa con carga fija, obtener el \textit{speed up} máximo que podríamos alcanzar
 
 \[ S = \frac{1}{(1 - P) + \frac{P}{N}} \]
 
@@ -307,21 +297,42 @@ De esta forma, en el código original tenemos 288 líneas de código, de las cua
 94 como parelizables, dándo lugar a una $P = 0.32638$.
 
 \begin{figure}[H]
-    \makebox[\textwidth][c]{\includegraphics[width=14cm]{amdahl.png}}
-    \caption{Ley de Amdahl con distinto N}
-    \label{fig:fig_amdahl}
+    \makebox[\textwidth][c]{
+        \includesvg[width=15cm]{comb/amdalh_teorico.svg}
+    }
+    \caption{Amdahl teórico}
+    \label{fig:ley_amdahl}
 \end{figure}
 
-Como se puede observar el \textit{speed up} se empieza a detener a partir de los 8 procesadores, ya que
-de un \textit{speed up} de 1.4 pasamos a 1.44 con 16 procesadores, por lo que no tiene mucho sentido
+Como se puede observar, con Amdahl el \textit{speed up} se empieza a detener a partir de los 8 procesadores,
+ya que de un \textit{speed up} de 1.4 pasamos a 1.44 con 16 procesadores, por lo que no tiene mucho sentido
 aumentar el número de procesadores ya que la ganancia sería mínima.
+
 
 \subsubsection{Ley de Gustafson}
 \label{sec:Gustafson}
 
+A diferencia de en la Ley de Amdahl, en Gustafson se considera que al mismo tiempo que se aumenta el número
+de procesadores disponibles, también aumenta el tamaño del problema.
+
 \[ S = P - \alpha \cdot (P - 1)\]
 
 Siendo P el número de procesadores y $\alpha$ la parte de código no paralelizable.
+
+\begin{figure}[H]
+    \makebox[\textwidth][c]{
+        \includesvg[width=15cm]{comb/gustafson_teorico.svg}
+    }
+    \caption{Gustafson teórico}
+    \label{fig:ley_amdahl}
+\end{figure}
+
+En cambio, si utilizásemos Gustafson, al ser dependiente del tamaño de los datos de entrada, el
+\textit{speed up} no se detiene. Por lo tanto, dado que este problema depende completamente del tamaño
+de la imagen, es más conveniente utilizar este \textit{speed up} para realizar estimaciones y comparar
+mejoras. Suponiendo que para las pruebas del código paralelo se pudiese ejecutar en todas estas posibles
+configuraciones, se debería de ver un aumento constante del speed up (si el tamaño de la imagen aumentase
+también).
 
 
 \chapter{Análisis y experimentación}
@@ -332,12 +343,81 @@ por elegir cada método en cada caso.
 
 \section{Análisis}
 
-LO DEL VALGRIND
+Esta sección se descompondrá en los cuatro pasos que se pueden seguir a la hora de paralelizar:
+Descomposición, Asignación, Orquestación y Reparto.
 
-\section{OpenMP}
-\label{sec:OpenMP}
+\subsection{Descomposición}
 
-La paralelización de código se ha centrado en bucles \textit{for} que operan sobre la imagen,
+En esta fase se analiza el código para identificar qué partes son paralelizables y cómo se podrían paralelizar.
+
+Como se ha explicado previamente en la \nameref{chap:Intro}, el esfuerzo de paralelización con OpenMP se va
+a orientar a bucles e iteraciones mientras que con MPI se va a reducir la carga de trabajo que deberá ejecutar
+cada hilo dividiendo la imagen de entrada en fragmentos más pequeños.
+
+Para identificar qué secciones de código son las más costosas se ha ejecutado callgrind y visualizado sus
+resultados con Kcachegrind \parencite{weidendorfer_kcachegrind_2013}. 
+
+\begin{figure}[H]
+    \makebox[\textwidth][c]{\includegraphics[width=12cm]{kcachegrind.png}}
+    \caption{Funciones más costosas}
+    \label{fig:kcachegrind}
+\end{figure}
+
+En la figura \ref{fig:kcachegrind} \nameref{fig:kcachegrind} se muestran ordenados de mayor a menor coste las llamadas que se
+realizan al ejecutar la versión secuencial del código y, como se puede apreciar, alrededor del 50\% del tiempo
+se gasta en funciones relacionadas con la equalización de una imagen en color (\texttt{hsl2rgb}, \texttt{rgb2hsl},
+\texttt{yuv2rgb}, \texttt{rgb2yuv}). También alrededor del 10\% del tiempo se gasta en la equalización como tal
+(\texttt{histogram\_equalization}).
+
+
+\subsection{Asignación}
+
+A través de las funciones identificadas en el paso anterior mediante cachegrind y Kcachegrind se puede
+analizar porqué son las más costosas de toda la aplicación.
+
+Esto se debe a que son funciones que iteran sobre todos los píxeles de la imagen, por lo tanto, siguiendo el
+planteamiento inicial de fragmentar la imagen en trozos más pequeños y paralelizar estos bucles mediante
+OpenMP el tiempo final debería reducirse considerablemente.
+
+A excepción de \texttt{histogram\_equalization}, que está formado de dos bucles, y uno tiene dependencias
+con sus iteraciones previas, el resto de bucles carecen de este tipo de dependencias.
+
+El código no parece excesivamente dependiente del tamaño del grano, dado que casi todo es independiente de
+lo que pueda ocurrir en los otros fragmentos en los se decide dividir la imagen original, por lo tanto un
+grano más fino que grueso puede ayudar alcanzar un mayor \textit{speed up}
+
+\subsection{Orquestación}
+
+En esta sección se plantea la forma de comunicar los datos entre los distintos procesos e hilos que se van a generar.
+
+Sin embargo, en el entorno que se dispone para realizar la práctica no es un aspecto tan configurable como podría ser,
+dado que todas las ejecuciones se realizan sobre una misma máquina, por lo tanto no existe tiempo de red, y otras
+variables como localidad de datos no hay que tenerse en cuenta, ya que todos los datos son locales.
+
+En cuanto a la comunicación y sincronización entre los distintos procesos e hilos que se puedan crear, solamente existen
+cuatro momentos en los que tener cuidado, dado que dependen de toda la imagen, y no de fragmentos de la misma:
+
+\begin{itemize}
+  \item Lectura de la imagen: Dado que solo 1 proceso debe leer, y comunicárselo al resto.
+  \item Escritura de la imagen: Para evitar conflictos en disco, 1 único proceso debería recuperar toda la imagen y
+      escribirla en disco.
+  \item Cálculo del histograma: El histograma debe ser de toda la imagen, si no la equalización estará mal.
+  \item Equalizar la imagen: Un paso previo antes de equalizar la imagen consiste en calcular una tabla de valores
+      que depende del valor mínimo presente en la imagen.
+\end{itemize}
+
+
+\subsection{Reparto}
+
+Dada la topología que se tiene (1 única máquina, con 8 procesadores), se va a intentar no sobrecargar la máquina,
+es decir. no lanzar 4 procesos de MPI con 8 hilos de OpenMP, dado que serían más tareas que procesadores
+disponibles. Sin embargo, hasta que no se realice una experimentacion probando todas las configuraciones
+disponibles no se puede afirmar que configuración sería la adecuada.
+
+\section{OpenMP + MPI}
+\label{sec:OpenMP+MPI}
+
+La paralelización de código con OpenMP se ha centrado en bucles \textit{for} que operan sobre la imagen,
 dado que con OpenMP es muy sencillo seguir un modelo SIMD (\textit{Single Instruction / Multiple Data})
 y, además representan un mayor número de iteraciones que cualquier otro tipo de bucles dado que una
 imagen pequeña de 200x200 píxeles, se traduciría en 40000 iteraciones.
@@ -354,126 +434,210 @@ a \textit{rgb}.
 En el tercer fichero, \textit{histogram-equalization.cpp}, también se ha realizado la paralelización
 de ciertos bucles. Los dos primeros, que se encuentran en la función \textit{histogram}, se ha decidido
 optar por paralelizarlos como \textit{SIMD} en vez de como simples bucles for, ya que al tener pocas
-iteraciones, el particionarlos no ofrecería ninguna ventaja, pero por otro lado el utilizar las operaciones
-vectoriales nos aportaría la velocidad suficiente para contrarestar el \textit{overhead} de paralelizarlo.
+iteraciones, el particionado no ofrecería ninguna ventaja, por otro lado el utilizar las operaciones
+vectoriales nos aportará la velocidad suficiente para contrarestar el \textit{overhead} de paralelizarlo.
 
 Por otro lado, en este mismo fichero también se ha paralelizado el bucle \textit{for} que escribe la imagen
 final tras ecualizar el histograma, en este caso usando las directivas propias de los bucles \textit{for} y
 de las instrucciones de tipo \textit{SIMD}. El bucle que ecualiza el histograma no ha sido paralelizado
 debido a las dependencias que tienen entre una iteración y la anterior.
 
-\subsection{Experimentación}
-
-La experimentación se ha realizado usando la imagen proporcionada de ejemplo (11472 x 6429 píxeles),
-usando el entorno de guernika (6 núcleos físicos y otros 6 virtuales, 12 en total a 3,4GHz), variando
-el números de hilos usados (desde 1 hasta 16) y repitiendo cada ejecución 100.
-
-En los resultados se pueden observar el tiempo medio obtenido con el código original (para 100 ejecuciones)
-y los tiempos medios obtenidos para cada número de hilos de esta versión. 
-
-Partiendo de un valor promedio de ejecuciones secuenciales que se sitúa en valores cercanos a 0.092 s en grises y
- 3.2s en color, dividiendo a su ver esto en 0.63s cuando se procesa en formato yuv y 2.48 s cuando se procesa
-en hsl. Los valores promedio de la paralelización del código son los siguientes:
- 
-\begin{figure}[H]
-    \makebox[\textwidth][c]{\includegraphics[width=14cm]{omp/omp_hilos_svg/omp_grey.svg}}
-    \caption{Tiempos paralelos sobre tiempo secuencial con OMP en escala de grises.}
-    \label{fig:fig_omp_grey}
-\end{figure}
- 
-En esta figura se puede ver que el tiempo empieza siendo peor que en la ejecución secuencial, ya que necesita invertir
- tiempo en la creación del hilo y después asignarle la función, pero ejecutándose solo en ese hilo.
- 
-En la gráfica se puede observar que, además del alto tiempo obtenido para un único hilo, también se encuentran dos picos
- más de bajo rendimiento, estos se sitúan en 8 hilos y 14 hilos.
- 
-Por otro lado, se puede observar que el mejor tiempo obtenido es el de dos hilos. 
- 
-Ademas de en la grafica de ejecución en el cala de los grises, tambien se pueden observar estos mismos comportamintos
- en la de color.
- \begin{figure}[H]
-	\makebox[\textwidth][c]{\includegraphics[width=14cm]{omp/omp_hilos_svg/omp_color_total.svg}}
-    \caption{Tiempos paralelos sobre tiempo secuencial con OMP en el proceso de la imagen en color.}
-    \label{fig:fig_omp_grey}
-\end{figure}
- 
-Con esto, también en las que se descompone esta última, HSL y YUV. 
- 
-\begin{figure}[H]
-	\makebox[\textwidth][c]{\includegraphics[width=14cm]{omp/omp_hilos_svg/omp_hsl_proc.svg}}
-    \caption{Tiempos paralelos sobre tiempo secuencial con OMP en el proceso de la imagen en formato HSL.}
-    \label{fig:fig_omp_grey}
-\end{figure}
- 
-\begin{figure}[H]
-	\makebox[\textwidth][c]{\includegraphics[width=14cm]{omp/omp_hilos_svg/omp_yuv_proc.svg}}
-    \caption{Tiempos paralelos sobre tiempo secuencial con OMP en el proceso de la imagen en formato YUV.}
-    \label{fig:fig_omp_grey}
-\end{figure}
-
-Estos tiempos se transforman en los siguientes speedups:
- 
-\begin{figure}[H]
-	\makebox[\textwidth][c]{\includegraphics[width=14cm]{omp/omp_hilos_svg/amdalh_omp_todo.svg}}
-	\caption{Speedups con OpenMP con y sin IO frente a la ley de Amdahl.}
-    \label{fig:fig_omp_grey}
-\end{figure}
-
-Como se puede ver lo que más retrasa a la hora de la ejecución es el tiempo de input output, ya que salvo 
-en el número de procesadores indicados previamente, en este apartado se supera con creces el speedup estimado 
-con amdahl, no obstante si se introduce estos procesos de lectura y escritura el speedup empeora radicalmente, 
-siendo 2 y 15 hilos los únicos que ves una mejoría mínima sobre 1 de speedup, que representa ninguna mejora. 
-
-
-\section{MPI}
-\label{sec:MPI}
-
-La paralelización de código se ha centrado en repartir la carga de trabajo inicial entre los distintos
+En cuanto MPI, la paralelización de código se ha centrado en repartir la carga de trabajo inicial entre los distintos
 procesos existentes. De forma similar a OpenMP, la parelización de MPI, aunque puede seguir otros
 patrones como MISD (\textit{Multiple Instruction / Single Data}) o MIMD (\textit{Multiple Instruction
 / Multiple Data}), se ha seguido un planteamiento SIMD.
 
 Para decidir en qué secciones del código se puede paralelizar siguiendo un modelo SIMD, hay que identificar
-las operaciones que dependen de la imagen completa, para evitar realizar esas operaciones con fragmentos de
+las operaciones que dependen de la imagen completa para evitar realizar esas operaciones con fragmentos de
 la imagen total, ya que se obtendrían resultados distintos de la versión secuencial y por tanto, incorrectos.
 
-Estas secciones de código que dependen de la imagen original se encuentran en la lectura inicial y escritura
-final de la misma e inicialización de variables en \textit{contrast.cpp}, en la definición del histograma
-inicial y en la normalización del histograma final en \textit{histogram-equalization.cpp}. Sin embargo,
-a pesar de depender de la imagen inicial, la inicialización del histograma es fácilmente paralelizable sin
-un impacto negativo en el rendimiento al tratarse de un array de números.
-
-
-\subsection{Experimentación}
-
-La experimentación se ha realizado usando la imagen proporcionada de ejemplo (11472 x 6429 píxeles),
-usando el entorno de guernika (6 núcleos físicos y otros 6 virtuales, 12 en total a 3,4GHz), variando
-el números de procesos usados (desde 1 hasta 8) y repitiendo cada ejecución 100. El número máximo
-de procesos viene limitado por el hardware de la máquina.
-
-En los resultados se pueden observar el tiempo medio obtenido con el código original (para 100 ejecuciones)
-y los tiempos medios obtenidos para cada número de procesos de esta versión.
-
-\section{OpenMP + MPI}
-\label{sec:OpenMP+MPI}
-Explicar "conclusiones" o yuqse sobre porqué en base a lo anterior hemos decidido hacer el OpenMP+MPI final, quizás no es exáctamente igual que simplemente juntar lo anterior
-
+Estas secciones de código que dependen de la imagen original, como se ha comentado previamente, se encuentran
+en la lectura inicial y escritura final de la misma e inicialización de variables en \textit{contrast.cpp},
+en la definición del histograma inicial y en la normalización del histograma final en
+\textit{histogram-equalization.cpp}. Sin embargo, a pesar de depender de la imagen inicial,
+la inicialización del histograma es fácilmente paralelizable sin
+un impacto negativo en el rendimiento al tratarse de un array de números cuyo resultado final es una suma (reducción).
+Para el resto de operaciones que dependen de la imagen total, se ha delegado a que solamente el proceso
+con el rank 0 sea el que se encarge de realizar esas operaciones para posteriormente comunicárselas al
+resto de procesos.
 
 \subsection{Experimentación}
 
 La experimentación se ha realizado usando la imagen proporcionada de ejemplo (11472 x 6429 píxeles),
-usando el entorno de guernika (6 núcleos físicos y otros 6 virtuales, 12 en total a 3,4GHz), escogiendo
-combinaciones de los mejores parámetros para cada una de las versiones anteriores y repitiendo
-durante 100 ejecuciones.
+usando una CPU Intel(R) Core(TM) i7-4702MQ CPU @ 2.20GHz con 4 núcleos físicos y otros 4 virtuales, variando
+el números de procesos de MPI y el número de hilos de OpenMP con valores 1, 2, 4 y 8 y repitiendo cada ejecución 10 veces.
 
-En los resultados se pueden observar el tiempo medio obtenido con el código original (para 100 ejecuciones)
-y el tiempo medio obtenido para distintas configuraciones de esta versión.
+En los resultados se pueden observar el tiempo medio obtenido con el código original
+y los tiempos medios obtenidos para cada una de las posibles combinaciones de MPI+OpenMP.
+
+Partiendo de un valor promedio de ejecuciones secuenciales (sin contar entrada y salida) que se sitúa en
+valores cercanos a 0.11 s en grises y 4s en color, dividiendo a su vez esto en 0.74s cuando se procesa
+en formato YUV y 3.2s cuando se procesa en HSL. Y con valores de 1.1s en escala de grises y 10.5s en color al contar la entrada y salida.
+
+Los valores promedio de la paralelización del código son los siguientes:
+
+\begin{figure}[H]
+    \makebox[\textwidth][c]{
+        \includesvg[width=15cm]{comb/comb_grey_proc.svg}
+    }
+    \caption{Grises. Tiempos (sin I/O) Secuencial vs MPI+OpenMP}
+    \label{fig:tiempos_no_io_gris}
+\end{figure}
+
+Como se puede apreciar en la figura, cuando se utiliza un número bajo de procesos el tiempo es
+peor, independientemente del número de hilos, ya que existe la sobrecarga de MPI, pero ningún tipo de paralelismo
+al haber un único proceso.
+Sin embargo, cuando empieza a existir paralelísmo y reparto de datos, aunque sea mínimo, como en el caso de N=2,
+se empieza a notar una mejora en los tiempos, siendo este máximo cuando se ocupan todos los procesadores de
+la máquina.
+
+No obstante, cuando se empieza a sobrecargar la máquina, y al ser relativamente "barato" computar la equalización
+de histograma sobre la imagen en escala de grises, el tiempo comienza a empeorar, ya que el número de procesos
+e hilos es mayor que el número de núcleos disponibles.
+
+\begin{figure}[H]
+    \makebox[\textwidth][c]{
+        \includesvg[width=15cm]{comb/comb_grey_total.svg}
+    }
+    \caption{Grises. Tiempos (con I/O) Secuencial vs MPI+OpenMP}
+    \label{fig:tiempos_io_gris}
+\end{figure}
+
+Teniendo en cuenta la entrada y salida hay que tener en cuenta también el paso por mensajes de MPI,
+dado que para escribir en disco es necesario que todos los
+procesos comuniquen su trozo de la imagen al proceso con rank 0, por lo tanto, aquellas pruebas con un N>1
+añadirán a su tiempo total de ejecución el tiempo de comunicación, por lo tanto, como se puede apreciar, a mayor
+N, mayor tiempo de ejecución, llegando a ser peor que la versión secuencial cuando N=8.
+
+\begin{figure}[H]
+	\makebox[\textwidth][c]{
+        \includesvg[width=15cm]{comb/comb_color_total.svg}
+    }
+    \caption{Color. Tiempos paralelos (con I/O) Secuencial vs MPI+OpenMP.}
+    \label{fig:color_tiempos}
+\end{figure}
+
+De forma similar a la escala de grises, un número pequeño de procesos de MPI mejora ligeramente el
+rendimiento y un número elevado lo empeora debido al paso por mensajes.
+
+No obstante, esto empieza a cambiar en cuanto aumentamos el número de hilos disponibles para cada proceso
+ya que , a diferencia de la escala de grises, en color se trabaja
+con tres canales (r,g,b), lo que implica el triple de datos a comunicar entre procesos, y es hasta que no se
+alcanza un cierto nivel de paralelismo (por ejemplo, 4 procesos y 8 hilos) que aproveche al máximo la CPU,
+no se obtiene una mejora significativa.
+
+% CACA: LEED ESTo SI O SI
+Sin embargo, contrario a la suposición inicial de que sobrecargar el procesador lanzando tantos procesos
+como núcleos e hilos de OpenMP podría ser contraproducente, se obtiene el mejor rendimiento posible para este
+caso. Se considera que esto se debe a que con 4 procesos el tamaño de la imagen tiene el tamaño de grano
+perfecto para con 8 hilos de OpenMP, no haya demasiados cambios de contexto en los núcleos y se encuentre
+trabajando la mayor parte del tiempo. No como puede ocurrir con 8 procesos.
+
+Este mismo comportamiento se puede apreciar en el procesamiento de HSL y YUV.
+
+\begin{figure}[H]
+	\makebox[\textwidth][c]{
+        \includesvg[width=15cm]{comb/comb_hsl_proc.svg}
+    }
+    \caption{HSL. Tiempos paralelos (sin I/O) Secuencial vs MPI+OpenMP.}
+    \label{fig:hsl_tiempos}
+\end{figure}
+
+\begin{figure}[H]
+	\makebox[\textwidth][c]{
+        \includesvg[width=15cm]{comb/comb_yuv_proc.svg}
+    }
+    \caption{YUV. Tiempos paralelos (sin I/O) Secuencial vs MPI+OpenMP.}
+    \label{fig:yuv_tiempos}
+\end{figure}
+
+Observando los resultados obtenidos, se puede deducir que para la configuración actual, los mejores
+resultados se van a obtener usando 4 procesos de MPI y 8 hilos de OpenMP. Con esta configuración, se
+obtiene el siguiente histograma de tiempos en comparación con su versión secuencial.
+
+\begin{figure}[H]
+	\makebox[\textwidth][c]{
+        \includesvg[width=15cm]{comb/hist_times_grey.svg}
+    }
+    \caption{Histograma acumulado - Escala de grises - Secuencial vs Paralelo.}
+    \label{fig:hist_times_grey}
+\end{figure}
+\begin{figure}[H]
+	\makebox[\textwidth][c]{
+        \includesvg[width=15cm]{comb/hist_times_color.svg}
+    }
+    \caption{Histograma acumulado - Color - Secuencial vs Paralelo.}
+    \label{fig:hist_times_color}
+\end{figure}
+
+Donde se aprecia claramente que los tiempos de entrada y salida se mantienen constante para la escala de grises y
+mejoran ligeramente en color debido a una pequeña parelización a la hora de reconstruir la imagen.
+Los tiempos de CPU descienden considerablemente y aparece un tiempo que antes no existía en la versión
+secuencial, el tiempo de los pasos de mensajes de MPI.
+
+Este tiempo de paso de mensajes hace que la versión paralela para imágenes en escala de grises sea
+exáctamente igual a la versión original o incluso un poco peor, como se vió previamente, dado que el tiempo
+de CPU se reduce a la mitad, pero el tiempo de los mensajes es igual al de la CPU, por lo tanto se
+mantiene estable. En cambio, para las imágenes a color el tiempo de mensajes es bastante inferior al
+tiempo de cómputo (que se reduce casi 4 veces), por lo que el \textit{overhead} que añade MPI es despreciable.
+
+Los tiempos previamente obtenidos durante las pruebas se pueden transforman en los siguientes \textit{speed ups}:
+
+\begin{figure}[H]
+	\makebox[\textwidth][c]{
+        \includesvg[width=15cm]{comb/amdalh_comb_no_io.svg}
+    }
+	\caption{Speedup MPI+OpenMP sin I/O frente a la Ley de Amdahl.}
+    \label{fig:comparacion_speedup}
+\end{figure}
+\begin{figure}[H]
+	\makebox[\textwidth][c]{
+        \includesvg[width=15cm]{comb/amdalh_comb_io.svg}
+    }
+	\caption{Speedup MPI+OpenMP con I/O frente a la Ley de Amdahl.}
+    \label{fig:comparacion_speedup}
+\end{figure}
+
+Como se pudo apreciar en las figuras \ref{fig:hist_times_grey} \nameref{fig:hist_times_grey} y
+\ref{fig:hist_times_color} \nameref{fig:hist_times_color}, lo que más retrasa la
+ejecución es el tiempo de entrada y salida, siendo los casos en los que se ignora para el tiempo total
+cuando se consigue obtener un \textit{speed up} super lineal. No obstante,
+si se introducen estos procesos de lectura y escritura, el \textit{speed up} empeora considerablemente y, por
+tanto, obteniendo un resultado más realista con lo que se puede esperar a la hora de paralelizar código.
+
+\begin{figure}[H]
+	\makebox[\textwidth][c]{
+        \includesvg[width=15cm]{comb/gustafson_comb_no_io.svg}
+    }
+	\caption{Speedup MPI+OpenMP sin I/O frente a la Ley de Gustafson.}
+    \label{fig:comparacion_speedup}
+\end{figure}
+\begin{figure}[H]
+	\makebox[\textwidth][c]{
+        \includesvg[width=15cm]{comb/gustafson_comb_io.svg}
+    }
+	\caption{Speedup MPI+OpenMP con I/O frente a la Ley de Gustafson.}
+    \label{fig:comparacion_speedup}
+\end{figure}
+
+Como se puede apreciar, ocurre el mismo comportamiento que en la Ley de Amdahl y exáctamente por
+los mismos motivos. Aunque a diferencia de Amdahl, se empieza a estancar con Nº hilos = 8 cuando no consideramos
+la entrada y salido, y esto se debe a que el tamaño de la imagen ha sido constante durante las pruebas.
 
 \chapter{Conclusiones}
 
-Buah colega, hemos aprendido tope mazo
+La implementación de soluciones de computación distribuida mediante MPI es una forma relativamente sencilla
+de repartir datos a lo largo de varias máquinas sin mucha complicación, sin embargo, las modificaciones y aspectos
+a tener en cuenta a la hora de adaptar programas secuenciales hace que sea un proceso delicado.
 
+Por otro lado, OpenMP es muchísimo más sencillo de utilizar y nos permite introducir un gran nivel de
+paralelismo sin ningún problema, ni apenas modificaciones en el código original. Sin embargo, a diferencia
+de MPI, es mucho más complicado paralelizar el reparto de datos cuando no se trabaja con tipos básicos,
+por ejemplo en el caso que nos atañe, dividir un array en trozos equitativos y repartirlos, operar sobre
+ellos y luego recomponerlo.
 
+Cada estándar tiene sus pros y sus contras, y es importante conocer de antemano el entorno de ejecución de
+nuestro programa para poder aprovechar el máximo de cada uno de ellos.
 
 %----------
 %	BIBLIOGRAFÍA
